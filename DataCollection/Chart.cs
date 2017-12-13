@@ -18,12 +18,15 @@ namespace DataCollection
                             "initial catalog = DataCollection;" +
                             "integrated security = True;" +
                             "MultipleActiveResultSets=True;App=EntityFramework";
-        private string strSelectQuery1 = "SELECT ReadDate, SensorVal FROM S_Data where SensorID = 1;";
-        private string strSelectQuery2 = "SELECT ReadDate, SensorVal FROM S_Data where SensorID = 18;";
+        private string strSelectQuery1 = "SELECT ReadDate, SensorVal FROM S_Data where SensorID = ";
+        private string strSelectQuery2 = "SELECT ReadDate, SensorVal FROM S_Data where SensorID = ";
+        private bool[] tempLogic = new bool[16];
         public Chart()
         {
             InitializeComponent();
-            chart1.Visible = true;
+             chart1.Visible = true;
+
+
         }
 
         private void Chart_Load(object sender, EventArgs e)
@@ -33,45 +36,33 @@ namespace DataCollection
 
         private void sDATABindingSource_CurrentChanged(object sender, EventArgs e)
         {
+            
 
         }
 
+        public DataTable get(string query)
+        {
+            numCrunch access = new numCrunch();
+            DataTable result = new DataTable();
+            result = access.dataRead(query);
+            return result;
+        }
 
-        public DataTable dataRead()
+
+        public DataTable dataMerge(DataTable orig, DataTable add, int index)
         {
             try
             {
-                DataTable result1 = new DataTable();
-                DataTable result2 = new DataTable();
-                using (SqlConnection conn2 = new SqlConnection(connectionString))
+               orig.Columns.Add(new DataColumn("Temperature-" + (index + 1).ToString() , typeof(float)));
+                for (int col = 0; col < orig.Columns.Count; col++)
                 {
-                    conn2.Open();
-                    using (SqlCommand cmd = new SqlCommand(strSelectQuery1, conn2))
+                    for (int i = 0; i < orig.Rows.Count; i++)
                     {
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                        result1.Load(rdr);
+                        orig.Rows[i][col +2] = add.Rows[i][col + 1];
                     }
                 }
 
-                using (SqlConnection conn2 = new SqlConnection(connectionString))
-                {
-                    conn2.Open();
-                    using (SqlCommand cmd = new SqlCommand(strSelectQuery2, conn2))
-                    {
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                        result2.Load(rdr);
-                    }
-                }
-
-                result1.Columns.Add(new DataColumn("SensorVal2", typeof(float)));
-                //result2.Columns["SensorVal"].ColumnName = "SensorVal2";
-
-                for (int i = 0; i < result1.Rows.Count; i++)
-                {
-                    result1.Rows[i][2] = result2.Rows[i][1];
-                }
-
-                return result1;
+                return orig;
             }
             catch (Exception e)
             {
@@ -81,22 +72,91 @@ namespace DataCollection
             }
         }
 
+        private bool[] chkChecked()
+        {
+            if (chkBoxSensor1.Checked) { tempLogic[0] = true; } else { tempLogic[0] = false; }
+            if (chkBoxSensor2.Checked) { tempLogic[1] = true; } else { tempLogic[1] = false; }
+            if (chkBoxSensor3.Checked) { tempLogic[2] = true; } else { tempLogic[2] = false; }
+            if (chkBoxSensor4.Checked) { tempLogic[3] = true; } else { tempLogic[3] = false; }
+            if (chkBoxSensor5.Checked) { tempLogic[4] = true; } else { tempLogic[4] = false; }
+            if (chkBoxSensor6.Checked) { tempLogic[5] = true; } else { tempLogic[5] = false; }
+            if (chkBoxSensor7.Checked) { tempLogic[6] = true; } else { tempLogic[6] = false; }
+            if (chkBoxSensor8.Checked) { tempLogic[7] = true; } else { tempLogic[7] = false; }
+            if (chkBoxSensor9.Checked) { tempLogic[8] = true; } else { tempLogic[8] = false; }
+            if (chkBoxSensor10.Checked) { tempLogic[9] = true; } else { tempLogic[9] = false; }
+            if (chkBoxSensor11.Checked) { tempLogic[10] = true; } else { tempLogic[10] = false; }
+            if (chkBoxSensor12.Checked) { tempLogic[11] = true; } else { tempLogic[11] = false; }
+            if (chkBoxSensor13.Checked) { tempLogic[12] = true; } else { tempLogic[12] = false; }
+            if (chkBoxSensor14.Checked) { tempLogic[13] = true; } else { tempLogic[13] = false; }
+            if (chkBoxSensor15.Checked) { tempLogic[14] = true; } else { tempLogic[14] = false; }
+            if (chkBoxSensor16.Checked) { tempLogic[15] = true; } else { tempLogic[15] = false; }
+
+            return tempLogic;
+        }
+        private DataTable getValues(bool[] chkItems )
+        {
+            DataTable chartTable = new DataTable();
+            string column = "Temperature-";
+            for (int i = 0; i < chkItems.Length; i++)
+            {
+                if (chkItems[i] == true)
+                {
+                    if (chartTable.Columns.Count < 1)
+                    {
+                        
+                        string y = column + (i + 1).ToString();
+                        chart1.Series.Add(y);
+                        chart1.Series[y].XValueType = ChartValueType.DateTime;
+                        chart1.Series[y].ChartType = SeriesChartType.Line;
+                        chart1.Series[y].XValueMember = "ReadDate";
+                        chart1.Series[y].YValueMembers = y;
+                        chartTable = get(strSelectQuery1 + (i + 1).ToString());
+                        chartTable.Columns["SensorVal"].ColumnName = column + (i + 1).ToString();
+
+                    }
+                    
+                    else
+                    {
+                        string x = column + (i + 1).ToString();
+                        chart1.Series.Add(x);
+                        chart1.Series[x].XValueType = ChartValueType.DateTime;
+                        chart1.Series[x].ChartType = SeriesChartType.Line;
+                        chart1.Series[x].XValueMember = "ReadDate";
+                        chart1.Series[x].YValueMembers = x;
+                        chartTable = dataMerge(chartTable, (get(strSelectQuery1 + (i + 1).ToString())), i);
+                    }
+                    //MessageBox.Show(strSelectQuery1 + (i + 1).ToString() + ";");
+                    
+                }
+            }
+
+            return chartTable;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
+            /*
             chart1.Series.Add("Temperature1");
             chart1.Series["Temperature1"].XValueMember = "ReadDate";
             chart1.Series["Temperature1"].YValueMembers = "SensorVal";
             chart1.Series["Temperature1"].XValueType = ChartValueType.DateTime;
             chart1.Series["Temperature1"].ChartType = SeriesChartType.Line;
+            
             chart1.Series.Add("Humidity1");
             chart1.Series["Humidity1"].XValueMember = "ReadDate";
             chart1.Series["Humidity1"].YValueMembers = "SensorVal2";
             chart1.Series["Humidity1"].XValueType = ChartValueType.DateTime;
             chart1.Series["Humidity1"].ChartType = SeriesChartType.Line;
+           // */
             DataTable forChart = new DataTable();
-            forChart = dataRead();
+            forChart = getValues(chkChecked());
             chart1.DataSource = forChart;
             chart1.DataBind();
+        }
+
+        private void Chart_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

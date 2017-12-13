@@ -12,13 +12,17 @@ namespace DataCollection
 {
     class numCrunch
     {
+        // String to be called to access DataCollection database
         private string connectionString = "data source = (localdb)\\MSSQLLocalDB;" +
                                     "initial catalog = DataCollection;" +
                                     "integrated security = True;" +
                                     "MultipleActiveResultSets=True;App=EntityFramework";
+        // Insert S_Data into DataCollection Database
         private string strInsertQuery = "INSERT INTO S_Data (ReadDate, SensorID, SensorVal) VALUES ('{0}', {1}, {2} )";
         private string strSelectQuery = "SELECT Enable FROM S_List";
 
+
+        // This method is called to obtain all the information about how each Sensor is configured.
         private void build()
         {
             try
@@ -45,7 +49,8 @@ namespace DataCollection
 
             }
         }
-
+        // This method inserts sensor data into the S_Data table 
+        // This method is called from the DataCollection.cs file
         public string insert(int sensorID, double sensorVal)
         {
             string y;
@@ -71,7 +76,7 @@ namespace DataCollection
                 return "failure";
             }
         }
-
+        // This method returns an array of bools which are the Enable column of the S_List table in the Database
         public bool[] dataEnable()
         {
             bool [] switches = new bool[32];
@@ -102,9 +107,23 @@ namespace DataCollection
                 return null;
             }
         }
-
-
+    
+        public DataTable dataRead(string query)
+        {
+            DataTable result = new DataTable();
+            using (SqlConnection conn2 = new SqlConnection(connectionString))
+            {
+                conn2.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn2))
+                {
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    result.Load(rdr);
+                }
+            }
+            return result;
+        }
 
 
     }
+
 }
