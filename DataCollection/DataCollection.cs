@@ -232,7 +232,7 @@ namespace DataCollection
         {
             double slope = -.0135;
             double offset = 48.43;
-            return (((x * slope) + offset) * 1.8) + 32;
+            return Math.Round((((x * slope) + offset) * 1.8) + 32, 2);
         }
 
         #region fill methods
@@ -290,14 +290,14 @@ namespace DataCollection
             double RHt4 = (TempC4 - 25) * (t1 + (t2 * Hum4)) + RH4;
             
             // These lines first check to see if a sensor is giving readings, if it is not, zero is the value placed in the procdVales array
-            if (Temp1 == 0xf4f4) { procdValues[16] = 0; } else { procdValues[16] = procTempsF(TempC1); }
-            if (Hum1 == 0xf4f4) { procdValues[17] = 0; } else { procdValues[17] = RHt1; }
-            if (Temp2 == 0xf4f4) { procdValues[18] = 0; } else { procdValues[18] = procTempsF(TempC2); }
-            if (Hum2 == 0xf4f4) { procdValues[19] = 0; } else { procdValues[19] = RHt2; }
-            if (Temp3 == 0xf4f4) { procdValues[20] = 0; } else { procdValues[20] = procTempsF(TempC3); }
-            if (Hum3 == 0xf4f4) { procdValues[21] = 0; } else { procdValues[21] = RHt3; }
-            if (Temp4 == 0xf4f4) { procdValues[22] = 0; } else { procdValues[22] = procTempsF(TempC4); }
-            if (Hum4 == 0xf4f4) { procdValues[23] = 0; } else { procdValues[23] = RHt4; }
+            if (Temp1 == 0xf4f4) { procdValues[16] = 0; } else { procdValues[16] = Math.Round(procTempsF(TempC1), 2); }
+            if (Hum1 == 0xf4f4) { procdValues[17] = 0; } else { procdValues[17] = Math.Round(RHt1, 2); }
+            if (Temp2 == 0xf4f4) { procdValues[18] = 0; } else { procdValues[18] = Math.Round(procTempsF(TempC2), 2); }
+            if (Hum2 == 0xf4f4) { procdValues[19] = 0; } else { procdValues[19] = Math.Round(RHt2, 2); }
+            if (Temp3 == 0xf4f4) { procdValues[20] = 0; } else { procdValues[20] = Math.Round(procTempsF(TempC3), 2); }
+            if (Hum3 == 0xf4f4) { procdValues[21] = 0; } else { procdValues[21] = Math.Round(RHt3, 2); }
+            if (Temp4 == 0xf4f4) { procdValues[22] = 0; } else { procdValues[22] = Math.Round(procTempsF(TempC4), 2); }
+            if (Hum4 == 0xf4f4) { procdValues[23] = 0; } else { procdValues[23] = Math.Round(RHt4, 2); }
 
             // These lines first check to see if a sensor is attached if it is, the values of humidity and temerature are sent
             // to procDews and that result is put in a separate arrays for dew point only
@@ -346,35 +346,35 @@ namespace DataCollection
             a = (rawAuxs[2] * 256) + rawAuxs[3];
             a = value(a);
             a = calculate(a);
-            procdValues[24] = a;
+            procdValues[24] = Math.Round(a, 2);
             a = (rawAuxs[4] * 256) + rawAuxs[5];
             a = value(a);
             a = calculate(a);
-            procdValues[25] = a;
+            procdValues[25] = Math.Round(a, 2);
             a = (rawAuxs[6] * 256) + rawAuxs[7];
             a = value(a);
             a = calculate(a);
-            procdValues[26] = a;
+            procdValues[26] = Math.Round(a, 2);
             a = (rawAuxs[8] * 256) + rawAuxs[9];
             a = value(a);
             a = calculate(a);
-            procdValues[27] = a;
+            procdValues[27] = Math.Round(a, 2);
             a = (rawAuxs[10] * 256) + rawAuxs[11];
             a = value(a);
             a = calculate(a);
-            procdValues[28] = a;
+            procdValues[28] = Math.Round(a, 2);
             a = (rawAuxs[12] * 256) + rawAuxs[13];
             a = value(a);
             a = calculate(a);
-            procdValues[29] = a;
+            procdValues[29] = Math.Round(a, 2);
             a = (rawAuxs[14] * 256) + rawAuxs[15];
             a = value(a);
             a = calculate(a);
-            procdValues[30] = a;
+            procdValues[30] = Math.Round(a, 2);
             a = (rawAuxs[16] * 256) + rawAuxs[17];
             a = value(a);
             a = calculate(a);
-            procdValues[31] = a;
+            procdValues[31] = Math.Round(a, 2);
             fillAuxs();
         }
 
@@ -528,7 +528,6 @@ namespace DataCollection
             else { button1.Text = "&Open Port"; timer1.Enabled = false; }
         }
 
-        #endregion
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -559,6 +558,10 @@ namespace DataCollection
             setRelays[3] = 0xf5;
             communicate(setRelays);
         }
+
+
+        #endregion
+
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -612,14 +615,16 @@ namespace DataCollection
             {
                 listBox1.Items.Add(a);
             }
-            
+            log.insert(procdValues);
+            /*
             for (int i = 0; i < switches.Length; i++)
             {
                 if (switches[i])
                 {
-                    log.insert((i + 1), procdValues[i]);
+                    log.insert(procdValues);
                 }
             }
+            */
         }
 
 
