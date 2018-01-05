@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Chart));
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnGetData = new System.Windows.Forms.Button();
             this.chkBoxSensor1 = new System.Windows.Forms.CheckBox();
@@ -681,6 +682,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnGetData);
             this.Controls.Add(this.chart1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Chart";
             this.Text = "Chart";
             this.Load += new System.EventHandler(this.Chart_Load_1);

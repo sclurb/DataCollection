@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCollection));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
@@ -64,6 +65,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tripPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBox25 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -107,7 +109,6 @@
             this.portNameBox = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -432,7 +433,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
-            this.chartToolStripMenuItem});
+            this.chartToolStripMenuItem,
+            this.tripPointsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(720, 24);
@@ -452,6 +454,13 @@
             this.chartToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.chartToolStripMenuItem.Text = "Chart";
             this.chartToolStripMenuItem.Click += new System.EventHandler(this.chartToolStripMenuItem_Click);
+            // 
+            // tripPointsToolStripMenuItem
+            // 
+            this.tripPointsToolStripMenuItem.Name = "tripPointsToolStripMenuItem";
+            this.tripPointsToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.tripPointsToolStripMenuItem.Text = "Trip Points";
+            this.tripPointsToolStripMenuItem.Click += new System.EventHandler(this.tripPointsToolStripMenuItem_Click);
             // 
             // groupBox3
             // 
@@ -854,26 +863,17 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(134, 394);
+            this.label22.Location = new System.Drawing.Point(17, 355);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(41, 13);
             this.label22.TabIndex = 51;
             this.label22.Text = "label22";
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(5, 354);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 82);
-            this.listBox1.TabIndex = 52;
-            // 
             // DataCollection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(720, 448);
-            this.Controls.Add(this.listBox1);
+            this.ClientSize = new System.Drawing.Size(720, 381);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
@@ -884,6 +884,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DataCollection";
             this.Text = "DataCollection";
@@ -981,8 +982,8 @@
         public System.Windows.Forms.TextBox textBox1;
         public System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem chartToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tripPointsToolStripMenuItem;
     }
 }
 

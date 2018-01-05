@@ -18,7 +18,6 @@ namespace DataCollection
         delegate void SetTextCallback(byte[] rxTemp);
         delegate void justGiveMeNumBytes(string foo, string bar);
         
-
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
         private byte[] getHumps = { 0x40, 0x20, 0xf5 };
@@ -59,6 +58,12 @@ namespace DataCollection
 
         }
 
+        private void tripPointsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TripPoint tripoint = new TripPoint();
+            tripoint.Show();
+        }
+
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Config setForm = new Config();
@@ -69,9 +74,8 @@ namespace DataCollection
         {
             Chart chart = new Chart();
             chart.Show();
-
         }
-
+        #region Communicate Methods
         private void RefreshComPortList()
         {
             // Determain if the list of com port names has changed since last checked
@@ -150,7 +154,7 @@ namespace DataCollection
             SetTextCallback d = new SetTextCallback(process);
             this.Invoke(d, new object[] { rxBuffer });
         }
-
+        // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] gertrude)
         {
             foreach (byte a in gertrude)
@@ -180,9 +184,14 @@ namespace DataCollection
             }
         }
 
+        #endregion
+
+        #region  proc methods
+        // This method processes the byte[] by combining two separate btytes in the array then applying slope and offset.
+        // Finally the new value is placed in a global array that contains the values for all sensors
         private void procTemps(byte[] rawTemps)
         {
-            if (rawTemps.Length != 36)
+            if (rawTemps.Length != 36)  // if there is a formatting error or maybe the comport only returns a partial byte[], clear rxdata and return
             {
                 rxData.Clear();
                 return;
@@ -225,39 +234,6 @@ namespace DataCollection
             fillTemps(procdValues);
         }
 
-        //Gets called by procTemps()   This has two purposes:
-        // first, the passed value has slope and offset to set up for graph
-        // second, the value then get converted from Celcius to Fahenheit
-        private double fahrenheit(double x)
-        {
-            double slope = -.0135;
-            double offset = 48.43;
-            return Math.Round((((x * slope) + offset) * 1.8) + 32, 2);
-        }
-
-        #region fill methods
-        private void fillTemps(double[] stuff)
-        {
-
-            textBox1.Text = procdValues[0].ToString("0.0") + "\u00b0F";
-            textBox2.Text = procdValues[1].ToString("0.0") + "\u00b0F";
-            textBox3.Text = procdValues[2].ToString("0.0") + "\u00b0F";
-            textBox4.Text = procdValues[3].ToString("0.0") + "\u00b0F";
-            textBox5.Text = procdValues[4].ToString("0.0") + "\u00b0F";
-            textBox6.Text = procdValues[5].ToString("0.0") + "\u00b0F";
-            textBox7.Text = procdValues[6].ToString("0.0") + "\u00b0F";
-            textBox8.Text = procdValues[7].ToString("0.0") + "\u00b0F";
-            textBox9.Text = procdValues[8].ToString("0.0") + "\u00b0F";
-            textBox10.Text = procdValues[9].ToString("0.0") + "\u00b0F";
-            textBox11.Text = procdValues[10].ToString("0.0") + "\u00b0F";
-            textBox12.Text = procdValues[11].ToString("0.0") + "\u00b0F";
-            textBox13.Text = procdValues[12].ToString("0.0") + "\u00b0F";
-            textBox14.Text = procdValues[13].ToString("0.0") + "\u00b0F";
-            textBox15.Text = procdValues[14].ToString("0.0") + "\u00b0F";
-            textBox16.Text = procdValues[15].ToString("0.0") + "\u00b0F";
-            RXcount = 1;
-        }
-
         private void procHumps(byte[] rawHumps)
         {
             if (rawHumps.Length != 20)
@@ -265,8 +241,8 @@ namespace DataCollection
                 rxData.Clear();
                 return;
             }
-            
-            
+
+
             double Hum1 = (rawHumps[2] * 256) + rawHumps[3];
             double Temp1 = (rawHumps[4] * 256) + rawHumps[5];
             double Hum2 = (rawHumps[6] * 256) + rawHumps[7];
@@ -288,7 +264,7 @@ namespace DataCollection
             double RHt2 = (TempC2 - 25) * (t1 + (t2 * Hum2)) + RH2;
             double RHt3 = (TempC3 - 25) * (t1 + (t2 * Hum3)) + RH3;
             double RHt4 = (TempC4 - 25) * (t1 + (t2 * Hum4)) + RH4;
-            
+
             // These lines first check to see if a sensor is giving readings, if it is not, zero is the value placed in the procdVales array
             if (Temp1 == 0xf4f4) { procdValues[16] = 0; } else { procdValues[16] = Math.Round(procTempsF(TempC1), 2); }
             if (Hum1 == 0xf4f4) { procdValues[17] = 0; } else { procdValues[17] = Math.Round(RHt1, 2); }
@@ -307,32 +283,7 @@ namespace DataCollection
             if (Hum4 == 0xf4f4) { dews[3] = 0; } else { dews[3] = procDews(RHt4, TempC4); }
 
             fillHumps();
- 
-        }
-        // This method calculates dew point from a standard formula
-        private double procDews(double RH, double TempC)
-        {
-            double a = Math.Pow((RH / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112;
-            return (a * 1.8) + 32;
-        }
 
-        public void fillHumps()
-        {
-
-            textBox17.Text = procdValues[16].ToString("0.00") + "\u00b0F";
-            textBox18.Text = procdValues[17].ToString("0.00") + "%RH";
-            textBox19.Text = procdValues[18].ToString("0.00") + "\u00b0F";
-            textBox20.Text = procdValues[19].ToString("0.00") + "%RH";
-            textBox21.Text = procdValues[20].ToString("0.00") + "\u00b0F";
-            textBox22.Text = procdValues[21].ToString("0.00") + "%RH";
-            textBox23.Text = procdValues[22].ToString("0.00") + "\u00b0F";
-            textBox24.Text = procdValues[23].ToString("0.00") + "%RH";
-            
-            textBox33.Text = dews[0].ToString("0.00") + "\u00b0F";
-            textBox34.Text = dews[1].ToString("0.00") + "\u00b0F";
-            textBox35.Text = dews[2].ToString("0.00") + "\u00b0F";
-            textBox36.Text = dews[3].ToString("0.00") + "\u00b0F";
-            RXcount = 4;
         }
 
         private void procAuxs(byte[] rawAuxs)
@@ -377,6 +328,59 @@ namespace DataCollection
             procdValues[31] = Math.Round(a, 2);
             fillAuxs();
         }
+        #endregion
+
+
+
+        #region fill methods
+        private void fillTemps(double[] stuff)
+        {
+
+            textBox1.Text = procdValues[0].ToString("0.0") + "\u00b0F";
+            textBox2.Text = procdValues[1].ToString("0.0") + "\u00b0F";
+            textBox3.Text = procdValues[2].ToString("0.0") + "\u00b0F";
+            textBox4.Text = procdValues[3].ToString("0.0") + "\u00b0F";
+            textBox5.Text = procdValues[4].ToString("0.0") + "\u00b0F";
+            textBox6.Text = procdValues[5].ToString("0.0") + "\u00b0F";
+            textBox7.Text = procdValues[6].ToString("0.0") + "\u00b0F";
+            textBox8.Text = procdValues[7].ToString("0.0") + "\u00b0F";
+            textBox9.Text = procdValues[8].ToString("0.0") + "\u00b0F";
+            textBox10.Text = procdValues[9].ToString("0.0") + "\u00b0F";
+            textBox11.Text = procdValues[10].ToString("0.0") + "\u00b0F";
+            textBox12.Text = procdValues[11].ToString("0.0") + "\u00b0F";
+            textBox13.Text = procdValues[12].ToString("0.0") + "\u00b0F";
+            textBox14.Text = procdValues[13].ToString("0.0") + "\u00b0F";
+            textBox15.Text = procdValues[14].ToString("0.0") + "\u00b0F";
+            textBox16.Text = procdValues[15].ToString("0.0") + "\u00b0F";
+            RXcount = 1;
+        }
+
+
+        // This method calculates dew point from a standard formula
+        private double procDews(double RH, double TempC)
+        {
+            double a = Math.Pow((RH / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112;
+            return (a * 1.8) + 32;
+        }
+
+        public void fillHumps()
+        {
+
+            textBox17.Text = procdValues[16].ToString("0.00") + "\u00b0F";
+            textBox18.Text = procdValues[17].ToString("0.00") + "%RH";
+            textBox19.Text = procdValues[18].ToString("0.00") + "\u00b0F";
+            textBox20.Text = procdValues[19].ToString("0.00") + "%RH";
+            textBox21.Text = procdValues[20].ToString("0.00") + "\u00b0F";
+            textBox22.Text = procdValues[21].ToString("0.00") + "%RH";
+            textBox23.Text = procdValues[22].ToString("0.00") + "\u00b0F";
+            textBox24.Text = procdValues[23].ToString("0.00") + "%RH";
+            
+            textBox33.Text = dews[0].ToString("0.00") + "\u00b0F";
+            textBox34.Text = dews[1].ToString("0.00") + "\u00b0F";
+            textBox35.Text = dews[2].ToString("0.00") + "\u00b0F";
+            textBox36.Text = dews[3].ToString("0.00") + "\u00b0F";
+            RXcount = 4;
+        }
 
         private void fillAuxs()
         {
@@ -391,6 +395,18 @@ namespace DataCollection
             RXcount = 2;
         }
         #endregion fill methods
+
+        #region Helper Methds (used by other methods)
+
+        //Gets called by procTemps()   This has two purposes:
+        // first, the passed value has slope and offset to set up for graph
+        // second, the value then get converted from Celcius to Fahenheit
+        private double fahrenheit(double x)
+        {
+            double slope = -.0135;
+            double offset = 48.43;
+            return Math.Round((((x * slope) + offset) * 1.8) + 32, 2);
+        }
 
 
         // this method processes raw data from Humidity uses 8 bit processing
@@ -439,6 +455,8 @@ namespace DataCollection
             }
             return z;
         }
+
+        #endregion
 
         private void firstShot()
         {
@@ -531,6 +549,24 @@ namespace DataCollection
 
         private void button5_Click(object sender, EventArgs e)
         {
+            setRelay1();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            setRelay2();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            setRelay3();
+        }
+
+        #endregion
+        #region relay set methods
+
+        private void setRelay1()
+        {
             rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
@@ -539,7 +575,7 @@ namespace DataCollection
             communicate(setRelays);
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void setRelay2()
         {
             rxData.Clear();
             setRelays[0] = 0x40;
@@ -549,7 +585,7 @@ namespace DataCollection
             communicate(setRelays);
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void setRelay3()
         {
             rxData.Clear();
             setRelays[0] = 0x40;
@@ -558,16 +594,12 @@ namespace DataCollection
             setRelays[3] = 0xf5;
             communicate(setRelays);
         }
-
-
         #endregion
-
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             firstShot();
         }
-
 
         private void timer2_Tick(object sender, EventArgs e)
         {
@@ -602,21 +634,16 @@ namespace DataCollection
                 timer2.Enabled = false;
                 writeDB();
             }
+            tripoiintCheck();
         }
-
-
-
+        // This method inserts the valuse in procValues into the database
         private void writeDB()
         {
             label22.Text = DateTime.Now.ToString();
             numCrunch log = new numCrunch();
             bool[] switches = log.dataEnable();
-            foreach (bool a in switches)
-            {
-                listBox1.Items.Add(a);
-            }
             log.insert(procdValues);
-            /*
+            /*   old routine with older database  obsolete!
             for (int i = 0; i < switches.Length; i++)
             {
                 if (switches[i])
@@ -626,7 +653,56 @@ namespace DataCollection
             }
             */
         }
+        private void tripoiintCheck()
+        {
+            if (Properties.Settings.Default.Enable1)
+            {
+                tripRelay check = new tripRelay();
 
+                check.MonitoredValue = procdValues[Properties.Settings.Default.Index1];
+                check.OverUnder = Properties.Settings.Default.OverUnder1;
+                check.TripPoint = Properties.Settings.Default.TripPoint1;
+                if (check.determine())
+                {
+                    if (button5.BackColor == Color.Red )
+                    {
+                        setRelay1();
+                    }
+                }
+            }
+
+            if (Properties.Settings.Default.Enable2)
+            {
+                tripRelay check = new tripRelay();
+
+                check.MonitoredValue = procdValues[Properties.Settings.Default.Index2];
+                check.OverUnder = Properties.Settings.Default.OverUnder2;
+                check.TripPoint = Properties.Settings.Default.TripPoint2;
+                if (check.determine())
+                {
+                    if (button6.BackColor == Color.Red)
+                    {
+                        setRelay2();
+                    }
+                }
+            }
+
+            if (Properties.Settings.Default.Enable3)
+            {
+                tripRelay check = new tripRelay();
+
+                check.MonitoredValue = procdValues[Properties.Settings.Default.Index3];
+                check.OverUnder = Properties.Settings.Default.OverUnder3;
+                check.TripPoint = Properties.Settings.Default.TripPoint3;
+                if (check.determine())
+                {
+                    if (button7.BackColor == Color.Red)
+                    {
+                        setRelay3();
+                    }
+                }
+            }
+        }
 
     }
 }
