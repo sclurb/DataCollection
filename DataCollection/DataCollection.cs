@@ -669,6 +669,13 @@ namespace DataCollection
                         setRelay1();
                     }
                 }
+                if (!check.determine())
+                {
+                    if (button5.BackColor == Color.Green)
+                    {
+                        setRelay1();
+                    }
+                }
             }
 
             if (Properties.Settings.Default.Enable2)
@@ -685,6 +692,13 @@ namespace DataCollection
                         setRelay2();
                     }
                 }
+                if (!check.determine())
+                {
+                    if (button6.BackColor == Color.Green)
+                    {
+                        setRelay2();
+                    }
+                }
             }
 
             if (Properties.Settings.Default.Enable3)
@@ -697,6 +711,13 @@ namespace DataCollection
                 if (check.determine())
                 {
                     if (button7.BackColor == Color.Red)
+                    {
+                        setRelay3();
+                    }
+                }
+                if (!check.determine())
+                {
+                    if (button7.BackColor == Color.Green)
                     {
                         setRelay3();
                     }
