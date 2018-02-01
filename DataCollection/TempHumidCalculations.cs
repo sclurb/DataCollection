@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataCollection
 {
-    public class TempHumidClaculations
+    public class TempHumidCalculations
     {
         private double c1 = -4;
         private double c2 = 0.0405;
@@ -15,7 +15,7 @@ namespace DataCollection
         private const double ch2 = 0.0367;
         private const double ch3 = -1.5955E-6;
 
-        public TempHumidClaculations()
+        public TempHumidCalculations()
         {
                 
         }

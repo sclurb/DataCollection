@@ -86,7 +86,7 @@
     <Compile Include="Config.Designer.cs">
       <DependentUpon>Config.cs</DependentUpon>
     </Compile>
-    <Compile Include="TempHumidClaculations.cs" />
+    <Compile Include="TempHumidCalculations.cs" />
     <Compile Include="TempHumidityProcessing.cs" />
     <Compile Include="TripPoint.cs">
       <SubType>Form</SubType>

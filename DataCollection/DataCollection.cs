@@ -35,7 +35,7 @@ namespace DataCollection
         private const double m = 17.62;
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
-        ArrayList rxData = new ArrayList();
+        
         private byte relayStat = 0;
         private byte[] setRelays = new byte[4];
         Timer timer1 = new Timer();     // sets the interval between data collection 450,000 = 7.5 minutes
@@ -157,6 +157,8 @@ namespace DataCollection
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] gertrude)
         {
+            ArrayList rxData = new ArrayList();
+            TempHumidityProcessing process = new TempHumidityProcessing();
             foreach (byte a in gertrude)
             {
                 rxData.Add(a);
@@ -167,15 +169,15 @@ namespace DataCollection
 
             if (fred[1] == 0x10 && fred.Length == 36)
             {
-                procTemps(fred);
+                fillTemps(process.procTemps(fred));
             }
             if (fred[1] == 0x20 && fred.Length == 20)
             {
-                procHumps(fred);
+                process.procHumps(fred);
             }
             if (fred[1] == 0x30)
             {
-                procAuxs(fred);
+                process.procAuxs(fred);
             }
             if (fred[1] == 0x50)
             {
@@ -193,7 +195,7 @@ namespace DataCollection
 
 
         #region fill methods
-        private void fillTemps(double[] stuff)
+        private void fillTemps(double[] procdValues)
         {
 
             textBox1.Text = procdValues[0].ToString("0.0") + "\u00b0F";
