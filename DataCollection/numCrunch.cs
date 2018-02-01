@@ -16,6 +16,7 @@ namespace DataCollection
         private string configQuery =  "select * from S_List";
         // String to be called to access DataCollection database
         private string connectionString = "data source = (localdb)\\MSSQLLocalDB;" +
+                                    "AttachDBFilename=C:\\Data\\Datacollection.mdf;" +
                                     "initial catalog = DataCollection;" +
                                     "integrated security = True;" +
                                     "MultipleActiveResultSets=True;App=EntityFramework";
