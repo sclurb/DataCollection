@@ -164,12 +164,15 @@ namespace DataCollection
                 rxData.Add(a);
             }
 
-            byte[] fred = new byte[1];
-            fred = (byte[])rxData.ToArray(typeof(byte));
+            byte[] tempArray = new byte[1];
+            tempArray = (byte[])rxData.ToArray(typeof(byte));
 
-            if (fred[1] == 0x10 && fred.Length == 36)
+            if (tempArray[1] == 0x10 && tempArray.Length == 36)
             {
-                fillTemps(process.procTemps(fred));
+                double[] temperatureArray = process.ArrangeTemps(tempArray);
+                temperatureArray = process.ProcTemps(temperatureArray);
+                fillTemps(temperatureArray);
+                rxData.Clear();
             }
             if (fred[1] == 0x20 && fred.Length == 20)
             {
