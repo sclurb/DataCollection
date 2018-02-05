@@ -14,7 +14,15 @@ namespace DatColTests.TempHumDewTests
         [TestMethod]
         public void TempHumDewTest1()
         {
-            TempHumDew test1 = new TempHumDew(2456, 1234);
+            TempHumDew test1 = new TempHumDew(6634, 1234);
+            Assert.AreEqual(test1.TempC, 26.24, 0.01);
+        }
+
+        [TestMethod]
+        public void TempHumDewTest2()
+        {
+            TempHumDew test1 = new TempHumDew(6634, 1234);
+            Assert.AreEqual(test1.RH, 40.81, 0.01);
         }
     }
 }
