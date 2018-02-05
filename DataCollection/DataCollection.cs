@@ -23,9 +23,9 @@ namespace DataCollection
         private byte[] getHumps = { 0x40, 0x20, 0xf5 };
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
         private SerialPort comPort = new SerialPort();
-        private double c1 = -4;
-        private double c2 = 0.0405;
-        private double c3 = -2.8E-6;
+        //private double c1 = -4;
+        //private double c2 = 0.0405;
+        //private double c3 = -2.8E-6;
         private const double ch1 = -2.0468;
         private const double ch2 = 0.0367;
         private const double ch3 = -1.5955E-6;
@@ -174,19 +174,21 @@ namespace DataCollection
                 fillTemps(temperatureArray);
                 rxData.Clear();
             }
-            if (fred[1] == 0x20 && fred.Length == 20)
+            
+            if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
-                process.procHumps(fred);
+               // process.procHumps(tempArray);
             }
-            if (fred[1] == 0x30)
+            if (tempArray[1] == 0x30)
             {
-                process.procAuxs(fred);
+                //process.procAuxs(tempArray);
             }
-            if (fred[1] == 0x50)
+            if (tempArray[1] == 0x50)
             {
-                relayStat = fred[2];
+                relayStat = tempArray[2];
                 funKen();
             }
+            
         }
 
         #endregion
@@ -264,7 +266,7 @@ namespace DataCollection
  
         private void firstShot()
         {
-            rxData.Clear();
+            //rxData.Clear();
             communicate(getTemps);
             timer2.Enabled = true;
         }
@@ -371,7 +373,7 @@ namespace DataCollection
 
         private void setRelay1()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x01;
@@ -381,7 +383,7 @@ namespace DataCollection
 
         private void setRelay2()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x02;
@@ -391,7 +393,7 @@ namespace DataCollection
 
         private void setRelay3()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x03;
@@ -414,7 +416,7 @@ namespace DataCollection
             if (RXcount == 1)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
+                //rxData.Clear();
                 communicate(getAuxs);
                 timer2.Enabled = true;
             }
@@ -422,7 +424,7 @@ namespace DataCollection
             if (RXcount == 2)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
+                //rxData.Clear();
                 setRelays[0] = 0x40;
                 setRelays[1] = 0x50;
                 setRelays[2] = 0xff;
@@ -433,7 +435,7 @@ namespace DataCollection
             if (RXcount == 3)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
+                //rxData.Clear();
                 communicate(getHumps);
                 timer2.Enabled = true;
             }

@@ -40,22 +40,21 @@ namespace DataCollection
             set { rawHumid = value; }
         }
 
-        public double RH()
+        public double RH
         {
-            double result = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
-            return result;
+            get { return ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2)); }
+
         }
 
-        public double RHT(double tempC1, double RH1)
+        public double RHT
         {
-            double y = (tempC1 - 25) * (t1 + (t2 * rawHumid)) + RH1;
-            return y;
+             get { return (((rawTemp * d2) + d1) - 25) * (t1 + (t2 * rawHumid)) + (ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2))); }
+            
         }
 
-        public double TempC(double rawTemp1)
+        public double TempC
         {
-            double y = ((rawTemp1 * d2) + d1);
-            return y;
+            get { return (rawTemp * d2) + d1; } 
         }
 
         private double calcDew(double RHT, double rawTemp1)
