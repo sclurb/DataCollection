@@ -18,7 +18,7 @@ namespace DataCollection
         private const double d1 = -40.1;        // SHT1 temperature coefficient for 5Vdc Supply and Celcius
 
         private double rawTemp;                 // raw temperature data from sensor 
-        private double rawHumid;                // raw humidit data from sensor
+        private double rawHumid;                // raw humidiy data from sensor
  
         public TempHumDew(double temp, double humid)
         {
@@ -40,6 +40,12 @@ namespace DataCollection
             set { rawHumid = value; }
         }
 
+        public double TempC
+        {
+            get { return (rawTemp * d2) + d1; }
+        }
+
+
         public double RH
         {
             get { return ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2)); }
@@ -48,19 +54,43 @@ namespace DataCollection
 
         public double RHT
         {
-             get { return (((rawTemp * d2) + d1) - 25) * (t1 + (t2 * rawHumid)) + (ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2))); }
+             get
+            {
+                // double tempc = (rawTemp * d2) + d1;
+                // double rh = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
+                return ((TempC - 25) * (t1 + (t2 * rawHumid))) + RH;
+            }
             
         }
 
-        public double TempC
+        // https://www.ajdesigner.com/phphumidity/dewpoint_equation_dewpoint_temperature.php
+        public double DewC
         {
-            get { return (rawTemp * d2) + d1; } 
+            get
+            {
+                // double tempc = (rawTemp * d2) + d1;
+                // double rh = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
+                // double rht = ((tempc - 25) * (t1 + (t2 * rawHumid))) + rh;
+                return Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112;
+            }
         }
 
-        private double calcDew(double RHT, double rawTemp1)
+        public double DewF
         {
-            double a = Math.Pow((RHT / 100), .125) * (112 + (.9 * rawTemp1)) + (.1 * rawTemp1) - 112;
-            return (a * 1.8) + 32;
+            get
+            {
+                // double tempc = (rawTemp * d2) + d1;
+                // double rh = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
+                // double rht = ((tempc - 25) * (t1 + (t2 * rawHumid))) + rh;
+                return ((Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112) * 1.8) + 32;
+            }
         }
+
+        public double TempF
+        {
+            get { return (((rawTemp * d2) + d1)* 1.8) + 32; }
+        }
+
+
     }
 }
