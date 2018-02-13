@@ -19,14 +19,30 @@ namespace DataCollection
         // This method converts the input parameter byte[] by combining two separate bytes of the array into an array of doubles.
         public double[] ArrangeTemps(byte[] rawTemps)
         {
-            if (rawTemps.Length != 36)  // if there is a formatting error or maybe the comport only returns a partial byte[], clear rxdata and return
-            {
-                return null;
-            }
             double[] arrangedValues = new double[16];
             for (int x = 0; x < 16; x++)
             {
                 arrangedValues[x] = (rawTemps[(x * 2) + 2] * 256) + rawTemps[(x * 2) + 3];
+            }
+            return arrangedValues;
+        }
+
+        public double[] ArrangeHumids(byte[] rawHumps)
+        {
+            double[] arrangedValues = new double[8];
+            for (int x = 0; x < 8; x++)
+            {
+                arrangedValues[x] = (rawHumps[(x * 2) + 2] * 256) + rawHumps[(x * 2) + 3];
+            }
+            return arrangedValues;
+        }
+
+        public double[] ArrangeAuxs(byte[] rawAuxs)
+        {
+            double[] arrangedValues = new double[8];
+            for (int x = 0; x < 8; x++)
+            {
+                arrangedValues[x] = (rawAuxs[(x * 2) + 2] * 256) + rawAuxs[(x * 2) + 3];
             }
             return arrangedValues;
         }
@@ -41,23 +57,41 @@ namespace DataCollection
                 }
                 else
                 {
-                    temperatureArray[x] = calcs.fahrenheit(temperatureArray[x]);
+                    temperatureArray[x] = fahrenheit(temperatureArray[x]);
                 }
             }
             return temperatureArray;
         }
 
-        public double[] ArrangeHumids(byte[] rawHumps)
+        public double[] ProcAuxs(double[] auxArray)
         {
-            double[] arrangedValues = new double[8];
             for (int x = 0; x < 8; x++)
             {
-                arrangedValues[x] = (rawHumps[(x * 2) + 2] * 256) + rawHumps[(x * 2) + 3];
+                if (auxArray[x] == 0xfff)
+                {
+                    auxArray[x] = 0;
+                }
+                else
+                {
+                    auxArray[x] = calculateAuxs(auxArray[x]);
+                }
             }
-            return arrangedValues;
+            return auxArray;
         }
 
-
+        // fahrenheit takes raw doubles from ProcTemps and aplies Slope and Offset
+        private double fahrenheit(double x)
+        {
+            double slope = -.0135;
+            double offset = 48.43;
+            return Math.Round((((x * slope) + offset) * 1.8) + 32, 2);
+        }
+        // CalculateAuxs takes raw double from ProAuxs and applies Slope.  There is no offset.
+        private double calculateAuxs(double x)
+        {
+            x = (x * .0009655);
+            return x;
+        }
 
 
     }
