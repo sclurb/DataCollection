@@ -15,8 +15,7 @@ namespace DataCollection
 {
     public partial class DataCollection : Form
     {
-        delegate void SetTextCallback(byte[] rxTemp);
-        delegate void justGiveMeNumBytes(string foo, string bar);
+        private delegate void DataIsReceived(byte[] rxTemp);
         
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
@@ -53,6 +52,8 @@ namespace DataCollection
             timer2.Tick += new EventHandler(timer2_Tick);
 
         }
+
+        #region Events
         private void DataCollection_Load(object sender, EventArgs e)
         {
 
@@ -75,6 +76,8 @@ namespace DataCollection
             Chart chart = new Chart();
             chart.Show();
         }
+        #endregion
+
         #region Communicate Methods
         private void RefreshComPortList()
         {
@@ -128,11 +131,11 @@ namespace DataCollection
             return selected;    // If there was a change to the port list, return the recommended default selection
         }
 
-        private void communicate(byte[] felderCarp)
+        private void communicate(byte[] txString)
         {
             try
             {
-                comPort.Write(felderCarp, 0, felderCarp.Length);
+                comPort.Write(txString, 0, txString.Length);
             }
             catch (ArgumentNullException)
             {MessageBox.Show("Argument Null");}
@@ -151,9 +154,10 @@ namespace DataCollection
             int bytes = comPort.BytesToRead;
             byte[] rxBuffer = new byte[bytes]; // Read the data from the port and store it in our buffer
             comPort.Read(rxBuffer, 0, bytes);
-            SetTextCallback d = new SetTextCallback(process);
-            this.Invoke(d, new object[] { rxBuffer });
+            DataIsReceived d = new DataIsReceived(process);
+            Invoke(d, new object[] { rxBuffer });
         }
+
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] gertrude)
         {
@@ -177,11 +181,25 @@ namespace DataCollection
             
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
-               // process.procHumps(tempArray);
+                double[] humidArray = process.ArrangeHumids(tempArray);
+
+                TempHumDew hum1 = new TempHumDew(humidArray[0], humidArray[1]);
+                TempHumDew hum2 = new TempHumDew(humidArray[2], humidArray[3]);
+                TempHumDew hum3 = new TempHumDew(humidArray[4], humidArray[5]);
+                TempHumDew hum4 = new TempHumDew(humidArray[6], humidArray[7]);
+
+                List<TempHumDew> humDew = new List<TempHumDew>();
+                humDew.Add(hum1);
+                humDew.Add(hum2);
+                humDew.Add(hum3);
+                humDew.Add(hum4);
+
             }
             if (tempArray[1] == 0x30)
             {
-                //process.procAuxs(tempArray);
+                double[] auxArray = process.ArrangeAuxs(tempArray);
+                auxArray = process.ProcAuxs(auxArray);
+                fillAuxs(auxArray);
             }
             if (tempArray[1] == 0x50)
             {
@@ -193,9 +211,7 @@ namespace DataCollection
 
         #endregion
 
-        #region  proc methods
 
-        #endregion
 
 
 
@@ -222,43 +238,34 @@ namespace DataCollection
             RXcount = 1;
         }
 
-
-        // This method calculates dew point from a standard formula
-        private double procDews(double RH, double TempC)
+        public void fillHumps(List<TempHumDew> humps)
         {
-            double a = Math.Pow((RH / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112;
-            return (a * 1.8) + 32;
-        }
-
-        public void fillHumps()
-        {
-
-            textBox17.Text = procdValues[16].ToString("0.00") + "\u00b0F";
-            textBox18.Text = procdValues[17].ToString("0.00") + "%RH";
-            textBox19.Text = procdValues[18].ToString("0.00") + "\u00b0F";
-            textBox20.Text = procdValues[19].ToString("0.00") + "%RH";
-            textBox21.Text = procdValues[20].ToString("0.00") + "\u00b0F";
-            textBox22.Text = procdValues[21].ToString("0.00") + "%RH";
-            textBox23.Text = procdValues[22].ToString("0.00") + "\u00b0F";
-            textBox24.Text = procdValues[23].ToString("0.00") + "%RH";
+            textBox17.Text = humps[0].TempF.ToString("0.00") + "\u00b0F";
+            textBox18.Text = humps[0].RHT.ToString("0.00") + "%RH";
+            textBox19.Text = humps[1].TempF.ToString("0.00") + "\u00b0F";
+            textBox20.Text = humps[1].RHT.ToString("0.00") + "%RH";
+            textBox21.Text = humps[2].TempF.ToString("0.00") + "\u00b0F";
+            textBox22.Text = humps[2].RHT.ToString("0.00") + "%RH";
+            textBox23.Text = humps[3].TempF.ToString("0.00") + "\u00b0F";
+            textBox24.Text = humps[3].RHT.ToString("0.00") + "%RH";
             
-            textBox33.Text = dews[0].ToString("0.00") + "\u00b0F";
-            textBox34.Text = dews[1].ToString("0.00") + "\u00b0F";
-            textBox35.Text = dews[2].ToString("0.00") + "\u00b0F";
-            textBox36.Text = dews[3].ToString("0.00") + "\u00b0F";
+            textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
+            textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
+            textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
+            textBox36.Text = humps[3].DewF.ToString("0.00") + "\u00b0F";
             RXcount = 4;
         }
 
-        private void fillAuxs()
+        private void fillAuxs(double[] auxArray)
         {
-            textBox25.Text = procdValues[24].ToString("0.00");
-            textBox26.Text = procdValues[25].ToString("0.00");
-            textBox27.Text = procdValues[26].ToString("0.00");
-            textBox28.Text = procdValues[27].ToString("0.00");
-            textBox29.Text = procdValues[28].ToString("0.00");
-            textBox30.Text = procdValues[29].ToString("0.00");
-            textBox31.Text = procdValues[30].ToString("0.00");
-            textBox32.Text = procdValues[31].ToString("0.00");
+            textBox25.Text = auxArray[0].ToString("0.00");
+            textBox26.Text = auxArray[1].ToString("0.00");
+            textBox27.Text = auxArray[2].ToString("0.00");
+            textBox28.Text = auxArray[3].ToString("0.00");
+            textBox29.Text = auxArray[4].ToString("0.00");
+            textBox30.Text = auxArray[5].ToString("0.00");
+            textBox31.Text = auxArray[6].ToString("0.00");
+            textBox32.Text = auxArray[7].ToString("0.00");
             RXcount = 2;
         }
         #endregion fill methods
@@ -332,7 +339,6 @@ namespace DataCollection
                 comPort.StopBits = StopBits.One;
                 comPort.Parity = Parity.None;
                 comPort.PortName = portNameBox.Text;
-
                 try
                 {
                     // Open the port
