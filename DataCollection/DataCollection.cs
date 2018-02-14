@@ -16,7 +16,7 @@ namespace DataCollection
     public partial class DataCollection : Form
     {
         private delegate void DataIsReceived(byte[] rxTemp);
-        
+        ArrayList rxData = new ArrayList();
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
         private byte[] getHumps = { 0x40, 0x20, 0xf5 };
@@ -133,20 +133,27 @@ namespace DataCollection
 
         private void communicate(byte[] txString)
         {
-            try
+            if (comPort.IsOpen)
             {
-                comPort.Write(txString, 0, txString.Length);
+                try
+                {
+                    comPort.Write(txString, 0, txString.Length);
+                }
+                catch (IOException)
+                { MessageBox.Show("IOException"); }
+                catch (ArgumentNullException)
+                { MessageBox.Show("Argument Null"); }
+                catch (InvalidOperationException)
+                { MessageBox.Show("InvalidOperationException"); }
+                catch (ArgumentOutOfRangeException)
+                { MessageBox.Show("ArgumentOutOfRangeException"); }
+                catch (ArgumentException)
+                { MessageBox.Show("ArgumentException"); }
+                catch (TimeoutException)
+                { MessageBox.Show("TimeoutException"); }
+                catch (Exception)
+                { MessageBox.Show("Just an Exception"); }
             }
-            catch (ArgumentNullException)
-            {MessageBox.Show("Argument Null");}
-            catch (InvalidOperationException)
-            { MessageBox.Show("InvalidOperationException"); }
-            catch (ArgumentOutOfRangeException)
-            { MessageBox.Show("ArgumentOutOfRangeException"); }
-            catch (ArgumentException)
-            { MessageBox.Show("ArgumentException");}
-            catch (TimeoutException)
-            { MessageBox.Show("TimeoutException");}
         }
 
         private void DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -159,52 +166,56 @@ namespace DataCollection
         }
 
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
-        private void process(byte[] gertrude)
+        private void process(byte[] rxBuffer)
         {
-            ArrayList rxData = new ArrayList();
-            TempHumidityProcessing process = new TempHumidityProcessing();
-            foreach (byte a in gertrude)
+            
+            TempHumidityProcessing arrange = new TempHumidityProcessing();
+            foreach (byte a in rxBuffer)
             {
                 rxData.Add(a);
             }
 
-            byte[] tempArray = new byte[1];
+            byte[] tempArray = new byte[rxData.Count];
             tempArray = (byte[])rxData.ToArray(typeof(byte));
 
             if (tempArray[1] == 0x10 && tempArray.Length == 36)
             {
-                double[] temperatureArray = process.ArrangeTemps(tempArray);
-                temperatureArray = process.ProcTemps(temperatureArray);
+                double[] temperatureArray = arrange.ArrangeTemps(tempArray);
+                temperatureArray = arrange.ProcTemps(temperatureArray);
                 fillTemps(temperatureArray);
-                rxData.Clear();
+
             }
             
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
-                double[] humidArray = process.ArrangeHumids(tempArray);
+                double[] humidArray = arrange.ArrangeHumids(tempArray);
 
-                TempHumDew hum1 = new TempHumDew(humidArray[0], humidArray[1]);
-                TempHumDew hum2 = new TempHumDew(humidArray[2], humidArray[3]);
-                TempHumDew hum3 = new TempHumDew(humidArray[4], humidArray[5]);
-                TempHumDew hum4 = new TempHumDew(humidArray[6], humidArray[7]);
+                TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0]);
+                TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2]);
+                TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4]);
+                TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6]);
 
                 List<TempHumDew> humDew = new List<TempHumDew>();
                 humDew.Add(hum1);
                 humDew.Add(hum2);
                 humDew.Add(hum3);
                 humDew.Add(hum4);
+                fillHumps(humDew);
 
             }
             if (tempArray[1] == 0x30)
             {
-                double[] auxArray = process.ArrangeAuxs(tempArray);
-                auxArray = process.ProcAuxs(auxArray);
+                
+                double[] auxArray = arrange.ArrangeAuxs(tempArray);
+                auxArray = arrange.ProcAuxs(auxArray);
                 fillAuxs(auxArray);
+
             }
             if (tempArray[1] == 0x50)
             {
                 relayStat = tempArray[2];
                 funKen();
+;
             }
             
         }
@@ -216,39 +227,52 @@ namespace DataCollection
 
 
         #region fill methods
-        private void fillTemps(double[] procdValues)
+        private void fillTemps(double[] proccessValues)
         {
+            textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
+            textBox2.Text = proccessValues[1].ToString("0.0") + "\u00b0F";
+            textBox3.Text = proccessValues[2].ToString("0.0") + "\u00b0F";
+            textBox4.Text = proccessValues[3].ToString("0.0") + "\u00b0F";
+            textBox5.Text = proccessValues[4].ToString("0.0") + "\u00b0F";
+            textBox6.Text = proccessValues[5].ToString("0.0") + "\u00b0F";
+            textBox7.Text = proccessValues[6].ToString("0.0") + "\u00b0F";
+            textBox8.Text = proccessValues[7].ToString("0.0") + "\u00b0F";
+            textBox9.Text = proccessValues[8].ToString("0.0") + "\u00b0F";
+            textBox10.Text = proccessValues[9].ToString("0.0") + "\u00b0F";
+            textBox11.Text = proccessValues[10].ToString("0.0") + "\u00b0F";
+            textBox12.Text = proccessValues[11].ToString("0.0") + "\u00b0F";
+            textBox13.Text = proccessValues[12].ToString("0.0") + "\u00b0F";
+            textBox14.Text = proccessValues[13].ToString("0.0") + "\u00b0F";
+            textBox15.Text = proccessValues[14].ToString("0.0") + "\u00b0F";
+            textBox16.Text = proccessValues[15].ToString("0.0") + "\u00b0F";
 
-            textBox1.Text = procdValues[0].ToString("0.0") + "\u00b0F";
-            textBox2.Text = procdValues[1].ToString("0.0") + "\u00b0F";
-            textBox3.Text = procdValues[2].ToString("0.0") + "\u00b0F";
-            textBox4.Text = procdValues[3].ToString("0.0") + "\u00b0F";
-            textBox5.Text = procdValues[4].ToString("0.0") + "\u00b0F";
-            textBox6.Text = procdValues[5].ToString("0.0") + "\u00b0F";
-            textBox7.Text = procdValues[6].ToString("0.0") + "\u00b0F";
-            textBox8.Text = procdValues[7].ToString("0.0") + "\u00b0F";
-            textBox9.Text = procdValues[8].ToString("0.0") + "\u00b0F";
-            textBox10.Text = procdValues[9].ToString("0.0") + "\u00b0F";
-            textBox11.Text = procdValues[10].ToString("0.0") + "\u00b0F";
-            textBox12.Text = procdValues[11].ToString("0.0") + "\u00b0F";
-            textBox13.Text = procdValues[12].ToString("0.0") + "\u00b0F";
-            textBox14.Text = procdValues[13].ToString("0.0") + "\u00b0F";
-            textBox15.Text = procdValues[14].ToString("0.0") + "\u00b0F";
-            textBox16.Text = procdValues[15].ToString("0.0") + "\u00b0F";
+            for (int i = 0; i < 16; i++)
+            {
+                procdValues[i] = proccessValues[i];
+            }
             RXcount = 1;
         }
 
         public void fillHumps(List<TempHumDew> humps)
         {
             textBox17.Text = humps[0].TempF.ToString("0.00") + "\u00b0F";
+            procdValues[16] = humps[0].TempF;
             textBox18.Text = humps[0].RHT.ToString("0.00") + "%RH";
+            procdValues[17] = humps[0].RHT;
             textBox19.Text = humps[1].TempF.ToString("0.00") + "\u00b0F";
+            procdValues[18] = humps[1].TempF;
             textBox20.Text = humps[1].RHT.ToString("0.00") + "%RH";
+            procdValues[19] = humps[1].RHT;
             textBox21.Text = humps[2].TempF.ToString("0.00") + "\u00b0F";
+            procdValues[20] = humps[2].TempF;
             textBox22.Text = humps[2].RHT.ToString("0.00") + "%RH";
+            procdValues[21] = humps[2].RHT;
             textBox23.Text = humps[3].TempF.ToString("0.00") + "\u00b0F";
+            procdValues[22] = humps[3].TempF;
             textBox24.Text = humps[3].RHT.ToString("0.00") + "%RH";
-            
+            procdValues[23] = humps[3].RHT;
+
+
             textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
             textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
             textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
@@ -266,6 +290,11 @@ namespace DataCollection
             textBox30.Text = auxArray[5].ToString("0.00");
             textBox31.Text = auxArray[6].ToString("0.00");
             textBox32.Text = auxArray[7].ToString("0.00");
+
+            for (int i = 0; i < 8; i++)
+            {
+                procdValues[i + 24] = auxArray[i];
+            }
             RXcount = 2;
         }
         #endregion fill methods
@@ -273,7 +302,7 @@ namespace DataCollection
  
         private void firstShot()
         {
-            //rxData.Clear();
+            rxData.Clear();
             communicate(getTemps);
             timer2.Enabled = true;
         }
@@ -379,7 +408,7 @@ namespace DataCollection
 
         private void setRelay1()
         {
-            //rxData.Clear();
+            rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x01;
@@ -389,7 +418,7 @@ namespace DataCollection
 
         private void setRelay2()
         {
-            //rxData.Clear();
+            rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x02;
@@ -399,7 +428,7 @@ namespace DataCollection
 
         private void setRelay3()
         {
-            //rxData.Clear();
+            rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x03;
@@ -422,7 +451,7 @@ namespace DataCollection
             if (RXcount == 1)
             {
                 timer2.Enabled = false;
-                //rxData.Clear();
+                rxData.Clear();
                 communicate(getAuxs);
                 timer2.Enabled = true;
             }
@@ -430,7 +459,7 @@ namespace DataCollection
             if (RXcount == 2)
             {
                 timer2.Enabled = false;
-                //rxData.Clear();
+                rxData.Clear();
                 setRelays[0] = 0x40;
                 setRelays[1] = 0x50;
                 setRelays[2] = 0xff;
@@ -441,7 +470,7 @@ namespace DataCollection
             if (RXcount == 3)
             {
                 timer2.Enabled = false;
-                //rxData.Clear();
+                rxData.Clear();
                 communicate(getHumps);
                 timer2.Enabled = true;
             }

@@ -23,74 +23,12 @@ namespace DataCollection
         // Insert S_Data into DataCollection Database
         private string strInsertQuery = "INSERT INTO S_Data (ReadDate, SensorID, SensorVal) VALUES ('{0}', {1}, {2} )";
         private string strSelectQuery = "SELECT Enable FROM S_List";
-        /*
-        private string Insert = "INSERT INTO MainData (Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Tep7, Temp8, Temp9, " +
-            " Temp10, Temp11, Temp12, Temp13, Temp14, Temp15, Temp16, Temph1, Hum1, Temph2, Hum2, Temph3, Hum3, Temph4, Hum4 " +
-            "Volts1, Volts2, Volts3, Volts4, Volts5, Volts6, Volts7, Volts8, ReadDate) VALUES ( {0}, {1}, {2}, [3}, {4}, {5}, {6}, {7}," +
-            "{8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19}, {20}, {21}, {22}, {23}, {24}, {25}, {26}, {27}, {28}," +
-            "{29}, {30} {31}, {32})";   */
+
         private string Insert2 = "INSERT INTO MainData (Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Temp7, Temp8, Temp9, " +
             " Temp10, Temp11, Temp12, Temp13, Temp14, Temp15, Temp16, Temph1, Hum1, Temph2, Hum2, Temph3, Hum3, Temph4, Hum4, " +
             "Volts1, Volts2, Volts3, Volts4, Volts5, Volts6, Volts7, Volts8, ReadDate) VALUES (";
 
 
-        // This method is called to obtain all the information about how each Sensor is configured.
-        private void build()
-        {
-            try
-            {
-                DataTable result = new DataTable();
-                using (SqlConnection conn1 = new SqlConnection(connectionString))
-                {
-                    conn1.Open();
-                    using (SqlCommand cmd = new SqlCommand(strInsertQuery, conn1))
-                    {
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                        result.Load(rdr);
-                        int count = result.Rows.Count;
-
-                        for (int i = 0; i < count; i++)
-                        {
-
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Hey your error is " + e.ToString());
-            }
-        }
-
-
-        // This method inserts sensor data into the S_Data table 
-        // This method is called from the DataCollection.cs file
-        // This method is not used with the new datbase configuration.
-        public string insert(int sensorID, double sensorVal)
-        {
-            string y;
-            DateTime x = DateTime.Now ;
-            try
-            {
-                y = String.Format(strInsertQuery, x.ToString(), sensorID, sensorVal);
-                
-                using (SqlConnection conn1 = new SqlConnection(connectionString))
-                {
-                    conn1.Open();
-                    using (SqlCommand cmd = new SqlCommand(y, conn1))
-                    {
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                    }
-                }
-                return y;
-            }
-            catch (Exception e)
-            {
-                System.Windows.Forms.MessageBox.Show("Well, You're gonna have to give this another Insert Try from numCrunch \r \r"
-                    + "Here's Why.... \r \r" + e.ToString());
-                return "failure";
-            }
-        }
         // This method inserts datarows into the MainData table in the database
         public string insert(double[] values)
         {
@@ -203,7 +141,7 @@ namespace DataCollection
             }
         }
 
-        // This method pdates the S_List Table in the database
+        // This method updates the S_List Table in the database
         public void updateS_List(string query)
         {
             using (SqlConnection conn1 = new SqlConnection(connectionString))
