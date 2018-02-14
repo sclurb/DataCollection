@@ -42,13 +42,35 @@ namespace DataCollection
 
         public double TempC
         {
-            get { return (rawTemp * d2) + d1; }
+            get
+            {
+                if (rawTemp == 0xf4f4)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return (rawTemp * d2) + d1;
+                }
+            }
+                
         }
 
 
         public double RH
         {
-            get { return ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2)); }
+            get
+            {
+                if (rawHumid == 0xf4f4)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
+                }
+                
+            }
 
         }
 
@@ -56,11 +78,15 @@ namespace DataCollection
         {
              get
             {
-                // double tempc = (rawTemp * d2) + d1;
-                // double rh = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
-                return ((TempC - 25) * (t1 + (t2 * rawHumid))) + RH;
+                if ((rawHumid == 0xf4f4) || rawTemp == 0xf4f4)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return ((TempC - 25) * (t1 + (t2 * rawHumid))) + RH;
+                }
             }
-            
         }
 
         // https://www.ajdesigner.com/phphumidity/dewpoint_equation_dewpoint_temperature.php
@@ -68,10 +94,15 @@ namespace DataCollection
         {
             get
             {
-                // double tempc = (rawTemp * d2) + d1;
-                // double rh = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
-                // double rht = ((tempc - 25) * (t1 + (t2 * rawHumid))) + rh;
-                return Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112;
+                if ((rawHumid == 0xf4f4) || rawTemp == 0xf4f4)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112;
+                }
+                
             }
         }
 
@@ -79,16 +110,33 @@ namespace DataCollection
         {
             get
             {
-                // double tempc = (rawTemp * d2) + d1;
-                // double rh = ch1 + (ch2 * rawHumid) + (ch3 * Math.Pow(rawHumid, 2));
-                // double rht = ((tempc - 25) * (t1 + (t2 * rawHumid))) + rh;
-                return ((Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112) * 1.8) + 32;
+                if ((rawHumid == 0xf4f4) || rawTemp == 0xf4f4)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return ((Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112) * 1.8) + 32;
+                }
+                
             }
         }
 
         public double TempF
         {
-            get { return (((rawTemp * d2) + d1)* 1.8) + 32; }
+            
+            get
+            {
+                if (rawTemp == 0xf4f4)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return (((rawTemp * d2) + d1) * 1.8) + 32;
+                }
+                
+            }
         }
 
 
