@@ -15,13 +15,13 @@ namespace DataCollection
     {
         private string configQuery =  "select * from S_List";
         // String to be called to access DataCollection database
-        private string connectionString = "data source = (localdb)\\MSSQLLocalDB;" +
-                                    "AttachDBFilename=C:\\Data\\Datacollection.mdf;" +
-                                    "initial catalog = DataCollection;" +
+        private string connectionString = "data source = .\\SQLEXPRESS;" +
+                                 //   "initial catalog = DataCollection;" +
                                     "integrated security = True;" +
-                                    "MultipleActiveResultSets=True;App=EntityFramework";
+                                    "AttachDBFilename=|DataDirectory|DataCollection.mdf;" +
+                                    "MultipleActiveResultSets=True;App=EntityFramework;" +
+                                    "user instance = true;";
         // Insert S_Data into DataCollection Database
-        private string strInsertQuery = "INSERT INTO S_Data (ReadDate, SensorID, SensorVal) VALUES ('{0}', {1}, {2} )";
         private string strSelectQuery = "SELECT Enable FROM S_List";
 
         private string Insert2 = "INSERT INTO MainData (Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Temp7, Temp8, Temp9, " +
