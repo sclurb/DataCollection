@@ -18,7 +18,7 @@ namespace DataCollection
         private string connectionString = "data source = .\\SQLEXPRESS;" +
                                  //   "initial catalog = DataCollection;" +
                                     "integrated security = True;" +
-                                    "AttachDBFilename=|DataDirectory|DataCollection.mdf;" +
+                                    "AttachDBFilename=C:\\Data\\DataCollection.mdf;" +
                                     "MultipleActiveResultSets=True;App=EntityFramework;" +
                                     "user instance = true;";
         // Insert S_Data into DataCollection Database
