@@ -11,8 +11,13 @@ using System.Windows.Forms;
 namespace DataCollectionCustomInstaller
 {
     public class SqlClass
+    // database=; 
     {
-        string connectionString = "Server=.\\SQLExpress; Integrated security=true; database=master";
+        string connectionString = "Server={0}; Integrated security=true; ";
+
+        public string make = "C:\\Data\\CreateDataCollection.sql";
+        public string createMainTable = "C:\\Data\\MakeTable.sql";
+        public string createS_List = "C:\\Data\\makeS_List.sql";
 
         public SqlClass()
         {
@@ -31,8 +36,10 @@ namespace DataCollectionCustomInstaller
 
 
 
-        public void DoIt(string nonQuery)
+        public void DoIt(string nonQuery, string instance)
         {
+            connectionString = string.Format(connectionString, instance);
+            MessageBox.Show(connectionString);
             SqlConnection conn = new SqlConnection(connectionString);
             try
             {
@@ -53,5 +60,7 @@ namespace DataCollectionCustomInstaller
                 }
             }
         }
+
+
     }
 }

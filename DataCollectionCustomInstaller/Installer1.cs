@@ -6,6 +6,9 @@ using System.Security.AccessControl;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Data;
+using System.Collections.Generic;
+using SQLTest;
+using JCS;
 
 namespace DataCollectionCustomInstaller
 {
@@ -13,25 +16,33 @@ namespace DataCollectionCustomInstaller
     public partial class Installer1 : Installer
     {
 
-        //string create;
-        //string connectionString = "Server=.\\SQLExpress; Integrated security=true; database=master";
-        //string make = "C:\\Data\\DataCollection-2.sql";
-        //string createMainTable = "C:\\Data\\MakeTable.sql";
-        //string createS_List = "C:\\Data\\makeS_List.sql";
+        string create;
+        string connectionString = "Server=.\\SQLExpress; Integrated security=true; database=master";
+        List<string> instanceCollection = new List<string>();
+        SqlProbe doom = new SqlProbe();
+        string instanceName;
+
         public Installer1()
         {
             InitializeComponent();
 
             if (SetAcl() == true)
             {
-                Console.WriteLine("Yay");
-            }
-            else
-            {
-                Console.WriteLine("Awww shucks");
-            }
+                string x = OSVersionInfo.Name;
+                if (x == "Windows 7")
+                {
+                    instanceCollection = doom.Go();
+                }
+                if (x == "Windows 10")
+                {
+                    instanceCollection = doom.gather();
+                }
+                
+                instanceName = doom.Select(instanceCollection);
 
-            //MakeDB();
+                
+                MakeDB();
+            }
         }
 
         static bool SetAcl()
@@ -65,63 +76,26 @@ namespace DataCollectionCustomInstaller
                                         AccessControlType.Allow);
             Result = false;
             Security.ModifyAccessRule(AccessControlModification.Add, AccessRule, out Result);
-
             if (!Result)
                 return false;
-
             Info.SetAccessControl(Security);
-
             return true;
         }
-        /*
+        
         private void MakeDB()
         {
-            //SqlClass makeDB = new SqlClass();
-            create = GetString(make);
-            MessageBox.Show(create);
-            DoIt(create);
-            //create = makeDB.GetString(createMainTable);
-            //makeDB.DoIt(create);
-           // create = makeDB.GetString(createS_List);
-            //makeDB.DoIt(create);
-
+            SqlClass makeDB = new SqlClass();
+            create = makeDB.GetString(makeDB.make);
+            
+            makeDB.DoIt(create, instanceName);
+            create = makeDB.GetString(makeDB.createMainTable);
+            makeDB.DoIt(create, instanceName);
+            create = makeDB.GetString(makeDB.createS_List);
+            makeDB.DoIt(create, instanceName);
         }
 
 
-        private string GetString(string path)
-        {
-            string content;
-            using (StreamReader reader = new StreamReader(path))
-            {
-                content = reader.ReadToEnd();
-            }
-            return content;
-        }
-
-
-
-        private void DoIt(string nonQuery)
-        {
-            SqlConnection conn = new SqlConnection(connectionString);
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(nonQuery, conn);
-                cmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-            finally
-            {
-                if (conn.State == ConnectionState.Open)
-                {
-                    conn.Close();
-                }
-            }
-        }
-        */
+ 
 
     }
 }
