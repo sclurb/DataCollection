@@ -11,9 +11,9 @@ using System.Windows.Forms;
 namespace DataCollectionCustomInstaller
 {
     public class SqlClass
-    // database=; 
+    // database=; Initial Catalog=master;
     {
-        string connectionString = "Server={0}; Integrated security=true; Database=;";
+        string connectionString = "Server={0}; Integrated security=true; Initial Catalog=master; database=DataCollection;";
 
         public string make = "C:\\Data\\CreateDataCollection.sql";
         public string createMainTable = "C:\\Data\\MakeTable.sql";
