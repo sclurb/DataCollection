@@ -15,11 +15,18 @@ namespace DataCollection
     {
         private string _update = "UPDATE S_LIST SET";
         List<string> forCombos = new List<string>();
+
+
         public Config()
         {
             InitializeComponent();
             populate();
             loadThem();
+        }
+
+        public Config(Action updater)
+        {
+            updateLables = updater;
         }
 
         private void loadThem()
@@ -239,6 +246,7 @@ namespace DataCollection
         private void button1_Click(object sender, EventArgs e)
         {
             gather();
+            
         }
 
         private void button2_Click(object sender, EventArgs e)

@@ -97,6 +97,7 @@
     <Compile Include="DataCollection.Designer.cs">
       <DependentUpon>DataCollection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Delegate.cs" />
     <Compile Include="numCrunch.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

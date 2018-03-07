@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DataCollection
 {
-    class numCrunch
+    public class numCrunch
     {
         private string configQuery =  "select * from S_List";
         // String to be called to access DataCollection database
-        private string connectionString = "data source = .\\SQLEXPRESS;" +
-                                 //   "initial catalog = DataCollection;" +
+        private string connectionString = "data source = TEMP-PC\\SQLEXPRESS2012;" +
+                                       "initial catalog = DataCollection;" +
                                     "integrated security = True;" +
                                     "AttachDBFilename=C:\\Data\\DataCollection.mdf;" +
-                                    "MultipleActiveResultSets=True;App=EntityFramework;" +
-                                    "user instance = true;";
+                                    "MultipleActiveResultSets=True;";
+                                    
         // Insert S_Data into DataCollection Database
         private string strSelectQuery = "SELECT Enable FROM S_List";
 

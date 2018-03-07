@@ -16,6 +16,9 @@ namespace DataCollection
     public partial class DataCollection : Form
     {
         private delegate void DataIsReceived(byte[] rxTemp);
+        public delegate void UpdateLables();
+        public UpdateLables Update;
+
         ArrayList rxData = new ArrayList();
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
@@ -50,6 +53,7 @@ namespace DataCollection
             numCrunch crunch = new numCrunch();
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
+            FillLabels();
 
         }
 
@@ -222,11 +226,40 @@ namespace DataCollection
 
         #endregion
 
-
+        void 
 
 
 
         #region fill methods
+
+        public void FillLabels()
+        {
+            numCrunch crunch1 = new numCrunch();
+            DataTable fillit = new DataTable();
+            fillit = crunch1.configLoad();
+
+            label1.Text = fillit.Rows[0][1].ToString();
+            label2.Text = fillit.Rows[1][1].ToString();
+            label3.Text = fillit.Rows[2][1].ToString();
+            label4.Text = fillit.Rows[3][1].ToString();
+            label5.Text = fillit.Rows[4][1].ToString();
+            label6.Text = fillit.Rows[5][1].ToString();
+            label7.Text = fillit.Rows[6][1].ToString();
+            label8.Text = fillit.Rows[7][1].ToString();
+            label9.Text = fillit.Rows[8][1].ToString();
+            label10.Text = fillit.Rows[9][1].ToString();
+            label11.Text = fillit.Rows[10][1].ToString();
+            label12.Text = fillit.Rows[11][1].ToString();
+            label13.Text = fillit.Rows[12][1].ToString();
+            label14.Text = fillit.Rows[13][1].ToString();
+            label15.Text = fillit.Rows[14][1].ToString();
+            label16.Text = fillit.Rows[15][1].ToString();
+            
+            label1.Text = fillit.Rows[0][1].ToString(); label1.Text = fillit.Rows[0][1].ToString();
+            label1.Text = fillit.Rows[0][1].ToString();
+            label1.Text = fillit.Rows[0][1].ToString();
+
+        }
         private void fillTemps(double[] proccessValues)
         {
             textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
