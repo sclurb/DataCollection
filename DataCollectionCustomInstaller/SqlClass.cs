@@ -13,7 +13,7 @@ namespace DataCollectionCustomInstaller
     public class SqlClass
     // database=; 
     {
-        string connectionString = "Server={0}; Integrated security=true; ";
+        string connectionString = "Server={0}; Integrated security=true; Database=;";
 
         public string make = "C:\\Data\\CreateDataCollection.sql";
         public string createMainTable = "C:\\Data\\MakeTable.sql";
