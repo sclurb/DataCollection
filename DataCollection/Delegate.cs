@@ -6,9 +6,5 @@ using System.Threading.Tasks;
 
 namespace DataCollection
 {
-    public class Delegate
-    {
-
-
-    }
+    public delegate void UpdateLabels();
 }
