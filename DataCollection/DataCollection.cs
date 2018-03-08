@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DataCollection
@@ -16,8 +13,7 @@ namespace DataCollection
     public partial class DataCollection : Form
     {
         private delegate void DataIsReceived(byte[] rxTemp);
-        public delegate void UpdateLables();
-        public UpdateLables Update;
+
 
         ArrayList rxData = new ArrayList();
         private int RXcount = 0;
@@ -72,6 +68,7 @@ namespace DataCollection
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Config setForm = new Config();
+            setForm.Updater = new UpdateLabels(FillLabels);
             setForm.Show();
         }
 
@@ -226,9 +223,7 @@ namespace DataCollection
 
         #endregion
 
-        void 
-
-
+   
 
         #region fill methods
 
@@ -254,12 +249,9 @@ namespace DataCollection
             label14.Text = fillit.Rows[13][1].ToString();
             label15.Text = fillit.Rows[14][1].ToString();
             label16.Text = fillit.Rows[15][1].ToString();
-            
-            label1.Text = fillit.Rows[0][1].ToString(); label1.Text = fillit.Rows[0][1].ToString();
-            label1.Text = fillit.Rows[0][1].ToString();
-            label1.Text = fillit.Rows[0][1].ToString();
-
         }
+
+
         private void fillTemps(double[] proccessValues)
         {
             textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
