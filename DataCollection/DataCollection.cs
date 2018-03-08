@@ -227,7 +227,7 @@ namespace DataCollection
 
         #region fill methods
 
-        public void FillLabels()
+        private void FillLabels()
         {
             numCrunch crunch1 = new numCrunch();
             DataTable fillit = new DataTable();
@@ -249,6 +249,14 @@ namespace DataCollection
             label14.Text = fillit.Rows[13][1].ToString();
             label15.Text = fillit.Rows[14][1].ToString();
             label16.Text = fillit.Rows[15][1].ToString();
+            label25.Text = fillit.Rows[24][1].ToString();
+            label26.Text = fillit.Rows[25][1].ToString();
+            label27.Text = fillit.Rows[26][1].ToString();
+            label28.Text = fillit.Rows[27][1].ToString();
+            label29.Text = fillit.Rows[28][1].ToString();
+            label30.Text = fillit.Rows[29][1].ToString();
+            label31.Text = fillit.Rows[30][1].ToString();
+            label32.Text = fillit.Rows[31][1].ToString();
         }
 
 
@@ -509,7 +517,7 @@ namespace DataCollection
         // This method inserts the valuse in procValues into the database
         private void writeDB()
         {
-            label22.Text = DateTime.Now.ToString();
+            label22.Text = "Last Update-  " + DateTime.Now.ToString();
             numCrunch log = new numCrunch();
             bool[] switches = log.dataEnable();
             log.insert(procdValues);
