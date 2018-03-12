@@ -120,7 +120,6 @@ namespace DataCollection
 
         protected void Start_MonthDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             cmbStartDay.Items.Clear();
             Establish_MonthDay(Int32.Parse(cmbStartMonth.SelectedItem.ToString()));
             for (int x = 1; x < monthLength + 1; x++)
@@ -128,13 +127,10 @@ namespace DataCollection
                 cmbStartDay.Items.Add(x.ToString());
             }
             cmbStartDay.SelectedIndex = 0;
-            
-
         }
 
         protected void End_MonthDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             cmbEndDay.Items.Clear();
             Establish_MonthDay(Int32.Parse(cmbEndMonth.SelectedItem.ToString()));
             for (int x = 1; x < monthLength + 1; x++)
@@ -194,7 +190,7 @@ namespace DataCollection
 
         private bool[] chkChecked()
         {
-            // First the Temerature Sensor
+            // First the Temerature Sensors
             if (chkBoxSensor1.Checked) { tempLogic[0] = true; } else { tempLogic[0] = false; }
             if (chkBoxSensor2.Checked) { tempLogic[1] = true; } else { tempLogic[1] = false; }
             if (chkBoxSensor3.Checked) { tempLogic[2] = true; } else { tempLogic[2] = false; }
@@ -213,14 +209,14 @@ namespace DataCollection
             if (chkBoxSensor16.Checked) { tempLogic[15] = true; } else { tempLogic[15] = false; }
             // Now the Temerature and Humidity Sensors...  The ordering in the groupboxes is different on [design] page
 
-            if (chkBoxSensor17.Checked) { tempLogic[17] = true; } else { tempLogic[17] = false; }
-            if (chkBoxSensor18.Checked) { tempLogic[16] = true; } else { tempLogic[16] = false; }
-            if (chkBoxSensor19.Checked) { tempLogic[19] = true; } else { tempLogic[19] = false; }
-            if (chkBoxSensor20.Checked) { tempLogic[18] = true; } else { tempLogic[18] = false; }
-            if (chkBoxSensor21.Checked) { tempLogic[21] = true; } else { tempLogic[21] = false; }
-            if (chkBoxSensor22.Checked) { tempLogic[20] = true; } else { tempLogic[20] = false; }
-            if (chkBoxSensor23.Checked) { tempLogic[23] = true; } else { tempLogic[23] = false; }
-            if (chkBoxSensor24.Checked) { tempLogic[22] = true; } else { tempLogic[22] = false; }
+            if (chkBoxSensor17.Checked) { tempLogic[16] = true; } else { tempLogic[16] = false; }
+            if (chkBoxSensor18.Checked) { tempLogic[17] = true; } else { tempLogic[17] = false; }
+            if (chkBoxSensor19.Checked) { tempLogic[18] = true; } else { tempLogic[18] = false; }
+            if (chkBoxSensor20.Checked) { tempLogic[19] = true; } else { tempLogic[19] = false; }
+            if (chkBoxSensor21.Checked) { tempLogic[20] = true; } else { tempLogic[20] = false; }
+            if (chkBoxSensor22.Checked) { tempLogic[21] = true; } else { tempLogic[21] = false; }
+            if (chkBoxSensor23.Checked) { tempLogic[22] = true; } else { tempLogic[22] = false; }
+            if (chkBoxSensor24.Checked) { tempLogic[23] = true; } else { tempLogic[23] = false; }
             // Finally the Voltage Sensors
             if (chkBoxSensor25.Checked) { tempLogic[24] = true; } else { tempLogic[24] = false; }
             if (chkBoxSensor26.Checked) { tempLogic[25] = true; } else { tempLogic[25] = false; }
@@ -236,12 +232,6 @@ namespace DataCollection
 
         private DataTable getValues1(bool[] chkItems, string query)
         {
-            //string temperature = "Temperature-";
-            //string humidity = "Humidity-";
-            //string humTemp = "Temp-";
-            //string voltage = "Voltage-";
-            //int t = 0;
-            //int h = 0;
             int j = 0;
             DataTable NameTable = new DataTable();
             numCrunch names = new numCrunch();
@@ -254,50 +244,11 @@ namespace DataCollection
             {
                 if (chkItems[i] == true)
                 {
-                    if (i < 16 || i > 23)
+                    if (i < 32)
                     {
                         chartTable.Columns[i + 1].ColumnName = NameTable.Rows[i][1].ToString();
-                        // chartTable.Columns[i + 1].ColumnName = temperature + (i + 1 );
-                        //addSeries(temperature, (i + 1 ));
                         addSeries(NameTable.Rows[i][1].ToString());
                     }
-
-                    if (i > 15 && i < 24)
-                    {
-                        if (i == 16) { j = 17; }
-                        if (i == 17) { j = 16; }
-                        if (i == 18) { j = 19; }
-                        if (i == 19) { j = 18; }
-                        if (i == 20) { j = 21; }
-                        if (i == 21) { j = 20; }
-                        if (i == 22) { j = 23; }
-                        if (i == 23) { j = 22; }
-                        /*
-                        if (i % 2 != 0)
-                        {
-                            chartTable.Columns[i + 1].ColumnName = humidity + h;
-                            addSeries(humidity, (h));
-                        }
-                        else
-                        {
-                            chartTable.Columns[i + 1].ColumnName = humTemp + t;
-                            addSeries(humTemp, (t));
-                        }
-                        */
-                        //chartTable.Columns[j + 1].ColumnName = NameTable.Rows[j][1].ToString();
-                        addSeries(NameTable.Rows[j][1].ToString());
-                    }
-
-                    /*
-                    if (i > 23 )
-                    {
-                        chartTable.Columns[i + 1].ColumnName = NameTable.Rows[i][1].ToString();
-                        //chartTable.Columns[i + 1].ColumnName = voltage + (i );
-                        //addSeries(voltage, (i ));
-
-                        addSeries(NameTable.Rows[i][1].ToString());
-                    }
-                    */
                 }
             }
             return chartTable;
@@ -326,7 +277,7 @@ namespace DataCollection
 
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnGetData_Click(object sender, EventArgs e)
         {
             string start = cmbStartYear.SelectedItem.ToString() + "/" + cmbStartMonth.SelectedItem.ToString() + "/" + cmbStartDay.SelectedItem.ToString() + " " + cmbStartTime.SelectedItem.ToString() + ":00:00.000000 ";
             string end = cmbEndYear.SelectedItem.ToString() + "/" + cmbEndMonth.SelectedItem.ToString() + "/" + cmbEndDay.SelectedItem.ToString() + " " + cmbEndTime.SelectedItem.ToString() + ":00:00.000000 ";
