@@ -23,17 +23,6 @@ namespace DataCollection.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DataCollection;Integrated Secu" +
-            "rity=True")]
-        public string DataCollectionConnectionString {
-            get {
-                return ((string)(this["DataCollectionConnectionString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
@@ -175,6 +164,17 @@ namespace DataCollection.Properties {
             }
             set {
                 this["Index3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|AttachDBFile|\\App_Data\\DataCollections.mdf;Initial Catalog=DataColle" +
+            "ction;Integrated Security=True")]
+        public string DataCollectionConnectionString {
+            get {
+                return ((string)(this["DataCollectionConnectionString"]));
             }
         }
     }
