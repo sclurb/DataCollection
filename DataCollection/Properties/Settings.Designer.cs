@@ -167,14 +167,27 @@ namespace DataCollection.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=|AttachDBFile|\\App_Data\\DataCollections.mdf;Initial Catalog=DataColle" +
-            "ction;Integrated Security=True")]
-        public string DataCollectionConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ConnectionString {
             get {
-                return ((string)(this["DataCollectionConnectionString"]));
+                return ((string)(this["ConnectionString"]));
+            }
+            set {
+                this["ConnectionString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Attached {
+            get {
+                return ((bool)(this["Attached"]));
+            }
+            set {
+                this["Attached"] = value;
             }
         }
     }

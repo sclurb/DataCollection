@@ -1,4 +1,5 @@
-﻿using Microsoft.SqlServer.Management.Smo;
+﻿using JCS;
+using Microsoft.SqlServer.Management.Smo;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,32 @@ using System.Windows.Forms;
 
 namespace DataCollection
 {
-    public class SqlProbe
+    public class  SqlProbe
     {
-
-        private string p = @"Bobzilla_16\SqlExpress";
+        List<string> instanceCollection = new List<string>();
         private string standard = "Microsoft SQL Server 2012";
+        string instanceName;
 
         public SqlProbe()
         {
+            string x = OSVersionInfo.Name;
+            if (x == "Windows 7")
+            {
+                instanceCollection = Go();
+            }
+            if (x == "Windows 10")
+            {
+                instanceCollection =gather();
+            }
 
+            instanceName = Select(instanceCollection);
         }
+
+        public string InstanceName
+            {
+            get { return instanceName; }
+                
+            }
 
         public string Select(List<string> str)
         {

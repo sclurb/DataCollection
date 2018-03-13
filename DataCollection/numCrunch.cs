@@ -7,21 +7,55 @@ namespace DataCollection
 {
     public class numCrunch
     {
+        public numCrunch()
+        {
+
+            if (DataCollection.set)
+            {
+                connectionString = Properties.Settings.Default.ConnectionString;
+                MessageBox.Show("Already Saved " + Properties.Settings.Default.Attached.ToString());
+            }
+            else
+            {
+                connectionString = GetInstance();
+                Properties.Settings.Default.ConnectionString = connectionString;
+                Properties.Settings.Default.Attached = true;
+                Properties.Settings.Default.Save();
+                DataCollection.set = true;
+               // MessageBox.Show("This Time " + Properties.Settings.Default.Attached.ToString() + "   " + Properties.Settings.Default.ConnectionString);
+                MessageBox.Show("This Time " + DataCollection.set.ToString());
+            }
+        }
+
+        SqlProbe chk = new SqlProbe();
         private string configQuery =  "select * from S_List";
-        // String to be called to access DataCollection database
-        private string connectionString = "data source = TEMP-PC\\SQLEXPRESS2012;" +
-                                       "initial catalog = DataCollection;" +
-                                    "integrated security = True;" +
-                                    "AttachDBFilename=C:\\Data\\DataCollection.mdf;" +
-                                    "MultipleActiveResultSets=True;";
-                                    
+
+
+
+
+        
+        private string connectionString;
+
+
         // Insert S_Data into DataCollection Database
         private string strSelectQuery = "SELECT Enable FROM S_List";
 
         private string Insert2 = "INSERT INTO MainData (Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Temp7, Temp8, Temp9, " +
             " Temp10, Temp11, Temp12, Temp13, Temp14, Temp15, Temp16, Temph1, Hum1, Temph2, Hum2, Temph3, Hum3, Temph4, Hum4, " +
             "Volts1, Volts2, Volts3, Volts4, Volts5, Volts6, Volts7, Volts8, ReadDate) VALUES (";
-
+        
+        public string GetInstance()
+        {
+            string inst = chk.InstanceName;
+            string conn = "data source={0}; " +
+                                       "initial catalog = DataCollection;" +
+                                    "integrated security = True;" +
+                                    "AttachDBFilename=C:\\Data\\DataCollection.mdf;" +
+                                    "MultipleActiveResultSets=True;";
+            string result = string.Format(conn, inst);
+            return result;
+        }
+        
 
         // This method inserts datarows into the MainData table in the database
         public string insert(double[] values)

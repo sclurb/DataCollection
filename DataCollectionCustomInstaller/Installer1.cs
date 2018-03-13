@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Data;
 using System.Collections.Generic;
-using SQLTest;
+using DataCollection;
 using JCS;
 
 namespace DataCollectionCustomInstaller
@@ -28,6 +28,7 @@ namespace DataCollectionCustomInstaller
 
             if (SetAcl() == true)
             {
+                
                 string x = OSVersionInfo.Name;
                 if (x == "Windows 7")
                 {
@@ -39,47 +40,57 @@ namespace DataCollectionCustomInstaller
                 }
                 
                 instanceName = doom.Select(instanceCollection);
-
-                
-                MakeDB();
+                //MessageBox.Show(instanceName);
+                //MakeDB();
             }
         }
 
         static bool SetAcl()
         {
-            FileSystemRights Rights = (FileSystemRights)0;
-            Rights = FileSystemRights.FullControl;
+            try
+            {
+                System.IO.Directory.CreateDirectory("C:\\Data");
+                
+                FileSystemRights Rights = (FileSystemRights)0;
+                Rights = FileSystemRights.FullControl;
 
-            // *** Add Access Rule to the actual directory itself
-            FileSystemAccessRule AccessRule = new FileSystemAccessRule("Users", Rights,
-                                        InheritanceFlags.None,
-                                        PropagationFlags.NoPropagateInherit,
-                                        AccessControlType.Allow);
+                // *** Add Access Rule to the actual directory itself
+                FileSystemAccessRule AccessRule = new FileSystemAccessRule("Users", Rights,
+                                            InheritanceFlags.None,
+                                            PropagationFlags.NoPropagateInherit,
+                                            AccessControlType.Allow);
 
-            DirectoryInfo Info = new DirectoryInfo(@"C:\Data");
-            DirectorySecurity Security = Info.GetAccessControl(AccessControlSections.Access);
+                DirectoryInfo Info = new DirectoryInfo(@"C:\Data");
+                DirectorySecurity Security = Info.GetAccessControl(AccessControlSections.Access);
 
-            bool Result = false;
-            Security.ModifyAccessRule(AccessControlModification.Set, AccessRule, out Result);
+                bool Result = false;
+                Security.ModifyAccessRule(AccessControlModification.Set, AccessRule, out Result);
 
-            if (!Result)
+                if (!Result)
+                    return false;
+
+                // *** Always allow objects to inherit on a directory
+                InheritanceFlags iFlags = InheritanceFlags.ObjectInherit;
+                iFlags = InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit;
+
+                // *** Add Access rule for the inheritance
+                AccessRule = new FileSystemAccessRule("Users", Rights,
+                                            iFlags,
+                                            PropagationFlags.InheritOnly,
+                                            AccessControlType.Allow);
+                Result = false;
+                Security.ModifyAccessRule(AccessControlModification.Add, AccessRule, out Result);
+                if (!Result)
+                    return false;
+                Info.SetAccessControl(Security);
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
                 return false;
+            }
 
-            // *** Always allow objects to inherit on a directory
-            InheritanceFlags iFlags = InheritanceFlags.ObjectInherit;
-            iFlags = InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit;
-
-            // *** Add Access rule for the inheritance
-            AccessRule = new FileSystemAccessRule("Users", Rights,
-                                        iFlags,
-                                        PropagationFlags.InheritOnly,
-                                        AccessControlType.Allow);
-            Result = false;
-            Security.ModifyAccessRule(AccessControlModification.Add, AccessRule, out Result);
-            if (!Result)
-                return false;
-            Info.SetAccessControl(Security);
-            return true;
         }
         
         private void MakeDB()
