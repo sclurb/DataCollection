@@ -71,6 +71,13 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=13.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\AnotherSQLTest\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="OSVersionInfo">
+      <HintPath>..\..\..\..\Documents\Visual Studio 2015\Projects\SQLTest\SQLTest\SQLTest\bin\Release\OSVersionInfo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -107,6 +114,7 @@
     <Compile Include="Config.Designer.cs">
       <DependentUpon>Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="SqlProbe.cs" />
     <Compile Include="TempHumDew.cs" />
     <Compile Include="TempHumidCalculations.cs" />
     <Compile Include="TempHumidityProcessing.cs" />

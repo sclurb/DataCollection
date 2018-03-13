@@ -232,7 +232,6 @@ namespace DataCollection
 
         private DataTable getValues1(bool[] chkItems, string query)
         {
-            int j = 0;
             DataTable NameTable = new DataTable();
             numCrunch names = new numCrunch();
             NameTable = names.configLoad();

@@ -15,9 +15,9 @@ namespace DataCollectionCustomInstaller
     {
         string connectionString = "Server={0}; Integrated security=true; Initial Catalog=master; database=DataCollection;";
 
-        public string make = "C:\\Data\\CreateDataCollection.sql";
-        public string createMainTable = "C:\\Data\\MakeTable.sql";
-        public string createS_List = "C:\\Data\\makeS_List.sql";
+        public string make = "C:\\Data\\Scripts\\CreateDataCollection.sql";
+        public string createMainTable = "C:\\Data\\Scripts\\MakeTable.sql";
+        public string createS_List = "C:\\Data\\Scripts\\makeS_List.sql";
 
         public SqlClass()
         {

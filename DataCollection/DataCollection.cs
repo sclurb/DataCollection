@@ -39,6 +39,8 @@ namespace DataCollection
         Timer timer1 = new Timer();     // sets the interval between data collection 450,000 = 7.5 minutes
         Timer timer2 = new Timer();     // sets  short delay to separate the data send commands
 
+        public static bool set = false;
+
 
         public DataCollection()
         {
