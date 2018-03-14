@@ -14,23 +14,13 @@ namespace DataCollection
     {
         private delegate void DataIsReceived(byte[] rxTemp);
 
-
         ArrayList rxData = new ArrayList();
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
         private byte[] getHumps = { 0x40, 0x20, 0xf5 };
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
         private SerialPort comPort = new SerialPort();
-        //private double c1 = -4;
-        //private double c2 = 0.0405;
-        //private double c3 = -2.8E-6;
-        private const double ch1 = -2.0468;
-        private const double ch2 = 0.0367;
-        private const double ch3 = -1.5955E-6;
-        private const double t1 = .01;
-        private const double t2 = .00008;
-        private const double Tn = 243.12;
-        private const double m = 17.62;
+
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
@@ -259,6 +249,11 @@ namespace DataCollection
             label30.Text = fillit.Rows[29][1].ToString();
             label31.Text = fillit.Rows[30][1].ToString();
             label32.Text = fillit.Rows[31][1].ToString();
+            label17.Text = fillit.Rows[32][1].ToString();
+            label18.Text = fillit.Rows[33][1].ToString();
+            label19.Text = fillit.Rows[34][1].ToString();
+            label20.Text = fillit.Rows[35][1].ToString();
+
         }
 
 

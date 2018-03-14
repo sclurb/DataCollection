@@ -99,6 +99,13 @@ namespace DataCollection
                     textBox30.Text = result.Rows[29][1].ToString();
                     textBox31.Text = result.Rows[30][1].ToString();
                     textBox32.Text = result.Rows[31][1].ToString();
+                    textBox33.Text = result.Rows[32][1].ToString();
+                    textBox34.Text = result.Rows[33][1].ToString();
+                    textBox35.Text = result.Rows[34][1].ToString();
+                    textBox36.Text = result.Rows[35][1].ToString();
+
+
+
                     //
                     checkBox1.Checked = (bool)result.Rows[0][4];
                     checkBox2.Checked = (bool)result.Rows[1][4];
@@ -166,7 +173,6 @@ namespace DataCollection
             
             string s;
             numCrunch crunch = new numCrunch();
-            s = Validate(textBox1.Text);
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox1.Text), comboBox1.SelectedItem.ToString(), checkBox1.Checked, 1));
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox2.Text), comboBox2.SelectedItem.ToString(), checkBox2.Checked, 2));
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox3.Text), comboBox3.SelectedItem.ToString(), checkBox3.Checked, 3));
@@ -199,6 +205,10 @@ namespace DataCollection
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox30.Text), comboBox30.SelectedItem.ToString(), checkBox30.Checked, 30));
             crunch.updateS_List(makeQuery(_update, s = Validate (textBox31.Text), comboBox31.SelectedItem.ToString(), checkBox31.Checked, 31));
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox32.Text), comboBox32.SelectedItem.ToString(), checkBox32.Checked, 32));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox33.Text), null, false, 33));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox34.Text), null, false, 34));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), null, false, 35));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), null, false, 36));
         }
 
         private string makeQuery(string first, string second, string third, bool fourth, int x)
