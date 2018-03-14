@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +16,8 @@ namespace DataCollection
     {
         private string _update = "UPDATE S_LIST SET";
         List<string> forCombos = new List<string>();
+        public UpdateLabels Updater;
+
         public Config()
         {
             InitializeComponent();
@@ -96,6 +99,13 @@ namespace DataCollection
                     textBox30.Text = result.Rows[29][1].ToString();
                     textBox31.Text = result.Rows[30][1].ToString();
                     textBox32.Text = result.Rows[31][1].ToString();
+                    textBox33.Text = result.Rows[32][1].ToString();
+                    textBox34.Text = result.Rows[33][1].ToString();
+                    textBox35.Text = result.Rows[34][1].ToString();
+                    textBox36.Text = result.Rows[35][1].ToString();
+
+
+
                     //
                     checkBox1.Checked = (bool)result.Rows[0][4];
                     checkBox2.Checked = (bool)result.Rows[1][4];
@@ -138,25 +148,47 @@ namespace DataCollection
             }
         }
 
+        private string Validate(string textBox)
+        {
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            if (textBox.Length < 21)
+            {
+                if (regexItem.IsMatch(textBox))
+                {
+                    return textBox;
+                }
+                else
+                {
+                    return "Letters or Numbers";
+                }
+            }
+            else
+            {
+                return "Name was too long";
+            }
+        }
+
         private void gather()
         {
+            
+            string s;
             numCrunch crunch = new numCrunch();
-            crunch.updateS_List(makeQuery(_update, textBox1.Text, comboBox1.SelectedItem.ToString(), checkBox1.Checked, 1));
-            crunch.updateS_List(makeQuery(_update, textBox2.Text, comboBox2.SelectedItem.ToString(), checkBox2.Checked, 2));
-            crunch.updateS_List(makeQuery(_update, textBox3.Text, comboBox3.SelectedItem.ToString(), checkBox3.Checked, 3));
-            crunch.updateS_List(makeQuery(_update, textBox4.Text, comboBox4.SelectedItem.ToString(), checkBox4.Checked, 4));
-            crunch.updateS_List(makeQuery(_update, textBox5.Text, comboBox5.SelectedItem.ToString(), checkBox5.Checked, 5));
-            crunch.updateS_List(makeQuery(_update, textBox6.Text, comboBox6.SelectedItem.ToString(), checkBox6.Checked, 6));
-            crunch.updateS_List(makeQuery(_update, textBox7.Text, comboBox7.SelectedItem.ToString(), checkBox7.Checked, 7));
-            crunch.updateS_List(makeQuery(_update, textBox8.Text, comboBox8.SelectedItem.ToString(), checkBox8.Checked, 8));
-            crunch.updateS_List(makeQuery(_update, textBox9.Text, comboBox9.SelectedItem.ToString(), checkBox9.Checked, 9));
-            crunch.updateS_List(makeQuery(_update, textBox10.Text, comboBox10.SelectedItem.ToString(), checkBox10.Checked, 10));
-            crunch.updateS_List(makeQuery(_update, textBox11.Text, comboBox11.SelectedItem.ToString(), checkBox11.Checked, 11));
-            crunch.updateS_List(makeQuery(_update, textBox12.Text, comboBox12.SelectedItem.ToString(), checkBox12.Checked, 12));
-            crunch.updateS_List(makeQuery(_update, textBox13.Text, comboBox13.SelectedItem.ToString(), checkBox13.Checked, 13));
-            crunch.updateS_List(makeQuery(_update, textBox14.Text, comboBox14.SelectedItem.ToString(), checkBox14.Checked, 14));
-            crunch.updateS_List(makeQuery(_update, textBox15.Text, comboBox15.SelectedItem.ToString(), checkBox15.Checked, 15));
-            crunch.updateS_List(makeQuery(_update, textBox16.Text, comboBox16.SelectedItem.ToString(), checkBox16.Checked, 16));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox1.Text), comboBox1.SelectedItem.ToString(), checkBox1.Checked, 1));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox2.Text), comboBox2.SelectedItem.ToString(), checkBox2.Checked, 2));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox3.Text), comboBox3.SelectedItem.ToString(), checkBox3.Checked, 3));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox4.Text), comboBox4.SelectedItem.ToString(), checkBox4.Checked, 4));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox5.Text), comboBox5.SelectedItem.ToString(), checkBox5.Checked, 5));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox6.Text), comboBox6.SelectedItem.ToString(), checkBox6.Checked, 6));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox7.Text), comboBox7.SelectedItem.ToString(), checkBox7.Checked, 7));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox8.Text), comboBox8.SelectedItem.ToString(), checkBox8.Checked, 8));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox9.Text), comboBox9.SelectedItem.ToString(), checkBox9.Checked, 9));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox10.Text), comboBox10.SelectedItem.ToString(), checkBox10.Checked, 10));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox11.Text), comboBox11.SelectedItem.ToString(), checkBox11.Checked, 11));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox12.Text), comboBox12.SelectedItem.ToString(), checkBox12.Checked, 12));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox13.Text), comboBox13.SelectedItem.ToString(), checkBox13.Checked, 13));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox14.Text), comboBox14.SelectedItem.ToString(), checkBox14.Checked, 14));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox15.Text), comboBox15.SelectedItem.ToString(), checkBox15.Checked, 15));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox16.Text), comboBox16.SelectedItem.ToString(), checkBox16.Checked, 16));
             crunch.updateS_List(makeQuery(_update, textBox17.Text, comboBox17.SelectedItem.ToString(), checkBox17.Checked, 17));
             crunch.updateS_List(makeQuery(_update, textBox18.Text, comboBox18.SelectedItem.ToString(), checkBox18.Checked, 18));
             crunch.updateS_List(makeQuery(_update, textBox19.Text, comboBox19.SelectedItem.ToString(), checkBox19.Checked, 19));
@@ -165,14 +197,18 @@ namespace DataCollection
             crunch.updateS_List(makeQuery(_update, textBox22.Text, comboBox22.SelectedItem.ToString(), checkBox22.Checked, 22));
             crunch.updateS_List(makeQuery(_update, textBox23.Text, comboBox23.SelectedItem.ToString(), checkBox23.Checked, 23));
             crunch.updateS_List(makeQuery(_update, textBox24.Text, comboBox24.SelectedItem.ToString(), checkBox24.Checked, 24));
-            crunch.updateS_List(makeQuery(_update, textBox25.Text, comboBox25.SelectedItem.ToString(), checkBox25.Checked, 25));
-            crunch.updateS_List(makeQuery(_update, textBox26.Text, comboBox26.SelectedItem.ToString(), checkBox26.Checked, 26));
-            crunch.updateS_List(makeQuery(_update, textBox27.Text, comboBox27.SelectedItem.ToString(), checkBox27.Checked, 27));
-            crunch.updateS_List(makeQuery(_update, textBox28.Text, comboBox28.SelectedItem.ToString(), checkBox28.Checked, 28));
-            crunch.updateS_List(makeQuery(_update, textBox29.Text, comboBox29.SelectedItem.ToString(), checkBox29.Checked, 29));
-            crunch.updateS_List(makeQuery(_update, textBox30.Text, comboBox30.SelectedItem.ToString(), checkBox30.Checked, 30));
-            crunch.updateS_List(makeQuery(_update, textBox31.Text, comboBox31.SelectedItem.ToString(), checkBox31.Checked, 31));
-            crunch.updateS_List(makeQuery(_update, textBox32.Text, comboBox32.SelectedItem.ToString(), checkBox32.Checked, 32));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox25.Text), comboBox25.SelectedItem.ToString(), checkBox25.Checked, 25));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox26.Text), comboBox26.SelectedItem.ToString(), checkBox26.Checked, 26));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox27.Text), comboBox27.SelectedItem.ToString(), checkBox27.Checked, 27));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox28.Text), comboBox28.SelectedItem.ToString(), checkBox28.Checked, 28));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox29.Text), comboBox29.SelectedItem.ToString(), checkBox29.Checked, 29));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox30.Text), comboBox30.SelectedItem.ToString(), checkBox30.Checked, 30));
+            crunch.updateS_List(makeQuery(_update, s = Validate (textBox31.Text), comboBox31.SelectedItem.ToString(), checkBox31.Checked, 31));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox32.Text), comboBox32.SelectedItem.ToString(), checkBox32.Checked, 32));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox33.Text), null, false, 33));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox34.Text), null, false, 34));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), null, false, 35));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), null, false, 36));
         }
 
         private string makeQuery(string first, string second, string third, bool fourth, int x)
@@ -239,6 +275,9 @@ namespace DataCollection
         private void button1_Click(object sender, EventArgs e)
         {
             gather();
+
+            Updater();
+            
         }
 
         private void button2_Click(object sender, EventArgs e)

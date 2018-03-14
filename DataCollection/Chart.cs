@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -27,6 +20,7 @@ namespace DataCollection
             InitializeComponent();
             chart1.Visible = true;
             populate();
+            FillLabels();
         }
 
         private void Chart_Load(object sender, EventArgs e)
@@ -126,7 +120,6 @@ namespace DataCollection
 
         protected void Start_MonthDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             cmbStartDay.Items.Clear();
             Establish_MonthDay(Int32.Parse(cmbStartMonth.SelectedItem.ToString()));
             for (int x = 1; x < monthLength + 1; x++)
@@ -134,13 +127,10 @@ namespace DataCollection
                 cmbStartDay.Items.Add(x.ToString());
             }
             cmbStartDay.SelectedIndex = 0;
-            
-
         }
 
         protected void End_MonthDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             cmbEndDay.Items.Clear();
             Establish_MonthDay(Int32.Parse(cmbEndMonth.SelectedItem.ToString()));
             for (int x = 1; x < monthLength + 1; x++)
@@ -158,9 +148,49 @@ namespace DataCollection
             return result;
         }
 
+        private void FillLabels()
+        {
+            numCrunch crunch1 = new numCrunch();
+            DataTable fillit = new DataTable();
+            fillit = crunch1.configLoad();
+
+            chkBoxSensor1.Text = fillit.Rows[0][1].ToString();
+            chkBoxSensor2.Text = fillit.Rows[1][1].ToString();
+            chkBoxSensor3.Text = fillit.Rows[2][1].ToString();
+            chkBoxSensor4.Text = fillit.Rows[3][1].ToString();
+            chkBoxSensor5.Text = fillit.Rows[4][1].ToString();
+            chkBoxSensor6.Text = fillit.Rows[5][1].ToString();
+            chkBoxSensor7.Text = fillit.Rows[6][1].ToString();
+            chkBoxSensor8.Text = fillit.Rows[7][1].ToString();
+            chkBoxSensor9.Text = fillit.Rows[8][1].ToString();
+            chkBoxSensor10.Text = fillit.Rows[9][1].ToString();
+            chkBoxSensor11.Text = fillit.Rows[10][1].ToString();
+            chkBoxSensor12.Text = fillit.Rows[11][1].ToString();
+            chkBoxSensor13.Text = fillit.Rows[12][1].ToString();
+            chkBoxSensor14.Text = fillit.Rows[13][1].ToString();
+            chkBoxSensor15.Text = fillit.Rows[14][1].ToString();
+            chkBoxSensor16.Text = fillit.Rows[15][1].ToString();
+            chkBoxSensor17.Text = fillit.Rows[16][1].ToString();
+            chkBoxSensor18.Text = fillit.Rows[17][1].ToString();
+            chkBoxSensor19.Text = fillit.Rows[18][1].ToString();
+            chkBoxSensor20.Text = fillit.Rows[19][1].ToString();
+            chkBoxSensor21.Text = fillit.Rows[20][1].ToString();
+            chkBoxSensor22.Text = fillit.Rows[21][1].ToString();
+            chkBoxSensor23.Text = fillit.Rows[22][1].ToString();
+            chkBoxSensor24.Text = fillit.Rows[23][1].ToString();
+            chkBoxSensor25.Text = fillit.Rows[24][1].ToString();
+            chkBoxSensor26.Text = fillit.Rows[25][1].ToString();
+            chkBoxSensor27.Text = fillit.Rows[26][1].ToString();
+            chkBoxSensor28.Text = fillit.Rows[27][1].ToString();
+            chkBoxSensor29.Text = fillit.Rows[28][1].ToString();
+            chkBoxSensor30.Text = fillit.Rows[29][1].ToString();
+            chkBoxSensor31.Text = fillit.Rows[30][1].ToString();
+            chkBoxSensor32.Text = fillit.Rows[31][1].ToString();
+        }
+
         private bool[] chkChecked()
         {
-            // First the Temerature Sensor
+            // First the Temerature Sensors
             if (chkBoxSensor1.Checked) { tempLogic[0] = true; } else { tempLogic[0] = false; }
             if (chkBoxSensor2.Checked) { tempLogic[1] = true; } else { tempLogic[1] = false; }
             if (chkBoxSensor3.Checked) { tempLogic[2] = true; } else { tempLogic[2] = false; }
@@ -202,49 +232,21 @@ namespace DataCollection
 
         private DataTable getValues1(bool[] chkItems, string query)
         {
-            string temperature = "Temperature-";
-            string humidity = "Humidity-";
-            string humTemp = "Temp-";
-            string voltage = "Voltage-";
-            int t = 0;
-            int h = 0;
+            DataTable NameTable = new DataTable();
+            numCrunch names = new numCrunch();
+            NameTable = names.configLoad();
+
+
             DataTable chartTable = new DataTable();
             chartTable = get(query);
             for (int i = 0; i < chkItems.Length; i++)
             {
                 if (chkItems[i] == true)
                 {
-                    if (i < 16)
+                    if (i < 32)
                     {
-                        chartTable.Columns[i + 1].ColumnName = temperature + (i + 1 );
-                        addSeries(temperature, (i + 1 ));
-                    }
-
-                    if (i > 15 && i < 24)
-                    {
-                        if (i == 16) { t = 1; }
-                        if (i == 17) { h = 1; }
-                        if (i == 18) { t = 2; }
-                        if (i == 19) { h = 2; }
-                        if (i == 20) { t = 3; }
-                        if (i == 21) { h = 3; }
-                        if (i == 22) { t = 4; }
-                        if (i == 23) { h = 4; }
-                        if (i % 2 != 0)
-                        {
-                            chartTable.Columns[i + 1].ColumnName = humidity + h;
-                            addSeries(humidity, (h));
-                        }
-                        else
-                        {
-                            chartTable.Columns[i + 1].ColumnName = humTemp + t;
-                            addSeries(humTemp, (t));
-                        }
-                    }
-                    if (i > 23 )
-                    {
-                        chartTable.Columns[i + 1].ColumnName = voltage + (i );
-                        addSeries(voltage, (i ));
+                        chartTable.Columns[i + 1].ColumnName = NameTable.Rows[i][1].ToString();
+                        addSeries(NameTable.Rows[i][1].ToString());
                     }
                 }
             }
@@ -262,9 +264,19 @@ namespace DataCollection
             chart1.Series[col].YValueMembers = colName + x.ToString();
         }
 
+        public void addSeries(string colName)
+        {
+
+            chart1.Series.Add(colName);
+            chart1.Series[colName].XValueType = ChartValueType.DateTime;
+            chart1.Series[colName].ChartType = SeriesChartType.Line;
+            chart1.Series[colName].XValueMember = "ReadDate";
+            chart1.Series[colName].YValueMembers = colName;
+        }
 
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void btnGetData_Click(object sender, EventArgs e)
         {
             string start = cmbStartYear.SelectedItem.ToString() + "/" + cmbStartMonth.SelectedItem.ToString() + "/" + cmbStartDay.SelectedItem.ToString() + " " + cmbStartTime.SelectedItem.ToString() + ":00:00.000000 ";
             string end = cmbEndYear.SelectedItem.ToString() + "/" + cmbEndMonth.SelectedItem.ToString() + "/" + cmbEndDay.SelectedItem.ToString() + " " + cmbEndTime.SelectedItem.ToString() + ":00:00.000000 ";
