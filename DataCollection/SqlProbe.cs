@@ -17,20 +17,12 @@ namespace DataCollection
         List<string> instanceCollection = new List<string>();
         private string standard = "Microsoft SQL Server 2012";
         string instanceName;
+        string versionName;
 
         public SqlProbe()
         {
-            string x = OSVersionInfo.Name;
-            if (x == "Windows 7")
-            {
-                instanceCollection = Go();
-            }
-            if (x == "Windows 10")
-            {
-                instanceCollection =gather();
-            }
-
-            instanceName = Select(instanceCollection);
+            versionName = OSVersionInfo.Name;
+            GetVersion();
         }
 
         public string InstanceName
@@ -38,8 +30,31 @@ namespace DataCollection
             get { return instanceName; }
                 
             }
+        public string VersionName
+        {
+            get
+            {
+                return versionName;
+            }
+        }
 
-        public string Select(List<string> str)
+        private string GetVersion()
+        {
+            if (VersionName == "Windows 10")
+            {
+                instanceCollection = gather();
+            }
+            if (VersionName == "Windows 7")
+            {
+                instanceCollection = Go();
+            }
+
+            string result = Select(instanceCollection);
+            instanceName = result;
+            return result;
+        }
+
+        private string Select(List<string> str)
         {
             string p = null;
             foreach(string a in str)
@@ -49,7 +64,6 @@ namespace DataCollection
                     p = a;
                 }
             }
-
             if (p != null)
             {
                 return p;
@@ -58,22 +72,21 @@ namespace DataCollection
             {
                 return "No Match!";
             }
-            
         }
 
-        public bool Sql(string server)
+        private bool Sql(string server)
         {
             try
             {
                 DataTable result = new DataTable();
                 string connectionString = String.Format("Server={0}; Database=; Integrated Security=True;", server);
                 string s = " ";
-                string nonQuery = "Select @@version";
+                string query = "Select @@version";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(nonQuery, conn))
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         SqlDataReader rdr = cmd.ExecuteReader();
                         result.Load(rdr);
@@ -92,18 +105,20 @@ namespace DataCollection
             }
             catch (SqlException e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show("Bad SQL Query in SqlProbe- " + e.ToString());
                 return false;
             }
         }
 
-        public string Truncate(string s, int maxLength)
+        // This method removes characters after the name of the instance
+        private string Truncate(string s, int maxLength)
         {
             return s != null && s.Length > maxLength ? s.Substring(0, maxLength) : s;
         }
 
-
-        public List<string> gather()
+        // This method returns a List<string> with all the instances of SQL Server on the host computer.
+        // This method is called if the computer's OS is Windows 10.
+        private List<string> gather()
         {
             List<string> floyd = new List<string>();
             DataTable dt = SmoApplication.EnumAvailableSqlServers(true);
@@ -115,7 +130,9 @@ namespace DataCollection
             return floyd;
         }
 
-        public List<string> Go()
+        // This method returns a List<string> with all the instances of SQL Server on the host computer.
+        // This method is called if the computer's OS is Windows 7.
+        private List<string> Go()
         {
             List<string> goober = new List<string>();
             RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
@@ -124,9 +141,9 @@ namespace DataCollection
                 RegistryKey instanceKey = hklm.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL", false);
                 if (instanceKey != null)
                 {
-                    foreach (var instanceName in instanceKey.GetValueNames())
+                    foreach (var instName in instanceKey.GetValueNames())
                     {
-                        goober.Add(Environment.MachineName + "\\" + instanceName);
+                        goober.Add(Environment.MachineName + "\\" + instName);
                     }
                 }
             }
