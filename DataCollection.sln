@@ -11,6 +11,11 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Install_DataCollection", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollectionCustomInstaller", "DataCollectionCustomInstaller\DataCollectionCustomInstaller.csproj", "{0FA88808-AF80-4561-BC59-52258555E834}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Referenced Assemblies", "Referenced Assemblies", "{EE590CD7-C14E-405A-BE82-0F60F421F71B}"
+	ProjectSection(SolutionItems) = preProject
+		Referenced Assemblies\OSVersionInfo.dll = Referenced Assemblies\OSVersionInfo.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
