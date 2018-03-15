@@ -96,15 +96,15 @@
             // 
             // chart1
             // 
-            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chart1.BorderlineColor = System.Drawing.Color.Maroon;
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Dock = System.Windows.Forms.DockStyle.Top;
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(0, 12);
+            this.chart1.Location = new System.Drawing.Point(0, 0);
             this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(1184, 555);
+            this.chart1.Size = new System.Drawing.Size(1184, 542);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
@@ -163,7 +163,7 @@
             this.groupBox1.Controls.Add(this.cmbEndYear);
             this.groupBox1.Controls.Add(this.cmbEndMonth);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 573);
+            this.groupBox1.Location = new System.Drawing.Point(0, 563);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1184, 219);
             this.groupBox1.TabIndex = 4;
@@ -690,7 +690,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 792);
+            this.ClientSize = new System.Drawing.Size(1184, 782);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.chart1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
