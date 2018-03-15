@@ -74,10 +74,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.SqlServer.Smo, Version=13.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\AnotherSQLTest\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.Smo.dll</HintPath>
+      <HintPath>..\Referenced Assemblies\Microsoft.SqlServer.Smo.dll</HintPath>
     </Reference>
-    <Reference Include="OSVersionInfo">
-      <HintPath>..\..\..\..\Documents\Visual Studio 2015\Projects\SQLTest\SQLTest\SQLTest\bin\Release\OSVersionInfo.dll</HintPath>
+    <Reference Include="OSVersionInfo, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Referenced Assemblies\OSVersionInfo.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
