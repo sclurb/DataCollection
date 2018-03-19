@@ -7,12 +7,9 @@ namespace DataCollection
 {
     public class numCrunch
     {
-
-
         //
         private string configQuery = "select * from S_List";
         private string connectionString;
-
         // Insert S_Data into DataCollection Database
         private string strSelectQuery = "SELECT Enable FROM S_List";
 
@@ -21,6 +18,9 @@ namespace DataCollection
             "Volts1, Volts2, Volts3, Volts4, Volts5, Volts6, Volts7, Volts8, ReadDate) VALUES (";
         public numCrunch()
         {
+
+            connectionString = "data source = EPHOT-FL\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
+            /*
             if (DataCollection.set)
             {
                 connectionString = Properties.Settings.Default.ConnectionString;
@@ -28,17 +28,18 @@ namespace DataCollection
             else
             {
                 
-                //connectionString = "data source = EPHOT-FL\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
-                connectionString = GetInstance();
+                
+               // connectionString = GetInstance();
                 Properties.Settings.Default.ConnectionString = connectionString;
                 Properties.Settings.Default.Attached = true;
                 Properties.Settings.Default.Save();
                 DataCollection.set = true;
             }
+            */
         }
 
 
-        
+        /*
         public string GetInstance()
         {
             SqlProbe chk = new SqlProbe();
@@ -53,7 +54,7 @@ namespace DataCollection
             return result;
         }
         
-
+    */
         // This method inserts datarows into the MainData table in the database
         public string insert(double[] values)
         {
@@ -179,8 +180,6 @@ namespace DataCollection
                 }
             }
         }
-
-
     }
 
 }

@@ -7,8 +7,8 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Data;
 using System.Collections.Generic;
-using DataCollection;
-using JCS;
+//using DataCollection;
+//using JCS;
 
 namespace DataCollectionCustomInstaller
 {
@@ -19,7 +19,7 @@ namespace DataCollectionCustomInstaller
         string create;
         string connectionString = "Server=.\\SQLExpress; Integrated security=true; database=master";
         List<string> instanceCollection = new List<string>();
-        SqlProbe doom = new SqlProbe();
+        //SqlProbe doom = new SqlProbe();
         string instanceName;
 
         public Installer1()
@@ -27,8 +27,8 @@ namespace DataCollectionCustomInstaller
             InitializeComponent();
 
             if (SetAcl() == true)
-            {
-                
+            { 
+                /*
                 string x = OSVersionInfo.Name;
                 if (x == "Windows 7")
                 {
@@ -42,6 +42,7 @@ namespace DataCollectionCustomInstaller
                 instanceName = doom.Select(instanceCollection);
                 //MessageBox.Show(instanceName);
                 //MakeDB();
+                */
             }
         }
 
