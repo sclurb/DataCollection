@@ -161,8 +161,8 @@ namespace DataCollection
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] rxBuffer)
         {
-            
             TempHumidityProcessing arrange = new TempHumidityProcessing();
+
             foreach (byte a in rxBuffer)
             {
                 rxData.Add(a);
@@ -176,7 +176,6 @@ namespace DataCollection
                 double[] temperatureArray = arrange.ArrangeTemps(tempArray);
                 temperatureArray = arrange.ProcTemps(temperatureArray);
                 fillTemps(temperatureArray);
-
             }
             
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
@@ -196,7 +195,7 @@ namespace DataCollection
                 fillHumps(humDew);
 
             }
-            if (tempArray[1] == 0x30)
+            if (tempArray[1] == 0x30 && tempArray.Length == 20)
             {
                 
                 double[] auxArray = arrange.ArrangeAuxs(tempArray);
@@ -204,7 +203,7 @@ namespace DataCollection
                 fillAuxs(auxArray);
 
             }
-            if (tempArray[1] == 0x50)
+            if (tempArray[1] == 0x50 && tempArray.Length == 7)
             {
                 relayStat = tempArray[2];
                 funKen();
