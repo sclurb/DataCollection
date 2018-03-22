@@ -168,48 +168,60 @@ namespace DataCollection
                 rxData.Add(a);
             }
 
+
             byte[] tempArray = new byte[rxData.Count];
             tempArray = (byte[])rxData.ToArray(typeof(byte));
 
             if (tempArray[1] == 0x10 && tempArray.Length == 36)
             {
-                double[] temperatureArray = arrange.ArrangeTemps(tempArray);
-                temperatureArray = arrange.ProcTemps(temperatureArray);
-                fillTemps(temperatureArray);
+                if (tempArray[35] == 0)
+                {
+                    double[] temperatureArray = arrange.ArrangeTemps(tempArray);
+                    temperatureArray = arrange.ProcTemps(temperatureArray);
+                    fillTemps(temperatureArray);
+                }
+                rxData.Clear();
+
             }
             
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
-                double[] humidArray = arrange.ArrangeHumids(tempArray);
-
-                TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0]);
-                TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2]);
-                TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4]);
-                TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6]);
-
-                List<TempHumDew> humDew = new List<TempHumDew>();
-                humDew.Add(hum1);
-                humDew.Add(hum2);
-                humDew.Add(hum3);
-                humDew.Add(hum4);
-                fillHumps(humDew);
+                if (tempArray[19] == 0)
+                {
+                    double[] humidArray = arrange.ArrangeHumids(tempArray);
+                    TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0]);
+                    TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2]);
+                    TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4]);
+                    TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6]);
+                    List<TempHumDew> humDew = new List<TempHumDew>();
+                    humDew.Add(hum1);
+                    humDew.Add(hum2);
+                    humDew.Add(hum3);
+                    humDew.Add(hum4);
+                    fillHumps(humDew);
+                }
+                rxData.Clear();
 
             }
             if (tempArray[1] == 0x30 && tempArray.Length == 20)
             {
-                
-                double[] auxArray = arrange.ArrangeAuxs(tempArray);
-                auxArray = arrange.ProcAuxs(auxArray);
-                fillAuxs(auxArray);
-
+                if(tempArray[19] == 0)
+                {
+                    double[] auxArray = arrange.ArrangeAuxs(tempArray);
+                    auxArray = arrange.ProcAuxs(auxArray);
+                    fillAuxs(auxArray);
+                }
+                rxData.Clear();
             }
             if (tempArray[1] == 0x50 && tempArray.Length == 7)
             {
-                relayStat = tempArray[2];
-                funKen();
-;
+                if (tempArray[6] == 0)
+                {
+                    relayStat = tempArray[2];
+                    funKen();
+                }
+                rxData.Clear();
             }
-            
         }
 
         #endregion
@@ -437,7 +449,7 @@ namespace DataCollection
 
         private void setRelay1()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x01;
@@ -447,7 +459,7 @@ namespace DataCollection
 
         private void setRelay2()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x02;
@@ -457,7 +469,7 @@ namespace DataCollection
 
         private void setRelay3()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x03;
@@ -480,7 +492,7 @@ namespace DataCollection
             if (RXcount == 1)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
+                //rxData.Clear();
                 communicate(getAuxs);
                 timer2.Enabled = true;
             }
@@ -488,7 +500,7 @@ namespace DataCollection
             if (RXcount == 2)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
+                //rxData.Clear();
                 setRelays[0] = 0x40;
                 setRelays[1] = 0x50;
                 setRelays[2] = 0xff;
@@ -499,7 +511,7 @@ namespace DataCollection
             if (RXcount == 3)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
+               // rxData.Clear();
                 communicate(getHumps);
                 timer2.Enabled = true;
             }
