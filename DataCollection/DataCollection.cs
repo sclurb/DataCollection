@@ -170,7 +170,23 @@ namespace DataCollection
 
 
             byte[] tempArray = new byte[rxData.Count];
-            tempArray = (byte[])rxData.ToArray(typeof(byte));
+
+            try
+            {
+                tempArray = (byte[])rxData.ToArray(typeof(byte));
+            }
+            catch(IndexOutOfRangeException e)
+            {
+                bool bReturnLog = false;
+
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+            }
+            
 
             if (tempArray[1] == 0x10 && tempArray.Length == 36)
             {
@@ -270,73 +286,119 @@ namespace DataCollection
 
         private void fillTemps(double[] proccessValues)
         {
-            textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
-            textBox2.Text = proccessValues[1].ToString("0.0") + "\u00b0F";
-            textBox3.Text = proccessValues[2].ToString("0.0") + "\u00b0F";
-            textBox4.Text = proccessValues[3].ToString("0.0") + "\u00b0F";
-            textBox5.Text = proccessValues[4].ToString("0.0") + "\u00b0F";
-            textBox6.Text = proccessValues[5].ToString("0.0") + "\u00b0F";
-            textBox7.Text = proccessValues[6].ToString("0.0") + "\u00b0F";
-            textBox8.Text = proccessValues[7].ToString("0.0") + "\u00b0F";
-            textBox9.Text = proccessValues[8].ToString("0.0") + "\u00b0F";
-            textBox10.Text = proccessValues[9].ToString("0.0") + "\u00b0F";
-            textBox11.Text = proccessValues[10].ToString("0.0") + "\u00b0F";
-            textBox12.Text = proccessValues[11].ToString("0.0") + "\u00b0F";
-            textBox13.Text = proccessValues[12].ToString("0.0") + "\u00b0F";
-            textBox14.Text = proccessValues[13].ToString("0.0") + "\u00b0F";
-            textBox15.Text = proccessValues[14].ToString("0.0") + "\u00b0F";
-            textBox16.Text = proccessValues[15].ToString("0.0") + "\u00b0F";
-
-            for (int i = 0; i < 16; i++)
+            try
             {
-                procdValues[i] = proccessValues[i];
+                textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
+                textBox2.Text = proccessValues[1].ToString("0.0") + "\u00b0F";
+                textBox3.Text = proccessValues[2].ToString("0.0") + "\u00b0F";
+                textBox4.Text = proccessValues[3].ToString("0.0") + "\u00b0F";
+                textBox5.Text = proccessValues[4].ToString("0.0") + "\u00b0F";
+                textBox6.Text = proccessValues[5].ToString("0.0") + "\u00b0F";
+                textBox7.Text = proccessValues[6].ToString("0.0") + "\u00b0F";
+                textBox8.Text = proccessValues[7].ToString("0.0") + "\u00b0F";
+                textBox9.Text = proccessValues[8].ToString("0.0") + "\u00b0F";
+                textBox10.Text = proccessValues[9].ToString("0.0") + "\u00b0F";
+                textBox11.Text = proccessValues[10].ToString("0.0") + "\u00b0F";
+                textBox12.Text = proccessValues[11].ToString("0.0") + "\u00b0F";
+                textBox13.Text = proccessValues[12].ToString("0.0") + "\u00b0F";
+                textBox14.Text = proccessValues[13].ToString("0.0") + "\u00b0F";
+                textBox15.Text = proccessValues[14].ToString("0.0") + "\u00b0F";
+                textBox16.Text = proccessValues[15].ToString("0.0") + "\u00b0F";
+
+                for (int i = 0; i < 16; i++)
+                {
+                    procdValues[i] = proccessValues[i];
+                }
+                RXcount = 1;
             }
-            RXcount = 1;
+            catch (NullReferenceException e)
+            {
+                bool bReturnLog = false;
+
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+                RXcount = 1;
+            }
+
         }
 
         public void fillHumps(List<TempHumDew> humps)
         {
-            textBox17.Text = humps[0].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[16] = humps[0].TempF;
-            textBox18.Text = humps[0].RHT.ToString("0.00") + "%RH";
-            procdValues[17] = humps[0].RHT;
-            textBox19.Text = humps[1].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[18] = humps[1].TempF;
-            textBox20.Text = humps[1].RHT.ToString("0.00") + "%RH";
-            procdValues[19] = humps[1].RHT;
-            textBox21.Text = humps[2].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[20] = humps[2].TempF;
-            textBox22.Text = humps[2].RHT.ToString("0.00") + "%RH";
-            procdValues[21] = humps[2].RHT;
-            textBox23.Text = humps[3].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[22] = humps[3].TempF;
-            textBox24.Text = humps[3].RHT.ToString("0.00") + "%RH";
-            procdValues[23] = humps[3].RHT;
+            try
+            {
+                textBox17.Text = humps[0].TempF.ToString("0.00") + "\u00b0F";
+                procdValues[16] = humps[0].TempF;
+                textBox18.Text = humps[0].RHT.ToString("0.00") + "%RH";
+                procdValues[17] = humps[0].RHT;
+                textBox19.Text = humps[1].TempF.ToString("0.00") + "\u00b0F";
+                procdValues[18] = humps[1].TempF;
+                textBox20.Text = humps[1].RHT.ToString("0.00") + "%RH";
+                procdValues[19] = humps[1].RHT;
+                textBox21.Text = humps[2].TempF.ToString("0.00") + "\u00b0F";
+                procdValues[20] = humps[2].TempF;
+                textBox22.Text = humps[2].RHT.ToString("0.00") + "%RH";
+                procdValues[21] = humps[2].RHT;
+                textBox23.Text = humps[3].TempF.ToString("0.00") + "\u00b0F";
+                procdValues[22] = humps[3].TempF;
+                textBox24.Text = humps[3].RHT.ToString("0.00") + "%RH";
+                procdValues[23] = humps[3].RHT;
 
 
-            textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
-            textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
-            textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
-            textBox36.Text = humps[3].DewF.ToString("0.00") + "\u00b0F";
-            RXcount = 4;
+                textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
+                textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
+                textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
+                textBox36.Text = humps[3].DewF.ToString("0.00") + "\u00b0F";
+                RXcount = 4;
+            }
+            catch (NullReferenceException e)
+            {
+                bool bReturnLog = false;
+
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+                RXcount = 1;
+            }
         }
 
         private void fillAuxs(double[] auxArray)
         {
-            textBox25.Text = auxArray[0].ToString("0.00");
-            textBox26.Text = auxArray[1].ToString("0.00");
-            textBox27.Text = auxArray[2].ToString("0.00");
-            textBox28.Text = auxArray[3].ToString("0.00");
-            textBox29.Text = auxArray[4].ToString("0.00");
-            textBox30.Text = auxArray[5].ToString("0.00");
-            textBox31.Text = auxArray[6].ToString("0.00");
-            textBox32.Text = auxArray[7].ToString("0.00");
-
-            for (int i = 0; i < 8; i++)
+            try
             {
-                procdValues[i + 24] = auxArray[i];
+                textBox25.Text = auxArray[0].ToString("0.00");
+                textBox26.Text = auxArray[1].ToString("0.00");
+                textBox27.Text = auxArray[2].ToString("0.00");
+                textBox28.Text = auxArray[3].ToString("0.00");
+                textBox29.Text = auxArray[4].ToString("0.00");
+                textBox30.Text = auxArray[5].ToString("0.00");
+                textBox31.Text = auxArray[6].ToString("0.00");
+                textBox32.Text = auxArray[7].ToString("0.00");
+
+                for (int i = 0; i < 8; i++)
+                {
+                    procdValues[i + 24] = auxArray[i];
+                }
+                RXcount = 2;
             }
-            RXcount = 2;
+            catch (NullReferenceException e)
+            {
+                bool bReturnLog = false;
+
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+                RXcount = 1;
+            }
         }
         #endregion fill methods
 
