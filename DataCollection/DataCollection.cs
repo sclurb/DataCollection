@@ -151,11 +151,24 @@ namespace DataCollection
 
         private void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            int bytes = comPort.BytesToRead;
-            byte[] rxBuffer = new byte[bytes]; // Read the data from the port and store it in our buffer
-            comPort.Read(rxBuffer, 0, bytes);
+            if (comPort.BytesToRead == 0)
+            {
+                return;
+            }
+            byte[] rxBuffer = new byte[comPort.BytesToRead]; // Read the data from the port and store it in our buffer
+            comPort.Read(rxBuffer, 0, comPort.BytesToRead);
             DataIsReceived d = new DataIsReceived(process);
-            Invoke(d, new object[] { rxBuffer });
+            try
+            {
+                Invoke(d, new object[] { rxBuffer });
+            }
+            catch (Exception ex)
+            {
+                bool bReturnLog = false;
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, ex);
+            }
         }
 
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
@@ -197,7 +210,6 @@ namespace DataCollection
                     fillTemps(temperatureArray);
                 }
                 rxData.Clear();
-
             }
             
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
@@ -217,7 +229,6 @@ namespace DataCollection
                     fillHumps(humDew);
                 }
                 rxData.Clear();
-
             }
             if (tempArray[1] == 0x30 && tempArray.Length == 20)
             {
