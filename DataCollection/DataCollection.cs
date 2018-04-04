@@ -155,11 +155,12 @@ namespace DataCollection
             {
                 return;
             }
-            byte[] rxBuffer = new byte[comPort.BytesToRead]; // Read the data from the port and store it in our buffer
-            comPort.Read(rxBuffer, 0, comPort.BytesToRead);
-            DataIsReceived d = new DataIsReceived(process);
+
             try
             {
+                byte[] rxBuffer = new byte[comPort.BytesToRead]; // Read the data from the port and store it in our buffer
+                comPort.Read(rxBuffer, 0, comPort.BytesToRead);
+                DataIsReceived d = new DataIsReceived(process);
                 Invoke(d, new object[] { rxBuffer });
             }
             catch (Exception ex)
