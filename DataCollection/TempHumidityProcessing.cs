@@ -170,7 +170,14 @@ namespace DataCollection
         // CalculateAuxs takes raw double from ProAuxs and applies Slope.  There is no offset.
         private double calculateAuxs(double x)
         {
-            x = (x * .0009655);
+            // x = (x * .0009655);
+            // return x;
+
+            x = (x * .008648) -2.3;
+            if (x < 0)
+            {
+                x = 0;
+            }
             return x;
         }
 
