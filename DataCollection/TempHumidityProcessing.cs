@@ -173,7 +173,11 @@ namespace DataCollection
             // x = (x * .0009655);
             // return x;
 
-            x = 30.65 - (x * .008015);
+            x = (x * .008648) -2.3;
+            if (x < 0)
+            {
+                x = 0;
+            }
             return x;
         }
 
