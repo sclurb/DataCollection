@@ -13,14 +13,14 @@ namespace DataCollection
     public partial class DataCollection : Form
     {
         private delegate void DataIsReceived(byte[] rxTemp);
-
+        private string[] InfoFTDI = new string[7];
         ArrayList rxData = new ArrayList();
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
         private byte[] getHumps = { 0x40, 0x20, 0xf5 };
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
-        private SerialPort comPort = new SerialPort();
-
+        //private SerialPort comPort = new SerialPort();
+        FT232 comPort = new FT232();
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
@@ -35,13 +35,15 @@ namespace DataCollection
         public DataCollection()
         {
             InitializeComponent();
-            RefreshComPortList();
-            comPort.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
+            InfoFTDI = comPort.InitFTDI();
+            comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             timer1.Interval = 450000;   // specify interval time as you want
             numCrunch crunch = new numCrunch();
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
             FillLabels();
+            timer1.Enabled = true;
+            firstShot();
 
         }
 
@@ -72,65 +74,13 @@ namespace DataCollection
         #endregion
 
         #region Communicate Methods
-        private void RefreshComPortList()
-        {
-            // Determain if the list of com port names has changed since last checked
-            string selected = RefreshComPortList(portNameBox.Items.Cast<string>(), portNameBox.SelectedItem as string, comPort.IsOpen);
-
-            // If there was an update, then update the control showing the user the list of port names
-            if (!String.IsNullOrEmpty(selected))
-            {
-                portNameBox.Items.Clear();
-                portNameBox.Items.AddRange(OrderedPortNames());
-                portNameBox.SelectedItem = selected;
-            }
-        }
-
-        private string[] OrderedPortNames()
-        {
-            // Just a placeholder for a successful parsing of a string to an integer
-            int num;
-
-            // Order the serial port names in numberic order (if possible)
-            return SerialPort.GetPortNames().OrderBy(a => a.Length > 3 && int.TryParse(a.Substring(3), out num) ? num : 0).ToArray();
-        }
-
-        private string RefreshComPortList(IEnumerable<string> PreviousPortNames, string CurrentSelection, bool PortOpen)
-        {
-            // Create a new return report to populate
-            string selected = null;
-            // Retrieve the list of ports currently mounted by the operating system (sorted by name)
-            string[] ports = SerialPort.GetPortNames();
-            // First determain if there was a change (any additions or removals)
-            bool updated = PreviousPortNames.Except(ports).Count() > 0 || ports.Except(PreviousPortNames).Count() > 0;
-            if (updated)    // If there was a change, then select an appropriate default port
-            {
-                ports = OrderedPortNames(); // Use the correctly ordered set of port names
-                // Find newest port if one or more were added
-                string newest = SerialPort.GetPortNames().Except(PreviousPortNames).OrderBy(a => a).LastOrDefault();
-                if (PortOpen)   // If the port was already open... (see logic notes and reasoning in Notes.txt)
-                {
-                    if (ports.Contains(CurrentSelection)) selected = CurrentSelection;
-                    else if (!String.IsNullOrEmpty(newest)) selected = newest;
-                    else selected = ports.LastOrDefault();
-                }
-                else
-                {
-                    if (!String.IsNullOrEmpty(newest)) selected = newest;
-                    else if (ports.Contains(CurrentSelection)) selected = CurrentSelection;
-                    else selected = ports.LastOrDefault();
-                }
-            }
-            return selected;    // If there was a change to the port list, return the recommended default selection
-        }
-
         private void communicate(byte[] txString)
         {
-            if (comPort.IsOpen)
+            if (comPort.comm.IsOpen)
             {
                 try
                 {
-                    comPort.Write(txString, 0, txString.Length);
+                    comPort.comm.Write(txString, 0, txString.Length);
                 }
                 catch (IOException)
                 { MessageBox.Show("IOException"); }
@@ -151,15 +101,14 @@ namespace DataCollection
 
         private void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (comPort.BytesToRead == 0)
+            if (comPort.comm.BytesToRead == 0)
             {
                 return;
             }
-
             try
             {
-                byte[] rxBuffer = new byte[comPort.BytesToRead]; // Read the data from the port and store it in our buffer
-                comPort.Read(rxBuffer, 0, comPort.BytesToRead);
+                byte[] rxBuffer = new byte[comPort.comm.BytesToRead]; // Read the data from the port and store it in our buffer
+                comPort.comm.Read(rxBuffer, 0, comPort.comm.BytesToRead);
                 DataIsReceived d = new DataIsReceived(process);
                 Invoke(d, new object[] { rxBuffer });
             }
@@ -171,7 +120,6 @@ namespace DataCollection
                 bReturnLog = ErrorLog.ErrorRoutine(false, ex);
             }
         }
-
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] rxBuffer)
         {
@@ -181,10 +129,7 @@ namespace DataCollection
             {
                 rxData.Add(a);
             }
-
-
             byte[] tempArray = new byte[rxData.Count];
-
             try
             {
                 tempArray = (byte[])rxData.ToArray(typeof(byte));
@@ -192,7 +137,6 @@ namespace DataCollection
             catch(IndexOutOfRangeException e)
             {
                 bool bReturnLog = false;
-
                 ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                 //false for writing log entry to customized text file
                 bReturnLog = ErrorLog.ErrorRoutine(false, e);
@@ -469,38 +413,6 @@ namespace DataCollection
             RXcount = 3;
         }
         #region  button click events
-        private void button1_Click(object sender, EventArgs e)
-        {
-            bool error = false;
-
-            // If the port is open, close it.
-            if (comPort.IsOpen) comPort.Close();
-            else
-            {
-                // Set the port's settings
-                comPort.BaudRate = 9600;
-                comPort.DataBits = 8;
-                comPort.StopBits = StopBits.One;
-                comPort.Parity = Parity.None;
-                comPort.PortName = portNameBox.Text;
-                try
-                {
-                    // Open the port
-                    comPort.Open();
-                }
-                catch (UnauthorizedAccessException) { error = true; }
-                catch (IOException) { error = true; }
-                catch (ArgumentException) { error = true; }
-
-                if (error) MessageBox.Show(this, "Could not open the COM port.  Most likely it is already in use, has been removed, or is unavailable.", "COM Port Unavalible", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            }
-            if (comPort.IsOpen)
-            {
-                button1.Text = "&Close Port"; timer1.Enabled = true;
-                firstShot();
-            }
-            else { button1.Text = "&Open Port"; timer1.Enabled = false; }
-        }
 
 
         private void button5_Click(object sender, EventArgs e)
@@ -554,7 +466,7 @@ namespace DataCollection
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (comPort.IsOpen)
+            if (comPort.comm.IsOpen)
             {
                 firstShot();
             }
@@ -566,7 +478,6 @@ namespace DataCollection
             if (RXcount == 1)
             {
                 timer2.Enabled = false;
-                //rxData.Clear();
                 communicate(getAuxs);
                 timer2.Enabled = true;
             }
@@ -574,7 +485,6 @@ namespace DataCollection
             if (RXcount == 2)
             {
                 timer2.Enabled = false;
-                //rxData.Clear();
                 setRelays[0] = 0x40;
                 setRelays[1] = 0x50;
                 setRelays[2] = 0xff;
@@ -585,7 +495,6 @@ namespace DataCollection
             if (RXcount == 3)
             {
                 timer2.Enabled = false;
-               // rxData.Clear();
                 communicate(getHumps);
                 timer2.Enabled = true;
             }
@@ -603,15 +512,6 @@ namespace DataCollection
             numCrunch log = new numCrunch();
             bool[] switches = log.dataEnable();
             log.insert(procdValues);
-            /*   old routine with older database  obsolete!
-            for (int i = 0; i < switches.Length; i++)
-            {
-                if (switches[i])
-                {
-                    log.insert(procdValues);
-                }
-            }
-            */
         }
         private void tripoiintCheck()
         {

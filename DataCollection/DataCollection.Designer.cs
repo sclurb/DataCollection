@@ -93,21 +93,19 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.textBox20 = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
             this.textBox22 = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
             this.textBox24 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.textBox23 = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.textBox19 = new System.Windows.Forms.TextBox();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.portNameBox = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -725,6 +723,20 @@
             this.textBox20.Size = new System.Drawing.Size(70, 23);
             this.textBox20.TabIndex = 7;
             // 
+            // textBox22
+            // 
+            this.textBox22.Location = new System.Drawing.Point(67, 105);
+            this.textBox22.Name = "textBox22";
+            this.textBox22.Size = new System.Drawing.Size(70, 23);
+            this.textBox22.TabIndex = 9;
+            // 
+            // textBox24
+            // 
+            this.textBox24.Location = new System.Drawing.Point(67, 135);
+            this.textBox24.Name = "textBox24";
+            this.textBox24.Size = new System.Drawing.Size(70, 23);
+            this.textBox24.TabIndex = 11;
+            // 
             // label19
             // 
             this.label19.AutoSize = true;
@@ -734,30 +746,6 @@
             this.label19.Size = new System.Drawing.Size(54, 17);
             this.label19.TabIndex = 8;
             this.label19.Text = "Sensor-3";
-            // 
-            // textBox22
-            // 
-            this.textBox22.Location = new System.Drawing.Point(67, 105);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new System.Drawing.Size(70, 23);
-            this.textBox22.TabIndex = 9;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Arial Narrow", 10F);
-            this.label20.Location = new System.Drawing.Point(214, 137);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(54, 17);
-            this.label20.TabIndex = 10;
-            this.label20.Text = "Sensor-4";
-            // 
-            // textBox24
-            // 
-            this.textBox24.Location = new System.Drawing.Point(67, 135);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(70, 23);
-            this.textBox24.TabIndex = 11;
             // 
             // textBox23
             // 
@@ -785,6 +773,16 @@
             this.label24.Size = new System.Drawing.Size(37, 17);
             this.label24.TabIndex = 26;
             this.label24.Text = "Temp";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Arial Narrow", 10F);
+            this.label20.Location = new System.Drawing.Point(214, 137);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(54, 17);
+            this.label20.TabIndex = 10;
+            this.label20.Text = "Sensor-4";
             // 
             // textBox17
             // 
@@ -841,29 +839,10 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // portNameBox
-            // 
-            this.portNameBox.FormattingEnabled = true;
-            this.portNameBox.Location = new System.Drawing.Point(86, 319);
-            this.portNameBox.Name = "portNameBox";
-            this.portNameBox.Size = new System.Drawing.Size(89, 21);
-            this.portNameBox.TabIndex = 47;
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Arial Narrow", 10F);
-            this.button1.Location = new System.Drawing.Point(5, 312);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 30);
-            this.button1.TabIndex = 46;
-            this.button1.Text = "&Open";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(17, 355);
+            this.label22.Location = new System.Drawing.Point(2, 321);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(41, 13);
             this.label22.TabIndex = 51;
@@ -878,8 +857,6 @@
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.portNameBox);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -977,8 +954,6 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ComboBox portNameBox;
-        private System.Windows.Forms.Button button1;
         public System.Windows.Forms.TextBox textBox1;
         public System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label22;

@@ -72,6 +72,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FTD2XX_NET">
+      <HintPath>..\Referenced Assemblies\FTD2XX_NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -100,6 +103,7 @@
     </Compile>
     <Compile Include="Delegate.cs" />
     <Compile Include="ErrorLog.cs" />
+    <Compile Include="FT232.cs" />
     <Compile Include="numCrunch.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
