@@ -21,6 +21,7 @@ namespace DataCollection
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
         //private SerialPort comPort = new SerialPort();
         FT232 comPort = new FT232();
+        Crystal_LCD lcd = new Crystal_LCD();
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
@@ -39,12 +40,12 @@ namespace DataCollection
             comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             timer1.Interval = 450000;   // specify interval time as you want
             numCrunch crunch = new numCrunch();
+            lcd.Open();
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
             FillLabels();
             timer1.Enabled = true;
             firstShot();
-
         }
 
         #region Events
@@ -172,6 +173,7 @@ namespace DataCollection
                     humDew.Add(hum3);
                     humDew.Add(hum4);
                     fillHumps(humDew);
+                    lcd.ExtractStrings(humDew);
                 }
                 rxData.Clear();
             }
@@ -313,11 +315,9 @@ namespace DataCollection
             catch (NullReferenceException e)
             {
                 bool bReturnLog = false;
-
                 ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                 //false for writing log entry to customized text file
                 bReturnLog = ErrorLog.ErrorRoutine(false, e);
-
                 if (false == bReturnLog)
                     MessageBox.Show("Unable to write a log");
                 RXcount = 1;
