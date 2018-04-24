@@ -40,7 +40,11 @@ namespace DataCollection
             comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             timer1.Interval = 450000;   // specify interval time as you want
             numCrunch crunch = new numCrunch();
-            lcd.Open();
+            if(lcd.IsPresent == true)
+            {
+                lcd.Open();
+            }
+            
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
             FillLabels();
