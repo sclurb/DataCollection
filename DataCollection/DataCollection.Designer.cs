@@ -107,6 +107,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -848,11 +849,21 @@
             this.label22.TabIndex = 51;
             this.label22.Text = "label22";
             // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(13, 313);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(41, 13);
+            this.label33.TabIndex = 52;
+            this.label33.Text = "label33";
+            // 
             // DataCollection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(745, 381);
+            this.Controls.Add(this.label33);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
@@ -959,6 +970,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.ToolStripMenuItem chartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tripPointsToolStripMenuItem;
+        private System.Windows.Forms.Label label33;
     }
 }
 

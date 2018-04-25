@@ -12,6 +12,7 @@ namespace DataCollection
 {
     public partial class DataCollection : Form
     {
+        private int zelda = 0;
         private delegate void DataIsReceived(byte[] rxTemp);
         private string[] InfoFTDI = new string[7];
         ArrayList rxData = new ArrayList();
@@ -25,7 +26,6 @@ namespace DataCollection
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
-        private byte relayStat = 0;
         private byte[] setRelays = new byte[4];
         Timer timer1 = new Timer();     // sets the interval between data collection 450,000 = 7.5 minutes
         Timer timer2 = new Timer();     // sets  short delay to separate the data send commands
@@ -39,6 +39,7 @@ namespace DataCollection
             InfoFTDI = comPort.InitFTDI();
             comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             timer1.Interval = 450000;   // specify interval time as you want
+            timer2.Interval = 100;
             numCrunch crunch = new numCrunch();
             if(lcd.IsPresent == true)
             {
@@ -49,7 +50,8 @@ namespace DataCollection
             timer2.Tick += new EventHandler(timer2_Tick);
             FillLabels();
             timer1.Enabled = true;
-            firstShot();
+            timer1.Start();
+            InitCommunications();
         }
 
         #region Events
@@ -106,6 +108,7 @@ namespace DataCollection
 
         private void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            
             if (comPort.comm.BytesToRead == 0)
             {
                 return;
@@ -150,7 +153,7 @@ namespace DataCollection
                     MessageBox.Show("Unable to write a log");
             }
             
-
+            // Checking to see if rxdata is for temp sensors
             if (tempArray[1] == 0x10 && tempArray.Length == 36)
             {
                 if (tempArray[35] == 0)
@@ -160,10 +163,12 @@ namespace DataCollection
                     fillTemps(temperatureArray);
                 }
                 rxData.Clear();
+                
             }
-            
+            // checking to see if rxdata is for Humidity/temperature sensors
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
+                zelda++;
                 if (tempArray[19] == 0)
                 {
                     double[] humidArray = arrange.ArrangeHumids(tempArray);
@@ -178,25 +183,35 @@ namespace DataCollection
                     humDew.Add(hum4);
                     fillHumps(humDew);
                     lcd.ExtractStrings(humDew);
+                    Trim trim = new Trim();
+                    procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
+                    FillAll(procdValues);
+                    label33.Text = zelda.ToString();
                 }
                 rxData.Clear();
             }
+
+            // checking to see if rxdata is for aux inputs
             if (tempArray[1] == 0x30 && tempArray.Length == 20)
             {
-                if(tempArray[19] == 0)
+                
+                if (tempArray[19] == 0)
                 {
                     double[] auxArray = arrange.ArrangeAuxs(tempArray);
                     auxArray = arrange.ProcAuxs(auxArray);
                     fillAuxs(auxArray);
                 }
                 rxData.Clear();
+                
             }
+
+            // checking to see if information is for relays
             if (tempArray[1] == 0x50 && tempArray.Length == 7)
             {
+                
                 if (tempArray[6] == 0)
                 {
-                    relayStat = tempArray[2];
-                    funKen();
+                    DisplayRelayStatus(tempArray[2]);
                 }
                 rxData.Clear();
             }
@@ -250,27 +265,11 @@ namespace DataCollection
         {
             try
             {
-                textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
-                textBox2.Text = proccessValues[1].ToString("0.0") + "\u00b0F";
-                textBox3.Text = proccessValues[2].ToString("0.0") + "\u00b0F";
-                textBox4.Text = proccessValues[3].ToString("0.0") + "\u00b0F";
-                textBox5.Text = proccessValues[4].ToString("0.0") + "\u00b0F";
-                textBox6.Text = proccessValues[5].ToString("0.0") + "\u00b0F";
-                textBox7.Text = proccessValues[6].ToString("0.0") + "\u00b0F";
-                textBox8.Text = proccessValues[7].ToString("0.0") + "\u00b0F";
-                textBox9.Text = proccessValues[8].ToString("0.0") + "\u00b0F";
-                textBox10.Text = proccessValues[9].ToString("0.0") + "\u00b0F";
-                textBox11.Text = proccessValues[10].ToString("0.0") + "\u00b0F";
-                textBox12.Text = proccessValues[11].ToString("0.0") + "\u00b0F";
-                textBox13.Text = proccessValues[12].ToString("0.0") + "\u00b0F";
-                textBox14.Text = proccessValues[13].ToString("0.0") + "\u00b0F";
-                textBox15.Text = proccessValues[14].ToString("0.0") + "\u00b0F";
-                textBox16.Text = proccessValues[15].ToString("0.0") + "\u00b0F";
-
                 for (int i = 0; i < 16; i++)
                 {
                     procdValues[i] = proccessValues[i];
                 }
+
                 RXcount = 1;
             }
             catch (NullReferenceException e)
@@ -292,24 +291,15 @@ namespace DataCollection
         {
             try
             {
-                textBox17.Text = humps[0].TempF.ToString("0.00") + "\u00b0F";
                 procdValues[16] = humps[0].TempF;
-                textBox18.Text = humps[0].RHT.ToString("0.00") + "%RH";
                 procdValues[17] = humps[0].RHT;
-                textBox19.Text = humps[1].TempF.ToString("0.00") + "\u00b0F";
                 procdValues[18] = humps[1].TempF;
-                textBox20.Text = humps[1].RHT.ToString("0.00") + "%RH";
                 procdValues[19] = humps[1].RHT;
-                textBox21.Text = humps[2].TempF.ToString("0.00") + "\u00b0F";
                 procdValues[20] = humps[2].TempF;
-                textBox22.Text = humps[2].RHT.ToString("0.00") + "%RH";
                 procdValues[21] = humps[2].RHT;
-                textBox23.Text = humps[3].TempF.ToString("0.00") + "\u00b0F";
                 procdValues[22] = humps[3].TempF;
-                textBox24.Text = humps[3].RHT.ToString("0.00") + "%RH";
                 procdValues[23] = humps[3].RHT;
-
-
+                // The following displyed readings are derived and are not stored in the database.
                 textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
                 textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
                 textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
@@ -332,15 +322,6 @@ namespace DataCollection
         {
             try
             {
-                textBox25.Text = auxArray[0].ToString("0.00");
-                textBox26.Text = auxArray[1].ToString("0.00");
-                textBox27.Text = auxArray[2].ToString("0.00");
-                textBox28.Text = auxArray[3].ToString("0.00");
-                textBox29.Text = auxArray[4].ToString("0.00");
-                textBox30.Text = auxArray[5].ToString("0.00");
-                textBox31.Text = auxArray[6].ToString("0.00");
-                textBox32.Text = auxArray[7].ToString("0.00");
-
                 for (int i = 0; i < 8; i++)
                 {
                     procdValues[i + 24] = auxArray[i];
@@ -360,16 +341,55 @@ namespace DataCollection
                 RXcount = 1;
             }
         }
+        
+        private void FillAll(double[] ProcessedValues)
+        {
+            textBox1.Text = ProcessedValues[0].ToString("0.0") + "\u00b0F";
+            textBox2.Text = ProcessedValues[1].ToString("0.0") + "\u00b0F";
+            textBox3.Text = ProcessedValues[2].ToString("0.0") + "\u00b0F";
+            textBox4.Text = ProcessedValues[3].ToString("0.0") + "\u00b0F";
+            textBox5.Text = ProcessedValues[4].ToString("0.0") + "\u00b0F";
+            textBox6.Text = ProcessedValues[5].ToString("0.0") + "\u00b0F";
+            textBox7.Text = ProcessedValues[6].ToString("0.0") + "\u00b0F";
+            textBox8.Text = ProcessedValues[7].ToString("0.0") + "\u00b0F";
+            textBox9.Text = ProcessedValues[8].ToString("0.0") + "\u00b0F";
+            textBox10.Text = ProcessedValues[9].ToString("0.0") + "\u00b0F";
+            textBox11.Text = ProcessedValues[10].ToString("0.0") + "\u00b0F";
+            textBox12.Text = ProcessedValues[11].ToString("0.0") + "\u00b0F";
+            textBox13.Text = ProcessedValues[12].ToString("0.0") + "\u00b0F";
+            textBox14.Text = ProcessedValues[13].ToString("0.0") + "\u00b0F";
+            textBox15.Text = ProcessedValues[14].ToString("0.0") + "\u00b0F";
+            textBox16.Text = ProcessedValues[15].ToString("0.0") + "\u00b0F";
+            textBox17.Text = ProcessedValues[16].ToString("0.00") + "\u00b0F";
+            textBox18.Text = ProcessedValues[17].ToString("0.00") + "%RH";
+            textBox19.Text = ProcessedValues[18].ToString("0.00") + "\u00b0F";
+            textBox20.Text = ProcessedValues[19].ToString("0.00") + "%RH";
+            textBox21.Text = ProcessedValues[20].ToString("0.00") + "\u00b0F";
+            textBox22.Text = ProcessedValues[21].ToString("0.00") + "%RH";
+            textBox23.Text = ProcessedValues[22].ToString("0.00") + "\u00b0F";
+            textBox24.Text = ProcessedValues[23].ToString("0.00") + "%RH";
+            textBox25.Text = ProcessedValues[24].ToString("0.00");
+            textBox26.Text = ProcessedValues[25].ToString("0.00");
+            textBox27.Text = ProcessedValues[26].ToString("0.00");
+            textBox28.Text = ProcessedValues[27].ToString("0.00");
+            textBox29.Text = ProcessedValues[28].ToString("0.00");
+            textBox30.Text = ProcessedValues[29].ToString("0.00");
+            textBox31.Text = ProcessedValues[30].ToString("0.00");
+            textBox32.Text = ProcessedValues[31].ToString("0.00");
+        }
+
         #endregion fill methods
 
  
-        private void firstShot()
+        private void InitCommunications()
         {
+            timer2.Enabled = false;
             rxData.Clear();
             communicate(getTemps);
             timer2.Enabled = true;
+            timer2.Start();
         }
-        private void funKen()
+        private void DisplayRelayStatus(int relayStat)
         {
             switch (relayStat)
             {
@@ -472,7 +492,11 @@ namespace DataCollection
         {
             if (comPort.comm.IsOpen)
             {
-                firstShot();
+                rxData.Clear();
+                timer2.Interval = 100;
+                communicate(getTemps);
+                timer2.Enabled = true;
+                timer2.Start();
             }
             
         }
@@ -484,6 +508,7 @@ namespace DataCollection
                 timer2.Enabled = false;
                 communicate(getAuxs);
                 timer2.Enabled = true;
+                timer2.Start();
             }
 
             if (RXcount == 2)
@@ -495,12 +520,15 @@ namespace DataCollection
                 setRelays[3] = 0xf5;
                 communicate(setRelays);
                 timer2.Enabled = true;
+                timer2.Start();
             }
             if (RXcount == 3)
             {
+                timer2.Interval = 1500;
                 timer2.Enabled = false;
                 communicate(getHumps);
                 timer2.Enabled = true;
+                timer2.Start();
             }
             if (RXcount == 4)
             {

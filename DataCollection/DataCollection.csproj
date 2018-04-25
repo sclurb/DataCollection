@@ -118,6 +118,7 @@
     <Compile Include="TempHumDew.cs" />
     <Compile Include="TempHumidCalculations.cs" />
     <Compile Include="TempHumidityProcessing.cs" />
+    <Compile Include="Trim.cs" />
     <Compile Include="TripPoint.cs">
       <SubType>Form</SubType>
     </Compile>

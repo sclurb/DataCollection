@@ -21,7 +21,7 @@ namespace DataCollection
         public Config()
         {
             InitializeComponent();
-            populate();
+            //populate();
             loadThem();
         }
 
@@ -34,38 +34,39 @@ namespace DataCollection
                 int count = result.Rows.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    comboBox1.SelectedIndex = comboBox1.FindStringExact(result.Rows[0][3].ToString());
-                    comboBox2.SelectedIndex = comboBox2.FindStringExact(result.Rows[1][3].ToString());
-                    comboBox3.SelectedIndex = comboBox3.FindStringExact(result.Rows[2][3].ToString());
-                    comboBox4.SelectedIndex = comboBox4.FindStringExact(result.Rows[3][3].ToString());
-                    comboBox5.SelectedIndex = comboBox5.FindStringExact(result.Rows[4][3].ToString());
-                    comboBox6.SelectedIndex = comboBox6.FindStringExact(result.Rows[5][3].ToString());
-                    comboBox7.SelectedIndex = comboBox7.FindStringExact(result.Rows[6][3].ToString());
-                    comboBox8.SelectedIndex = comboBox8.FindStringExact(result.Rows[7][3].ToString());
-                    comboBox9.SelectedIndex = comboBox9.FindStringExact(result.Rows[8][3].ToString());
-                    comboBox10.SelectedIndex = comboBox10.FindStringExact(result.Rows[9][3].ToString());
-                    comboBox11.SelectedIndex = comboBox11.FindStringExact(result.Rows[10][3].ToString());
-                    comboBox12.SelectedIndex = comboBox12.FindStringExact(result.Rows[11][3].ToString());
-                    comboBox13.SelectedIndex = comboBox13.FindStringExact(result.Rows[12][3].ToString());
-                    comboBox14.SelectedIndex = comboBox14.FindStringExact(result.Rows[13][3].ToString());
-                    comboBox15.SelectedIndex = comboBox15.FindStringExact(result.Rows[14][3].ToString());
-                    comboBox16.SelectedIndex = comboBox16.FindStringExact(result.Rows[15][3].ToString());
-                    comboBox17.SelectedIndex = comboBox17.FindStringExact(result.Rows[16][3].ToString());
-                    comboBox18.SelectedIndex = comboBox18.FindStringExact(result.Rows[17][3].ToString());
-                    comboBox19.SelectedIndex = comboBox19.FindStringExact(result.Rows[18][3].ToString());
-                    comboBox20.SelectedIndex = comboBox20.FindStringExact(result.Rows[19][3].ToString());
-                    comboBox21.SelectedIndex = comboBox21.FindStringExact(result.Rows[20][3].ToString());
-                    comboBox22.SelectedIndex = comboBox22.FindStringExact(result.Rows[21][3].ToString());
-                    comboBox23.SelectedIndex = comboBox23.FindStringExact(result.Rows[22][3].ToString());
-                    comboBox24.SelectedIndex = comboBox24.FindStringExact(result.Rows[23][3].ToString());
-                    comboBox25.SelectedIndex = comboBox25.FindStringExact(result.Rows[24][3].ToString());
-                    comboBox26.SelectedIndex = comboBox26.FindStringExact(result.Rows[25][3].ToString());
-                    comboBox27.SelectedIndex = comboBox27.FindStringExact(result.Rows[26][3].ToString());
-                    comboBox28.SelectedIndex = comboBox28.FindStringExact(result.Rows[27][3].ToString());
-                    comboBox29.SelectedIndex = comboBox29.FindStringExact(result.Rows[28][3].ToString());
-                    comboBox30.SelectedIndex = comboBox30.FindStringExact(result.Rows[29][3].ToString());
-                    comboBox31.SelectedIndex = comboBox31.FindStringExact(result.Rows[30][3].ToString());
-                    comboBox32.SelectedIndex = comboBox32.FindStringExact(result.Rows[31][3].ToString());
+                    textBox101.Text = result.Rows[0][3].ToString();
+                    textBox102.Text = result.Rows[1][3].ToString();
+                    textBox103.Text = result.Rows[2][3].ToString();
+                    textBox104.Text = result.Rows[3][3].ToString();
+                    textBox105.Text = result.Rows[4][3].ToString();
+                    textBox106.Text = result.Rows[5][3].ToString();
+                    textBox107.Text = result.Rows[6][3].ToString();
+                    textBox108.Text = result.Rows[7][3].ToString();
+                    textBox109.Text = result.Rows[8][3].ToString();
+                    textBox110.Text = result.Rows[9][3].ToString();
+                    textBox111.Text = result.Rows[10][3].ToString();
+                    textBox112.Text = result.Rows[11][3].ToString();
+                    textBox113.Text = result.Rows[12][3].ToString();
+                    textBox114.Text = result.Rows[13][3].ToString();
+                    textBox115.Text = result.Rows[14][3].ToString();
+                    textBox116.Text = result.Rows[15][3].ToString();
+                    textBox117.Text = result.Rows[16][3].ToString();
+                    textBox118.Text = result.Rows[17][3].ToString();
+                    textBox119.Text = result.Rows[18][3].ToString();
+                    textBox120.Text = result.Rows[19][3].ToString();
+                    textBox121.Text = result.Rows[20][3].ToString();
+                    textBox122.Text = result.Rows[21][3].ToString();
+                    textBox123.Text = result.Rows[22][3].ToString();
+                    textBox124.Text = result.Rows[23][3].ToString();
+                    textBox125.Text = result.Rows[24][3].ToString();
+                    textBox126.Text = result.Rows[25][3].ToString();
+                    textBox127.Text = result.Rows[26][3].ToString();
+                    textBox128.Text = result.Rows[27][3].ToString();
+                    textBox129.Text = result.Rows[28][3].ToString();
+                    textBox130.Text = result.Rows[29][3].ToString();
+                    textBox131.Text = result.Rows[30][3].ToString();
+                    textBox132.Text = result.Rows[31][3].ToString();
+                    
                     //
                     textBox1.Text = result.Rows[0][1].ToString();
                     textBox2.Text = result.Rows[1][1].ToString();
@@ -150,7 +151,9 @@ namespace DataCollection
 
         private string Validate(string textBox)
         {
-            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            string nullString = "Re-Enter";
+            //var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            var regexItem = new Regex("^[a-zA-Z0-9_.-]*$");
             if (textBox.Length < 21)
             {
                 if (regexItem.IsMatch(textBox))
@@ -159,12 +162,12 @@ namespace DataCollection
                 }
                 else
                 {
-                    return "Letters or Numbers";
+                    return nullString;
                 }
             }
             else
             {
-                return "Name was too long";
+                return nullString;
             }
         }
 
@@ -173,45 +176,45 @@ namespace DataCollection
             
             string s;
             numCrunch crunch = new numCrunch();
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox1.Text), comboBox1.SelectedItem.ToString(), checkBox1.Checked, 1));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox2.Text), comboBox2.SelectedItem.ToString(), checkBox2.Checked, 2));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox3.Text), comboBox3.SelectedItem.ToString(), checkBox3.Checked, 3));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox4.Text), comboBox4.SelectedItem.ToString(), checkBox4.Checked, 4));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox5.Text), comboBox5.SelectedItem.ToString(), checkBox5.Checked, 5));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox6.Text), comboBox6.SelectedItem.ToString(), checkBox6.Checked, 6));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox7.Text), comboBox7.SelectedItem.ToString(), checkBox7.Checked, 7));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox8.Text), comboBox8.SelectedItem.ToString(), checkBox8.Checked, 8));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox9.Text), comboBox9.SelectedItem.ToString(), checkBox9.Checked, 9));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox10.Text), comboBox10.SelectedItem.ToString(), checkBox10.Checked, 10));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox11.Text), comboBox11.SelectedItem.ToString(), checkBox11.Checked, 11));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox12.Text), comboBox12.SelectedItem.ToString(), checkBox12.Checked, 12));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox13.Text), comboBox13.SelectedItem.ToString(), checkBox13.Checked, 13));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox14.Text), comboBox14.SelectedItem.ToString(), checkBox14.Checked, 14));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox15.Text), comboBox15.SelectedItem.ToString(), checkBox15.Checked, 15));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox16.Text), comboBox16.SelectedItem.ToString(), checkBox16.Checked, 16));
-            crunch.updateS_List(makeQuery(_update, textBox17.Text, comboBox17.SelectedItem.ToString(), checkBox17.Checked, 17));
-            crunch.updateS_List(makeQuery(_update, textBox18.Text, comboBox18.SelectedItem.ToString(), checkBox18.Checked, 18));
-            crunch.updateS_List(makeQuery(_update, textBox19.Text, comboBox19.SelectedItem.ToString(), checkBox19.Checked, 19));
-            crunch.updateS_List(makeQuery(_update, textBox20.Text, comboBox20.SelectedItem.ToString(), checkBox20.Checked, 20));
-            crunch.updateS_List(makeQuery(_update, textBox21.Text, comboBox21.SelectedItem.ToString(), checkBox21.Checked, 21));
-            crunch.updateS_List(makeQuery(_update, textBox22.Text, comboBox22.SelectedItem.ToString(), checkBox22.Checked, 22));
-            crunch.updateS_List(makeQuery(_update, textBox23.Text, comboBox23.SelectedItem.ToString(), checkBox23.Checked, 23));
-            crunch.updateS_List(makeQuery(_update, textBox24.Text, comboBox24.SelectedItem.ToString(), checkBox24.Checked, 24));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox25.Text), comboBox25.SelectedItem.ToString(), checkBox25.Checked, 25));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox26.Text), comboBox26.SelectedItem.ToString(), checkBox26.Checked, 26));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox27.Text), comboBox27.SelectedItem.ToString(), checkBox27.Checked, 27));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox28.Text), comboBox28.SelectedItem.ToString(), checkBox28.Checked, 28));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox29.Text), comboBox29.SelectedItem.ToString(), checkBox29.Checked, 29));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox30.Text), comboBox30.SelectedItem.ToString(), checkBox30.Checked, 30));
-            crunch.updateS_List(makeQuery(_update, s = Validate (textBox31.Text), comboBox31.SelectedItem.ToString(), checkBox31.Checked, 31));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox32.Text), comboBox32.SelectedItem.ToString(), checkBox32.Checked, 32));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox33.Text), null, false, 33));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox34.Text), null, false, 34));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), null, false, 35));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), null, false, 36));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox1.Text), Convert.ToDecimal(textBox101.Text), checkBox1.Checked, 1));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox2.Text), Convert.ToDecimal(textBox102.Text), checkBox2.Checked, 2));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox3.Text), Convert.ToDecimal(textBox103.Text), checkBox3.Checked, 3));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox4.Text), Convert.ToDecimal(textBox104.Text), checkBox4.Checked, 4));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox5.Text), Convert.ToDecimal(textBox105.Text), checkBox5.Checked, 5));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox6.Text), Convert.ToDecimal(textBox106.Text), checkBox6.Checked, 6));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox7.Text), Convert.ToDecimal(textBox107.Text), checkBox7.Checked, 7));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox8.Text), Convert.ToDecimal(textBox108.Text), checkBox8.Checked, 8));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox9.Text), Convert.ToDecimal(textBox109.Text), checkBox9.Checked, 9));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox10.Text), Convert.ToDecimal(textBox110.Text), checkBox10.Checked, 10));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox11.Text), Convert.ToDecimal(textBox111.Text), checkBox11.Checked, 11));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox12.Text), Convert.ToDecimal(textBox112.Text), checkBox12.Checked, 12));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox13.Text), Convert.ToDecimal(textBox113.Text), checkBox13.Checked, 13));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox14.Text), Convert.ToDecimal(textBox114.Text), checkBox14.Checked, 14));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox15.Text), Convert.ToDecimal(textBox115.Text), checkBox15.Checked, 15));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox16.Text), Convert.ToDecimal(textBox116.Text), checkBox16.Checked, 16));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox17.Text), Convert.ToDecimal(textBox117.Text), checkBox17.Checked, 17));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox18.Text), Convert.ToDecimal(textBox118.Text), checkBox18.Checked, 18));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox19.Text), Convert.ToDecimal(textBox119.Text), checkBox19.Checked, 19));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox20.Text), Convert.ToDecimal(textBox120.Text), checkBox20.Checked, 20));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox21.Text), Convert.ToDecimal(textBox121.Text), checkBox21.Checked, 21));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox22.Text), Convert.ToDecimal(textBox122.Text), checkBox22.Checked, 22));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox23.Text), Convert.ToDecimal(textBox123.Text), checkBox23.Checked, 23));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox24.Text), Convert.ToDecimal(textBox124.Text), checkBox24.Checked, 24));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox25.Text), Convert.ToDecimal(textBox125.Text), checkBox25.Checked, 25));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox26.Text), Convert.ToDecimal(textBox126.Text), checkBox26.Checked, 26));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox27.Text), Convert.ToDecimal(textBox127.Text), checkBox27.Checked, 27));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox28.Text), Convert.ToDecimal(textBox128.Text), checkBox28.Checked, 28));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox29.Text), Convert.ToDecimal(textBox129.Text), checkBox29.Checked, 29));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox30.Text), Convert.ToDecimal(textBox130.Text), checkBox30.Checked, 30));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox31.Text), Convert.ToDecimal(textBox131.Text), checkBox31.Checked, 31));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox32.Text), Convert.ToDecimal(textBox132.Text), checkBox32.Checked, 32));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox33.Text), 0, false, 33));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox34.Text), 0, false, 34));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), 0, false, 35));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), 0, false, 36));
         }
 
-        private string makeQuery(string first, string second, string third, bool fourth, int x)
+        private string makeQuery(string first, string second, decimal third, bool fourth, int x)
         {
             int a = 89;
             if (fourth) { a = 1;  }
@@ -220,14 +223,34 @@ namespace DataCollection
             query.Append(first);
             query.Append(" SensorName = '");
             query.Append(second);
-            query.Append("', Zone =  '");
-            query.Append(third);
-            query.Append("', Enable = " );
+            query.Append("', Trim =  ");
+            query.Append(third.ToString("0.0"));
+            query.Append(", Enable = " );
             query.Append(a);
             query.Append(" WHERE SensorID = ");
             query.Append(x.ToString());
             return query.ToString();
         }
+
+        private string makeQuery(string first, string second, string third, bool fourth, int x)
+        {
+            int a = 89;
+            if (fourth) { a = 1; }
+            if (!fourth) { a = 0; }
+            StringBuilder query = new StringBuilder();
+            query.Append(first);
+            query.Append(" SensorName = '");
+            query.Append(second);
+            query.Append("', Zone =  '");
+            query.Append(third);
+            query.Append("', Enable = ");
+            query.Append(a);
+            query.Append(" WHERE SensorID = ");
+            query.Append(x.ToString());
+            return query.ToString();
+        }
+
+        /*
         private void populate()
         {
             forCombos.Add("Zone-1");
@@ -271,16 +294,17 @@ namespace DataCollection
                 comboBox32.Items.Add(a);
             }
         }
+        */
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_Save_Click(object sender, EventArgs e)
         {
             gather();
-
             Updater();
-            
+            this.Close();
+
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btn_Close_Click(object sender, EventArgs e)
         {
             this.Close();
         }

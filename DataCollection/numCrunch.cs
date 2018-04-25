@@ -5,6 +5,9 @@ using System.Windows.Forms;
 
 namespace DataCollection
 {
+    /// <summary>
+    /// This Class is used to access the DataCollection database used for the temperature-humidity data board
+    /// </summary>
     public class numCrunch
     {
         //
@@ -16,9 +19,11 @@ namespace DataCollection
         private string Insert2 = "INSERT INTO MainData (Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Temp7, Temp8, Temp9, " +
             " Temp10, Temp11, Temp12, Temp13, Temp14, Temp15, Temp16, Temph1, Hum1, Temph2, Hum2, Temph3, Hum3, Temph4, Hum4, " +
             "Volts1, Volts2, Volts3, Volts4, Volts5, Volts6, Volts7, Volts8, ReadDate) VALUES (";
+        /// <summary>
+        /// This class instantiates with the connection string for some reason... we'll fix that
+        /// </summary>
         public numCrunch()
         {
-
             connectionString = "data source = Temp-PC\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
             /*
             if (DataCollection.set)
@@ -27,8 +32,6 @@ namespace DataCollection
             }
             else
             {
-                
-                
                // connectionString = GetInstance();
                 Properties.Settings.Default.ConnectionString = connectionString;
                 Properties.Settings.Default.Attached = true;
