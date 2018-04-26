@@ -55,7 +55,7 @@ namespace DataCollection
             try
             {
                 int count = result.Rows.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < 32; i++)
                 {
                     Trim temp = new Trim();
                     temp.Enabled = Convert.ToBoolean(result.Rows[i][4]);
