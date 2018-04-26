@@ -98,7 +98,6 @@ namespace DataCollectionCustomInstaller
         {
             SqlClass makeDB = new SqlClass();
             create = makeDB.GetString(makeDB.make);
-            
             makeDB.DoIt(create, instanceName);
             create = makeDB.GetString(makeDB.createMainTable);
             makeDB.DoIt(create, instanceName);
