@@ -24,7 +24,7 @@ namespace DataCollection
         /// </summary>
         public numCrunch()
         {
-            connectionString = "data source = Temp-PC\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
+            connectionString = "data source = Bobzilla2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
             /*
             if (DataCollection.set)
             {
