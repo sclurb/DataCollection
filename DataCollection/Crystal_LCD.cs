@@ -172,7 +172,7 @@ namespace DataCollection
                     if (result.Contains(")"))
                     {
                         z = result.IndexOf(")");
-                        result = result.Substring(0, (z - 1));
+                        result = result.Substring(0, z);
                         
                     }
                     isPresent = true;

@@ -16,33 +16,28 @@ namespace DataCollectionCustomInstaller
     public partial class Installer1 : Installer
     {
 
-        string create;
-        string connectionString = "Server=.\\SQLExpress; Integrated security=true; database=master";
-        List<string> instanceCollection = new List<string>();
-        //SqlProbe doom = new SqlProbe();
-        string instanceName;
+        //string create;
+        string connectionString = "data source = {0}; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
+        //List<string> instanceCollection = new List<string>();
+        SqlProbe probe = new SqlProbe();
+
 
         public Installer1()
         {
             InitializeComponent();
 
             if (SetAcl() == true)
-            { 
-                /*
-                string x = OSVersionInfo.Name;
-                if (x == "Windows 7")
+            {
+                connectionString = string.Format(connectionString, probe.Select(probe.InstanceCollection));
+                if (File.Exists("C:\\Data\\connString.txt"))
                 {
-                    instanceCollection = doom.Go();
+                    File.Delete("C:\\Data\\connString.txt");
                 }
-                if (x == "Windows 10")
+                using (var writer = new StreamWriter("C:\\Data\\connString.txt"))
                 {
-                    instanceCollection = doom.gather();
+                    writer.WriteLine(connectionString);
                 }
-                
-                instanceName = doom.Select(instanceCollection);
-                //MessageBox.Show(instanceName);
-                //MakeDB();
-                */
+
             }
         }
 
@@ -96,6 +91,7 @@ namespace DataCollectionCustomInstaller
         
         private void MakeDB()
         {
+            /*
             SqlClass makeDB = new SqlClass();
             create = makeDB.GetString(makeDB.make);
             makeDB.DoIt(create, instanceName);
@@ -103,6 +99,7 @@ namespace DataCollectionCustomInstaller
             makeDB.DoIt(create, instanceName);
             create = makeDB.GetString(makeDB.createS_List);
             makeDB.DoIt(create, instanceName);
+            */
         }
 
 
