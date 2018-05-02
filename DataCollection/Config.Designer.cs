@@ -1,4 +1,4 @@
-﻿namespace DataCollection
+﻿namespace DataCollectionCustomInstaller
 {
     partial class Config
     {

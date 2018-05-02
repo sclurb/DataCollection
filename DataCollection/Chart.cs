@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     public partial class Chart : Form
     {

@@ -72,7 +72,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>DataCollection.Program</StartupObject>
+    <StartupObject>DataCollectionCustomInstaller.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FTD2XX_NET">
@@ -109,6 +109,12 @@
     <Compile Include="Delegate.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="FT232.cs" />
+    <Compile Include="LCD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LCD.Designer.cs">
+      <DependentUpon>LCD.cs</DependentUpon>
+    </Compile>
     <Compile Include="numCrunch.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataCollection.resx">
       <DependentUpon>DataCollection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LCD.resx">
+      <DependentUpon>LCD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

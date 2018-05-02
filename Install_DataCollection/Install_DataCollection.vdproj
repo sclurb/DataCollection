@@ -58,6 +58,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_DBDAF4B14844439A81A972B78F46576C"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -65,12 +71,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_3F1F62D24E9C59E275294FAA6545BD98"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -153,11 +153,6 @@
                     {
                     "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.5"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.SqlServer.Express.11.0"
-                    {
-                    "Name" = "8:SQL Server 2012 Express"
-                    "ProductCode" = "8:Microsoft.SqlServer.Express.11.0"
                     }
                 }
             }
@@ -385,7 +380,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DataCollection"
         "ProductCode" = "8:{365EAC8F-C77B-4200-B659-73D84D48C7C2}"
-        "PackageCode" = "8:{DD002672-F507-4476-846E-3DAFA624E6DB}"
+        "PackageCode" = "8:{895098BB-3626-4154-9FFB-7EA0149205A9}"
         "UpgradeCode" = "8:{29F40B42-CFFB-4EFE-9FA6-1C9A605EA984}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

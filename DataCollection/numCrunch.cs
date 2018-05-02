@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     /// <summary>
     /// This Class is used to access the DataCollection database used for the temperature-humidity data board

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
     {/// <summary>
     /// This Class will handle the trim feature.
     /// this class gets a list of sensor trim values

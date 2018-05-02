@@ -8,12 +8,14 @@ using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     public partial class DataCollection : Form
     {
         private int zelda = 0;
         private delegate void DataIsReceived(byte[] rxTemp);
+        //public delegate void Adjust(byte cmd, byte data);
+
         private string[] InfoFTDI = new string[7];
         ArrayList rxData = new ArrayList();
         private int RXcount = 0;
@@ -22,7 +24,7 @@ namespace DataCollection
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
         //private SerialPort comPort = new SerialPort();
         FT232 comPort = new FT232();
-        Crystal_LCD lcd = new Crystal_LCD();
+        public Crystal_LCD lcd = new Crystal_LCD();
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
@@ -52,6 +54,7 @@ namespace DataCollection
             timer1.Enabled = true;
             timer1.Start();
             InitCommunications();
+
         }
 
         #region Events
@@ -77,6 +80,15 @@ namespace DataCollection
         {
             Chart chart = new Chart();
             chart.Show();
+        }
+
+        private void lCDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            byte backlight = Properties.Settings.Default.Backlight;
+            byte contrast = Properties.Settings.Default.Contrast;
+            LCD adjust = new LCD(contrast, backlight);
+            adjust.adjuster = new AdjustLCD(Adjust);
+            adjust.Show();
         }
         #endregion
 
@@ -380,7 +392,16 @@ namespace DataCollection
 
         #endregion fill methods
 
- 
+
+        #region Methods
+
+        public  void Adjust(AdjustEventArgs e)
+        {
+            lcd.SendData(e.Cmd);
+            lcd.SendData(e.Data);
+           // MessageBox.Show(e.Cmd.ToString() + " And " + e.Data.ToString());
+        }
+        
         private void InitCommunications()
         {
             timer2.Enabled = false;
@@ -436,6 +457,10 @@ namespace DataCollection
             }
             RXcount = 3;
         }
+
+        #endregion
+
+
         #region  button click events
 
 
@@ -488,6 +513,8 @@ namespace DataCollection
         }
         #endregion
 
+        #region timer ticks
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (comPort.comm.IsOpen)
@@ -537,6 +564,8 @@ namespace DataCollection
             }
             tripoiintCheck();
         }
+
+        #endregion
         // This method inserts the valuse in procValues into the database
         private void writeDB()
         {
@@ -616,6 +645,7 @@ namespace DataCollection
                 }
             }
         }
+
 
     }
 }

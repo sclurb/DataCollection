@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.IO; 
 using System.Xml;
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
 	//Author : Mohamed Ashraf
 	//Date Written : 9th April 2003

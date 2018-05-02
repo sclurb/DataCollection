@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FTD2XX_NET;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     class FT232
     {

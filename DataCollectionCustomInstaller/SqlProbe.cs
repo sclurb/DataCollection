@@ -43,18 +43,15 @@ namespace DataCollectionCustomInstaller
         public string Select(List<string> str)
         {
             string p = "2012";
-
+            string result = "No Luck";
             for (int i = 0; i < str.Count; i++)
             {
                 if (Sql(str[i]))
                 {
-                    if (str[i].Contains(p))
-                    {
-                        return str[i];
-                    }
+                    return str[i];
                 }
             }
-            return "No Match!";
+            return result;
         }
         /// <summary>
         /// This method Takes a string and returns true if that string contains
