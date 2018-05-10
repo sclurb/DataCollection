@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Management;
+using System.Windows.Forms;
 
 namespace DataCollection
 {
@@ -42,15 +44,23 @@ namespace DataCollection
         {
             if (PortName != null)
             {
-                com.PortName = PortName;
-                com.BaudRate = 19200;
-                com.DataBits = 8;
-                com.Parity = Parity.None;
-                com.StopBits = StopBits.Two;
-                if (com.IsOpen != true)
+                try
                 {
-                    com.Open();
+                    com.PortName = PortName;
+                    com.BaudRate = 9600;
+                    com.DataBits = 8;
+                    com.Parity = Parity.None;
+                    com.StopBits = StopBits.Two;
+                    if (com.IsOpen != true)
+                    {
+                        com.Open();
+                    }
                 }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.ToString() + "\r\n" + PortName);
+                }
+
             }
 
             if (com.IsOpen)
@@ -167,18 +177,20 @@ namespace DataCollection
                     z = blah.IndexOf(searchString2);
                     result = blah.Substring(z, 5);
                 }
+                
                 if (result != null)
                 {
                     if (result.Contains(")"))
                     {
                         z = result.IndexOf(")");
-                        result = result.Substring(0, (z - 1));
+                        result = result.Substring(0, z);
                         
                     }
                     isPresent = true;
                 }
             }
-            return result;
+            MessageBox.Show(result + " *result 1");
+            return result; 
         }
         /// <summary>
         /// This method returns a List<string> of all com port devices on the local machine.   
