@@ -1,4 +1,4 @@
-﻿namespace DataCollection
+﻿namespace DataCollectionCustomInstaller
 {
     partial class DataCollection
     {
@@ -108,6 +108,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
+            this.lCDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -433,7 +434,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
             this.chartToolStripMenuItem,
-            this.tripPointsToolStripMenuItem});
+            this.tripPointsToolStripMenuItem,
+            this.lCDToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(745, 24);
@@ -858,6 +860,13 @@
             this.label33.TabIndex = 52;
             this.label33.Text = "label33";
             // 
+            // lCDToolStripMenuItem
+            // 
+            this.lCDToolStripMenuItem.Name = "lCDToolStripMenuItem";
+            this.lCDToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.lCDToolStripMenuItem.Text = "LCD";
+            this.lCDToolStripMenuItem.Click += new System.EventHandler(this.lCDToolStripMenuItem_Click);
+            // 
             // DataCollection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -971,6 +980,7 @@
         private System.Windows.Forms.ToolStripMenuItem chartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tripPointsToolStripMenuItem;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.ToolStripMenuItem lCDToolStripMenuItem;
     }
 }
 

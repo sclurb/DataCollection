@@ -16,55 +16,67 @@
         "Entry"
         {
         "MsmKey" = "8:_0D6791D831B7B1A7EFC2251A6F9C9D46"
-        "OwnerKey" = "8:_8AE075A388374D9B934E075BE9FB1BD1"
+        "OwnerKey" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_0D6791D831B7B1A7EFC2251A6F9C9D46"
-        "OwnerKey" = "8:_9AD191B533FE4426909455695ABB4CFC"
+        "OwnerKey" = "8:_DBDAF4B14844439A81A972B78F46576C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_35EBEA7FC4627217B4D3181423465572"
-        "OwnerKey" = "8:_9AD191B533FE4426909455695ABB4CFC"
+        "MsmKey" = "8:_3F1F62D24E9C59E275294FAA6545BD98"
+        "OwnerKey" = "8:_DBDAF4B14844439A81A972B78F46576C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8AE075A388374D9B934E075BE9FB1BD1"
+        "MsmKey" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_9AD191B533FE4426909455695ABB4CFC"
+        "MsmKey" = "8:_BBFE4A311A4F403EB7BAF781A8B20550"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EDFA3099D3544BFC89E47173885D64C7"
+        "MsmKey" = "8:_C904C9C2B4946504C101070062E87C21"
+        "OwnerKey" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBDAF4B14844439A81A972B78F46576C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9AD191B533FE4426909455695ABB4CFC"
+        "OwnerKey" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_35EBEA7FC4627217B4D3181423465572"
+        "OwnerKey" = "8:_DBDAF4B14844439A81A972B78F46576C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8AE075A388374D9B934E075BE9FB1BD1"
+        "OwnerKey" = "8:_3F1F62D24E9C59E275294FAA6545BD98"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C904C9C2B4946504C101070062E87C21"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -104,6 +116,11 @@
                     {
                     "Name" = "8:Microsoft .NET Framework 4.6 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.6"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.SqlServer.Express.10.5"
+                    {
+                    "Name" = "8:SQL Server 2008 R2 Express"
+                    "ProductCode" = "8:Microsoft.SqlServer.Express.10.5"
                     }
                 }
             }
@@ -145,17 +162,17 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_30A26D7D6342467BA55EF7898F7BDD1C"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B2A75407FC6F4DCFAD77CE983D45AAB2"
             {
             "Name" = "8:Primary output from DataCollectionCustomInstaller (Active)"
             "Condition" = "8:"
-            "Object" = "8:_8AE075A388374D9B934E075BE9FB1BD1"
+            "Object" = "8:_7C88D1EA49774BC99CD3D5A33314B953"
             "FileType" = "3:1"
             "InstallAction" = "3:1"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_9776C013_2B94_45F3_8FCB_CDEDD04AE01D"
+            "Identifier" = "8:_D02C6ABB_5265_430B_82E6_27154D095A95"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -213,14 +230,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_35EBEA7FC4627217B4D3181423465572"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3F1F62D24E9C59E275294FAA6545BD98"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:FTD2XX_NET, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_35EBEA7FC4627217B4D3181423465572"
+                    "_3F1F62D24E9C59E275294FAA6545BD98"
                     {
                     "Name" = "8:FTD2XX_NET.dll"
                     "Attributes" = "3:512"
@@ -244,7 +261,7 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EDFA3099D3544BFC89E47173885D64C7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BBFE4A311A4F403EB7BAF781A8B20550"
             {
             "SourcePath" = "8:..\\DataCollection\\thermo.ico"
             "TargetName" = "8:thermo.ico"
@@ -262,6 +279,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C904C9C2B4946504C101070062E87C21"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:OSVersionInfo, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C904C9C2B4946504C101070062E87C21"
+                    {
+                    "Name" = "8:OSVersionInfo.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:OSVersionInfo.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_8F8F2D78DA534E529F42C2CC644C6AE3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -332,7 +380,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DataCollection"
         "ProductCode" = "8:{365EAC8F-C77B-4200-B659-73D84D48C7C2}"
-        "PackageCode" = "8:{B5A54198-71D7-405B-B042-59552422FF80}"
+        "PackageCode" = "8:{895098BB-3626-4154-9FFB-7EA0149205A9}"
         "UpgradeCode" = "8:{29F40B42-CFFB-4EFE-9FA6-1C9A605EA984}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -349,7 +397,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Software for viewing and logging temperature and Humidity Sensors"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_9AD191B533FE4426909455695ABB4CFC"
+        "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -452,7 +500,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_586A86BE9E394424A26573E5E26606CB"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2F82360BAEC243BB90E8A2AE6121298E"
             {
             "Name" = "8:DataCollection"
             "Arguments" = "8:"
@@ -460,13 +508,13 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_9AD191B533FE4426909455695ABB4CFC"
+            "Target" = "8:_DBDAF4B14844439A81A972B78F46576C"
             "Folder" = "8:_316BD3EF8FEE4DCF9879899EADF32FB8"
             "WorkingFolder" = "8:_8F8F2D78DA534E529F42C2CC644C6AE3"
-            "Icon" = "8:_EDFA3099D3544BFC89E47173885D64C7"
+            "Icon" = "8:_BBFE4A311A4F403EB7BAF781A8B20550"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_AA1137BF266F45418AAD9F2E75961607"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_83ADE1A40D6E461AADF6E638F7F22A42"
             {
             "Name" = "8:DataCollection"
             "Arguments" = "8:"
@@ -474,10 +522,10 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_9AD191B533FE4426909455695ABB4CFC"
+            "Target" = "8:_DBDAF4B14844439A81A972B78F46576C"
             "Folder" = "8:_B632A5BD857246488DFC14BB2FD38241"
             "WorkingFolder" = "8:_8F8F2D78DA534E529F42C2CC644C6AE3"
-            "Icon" = "8:_EDFA3099D3544BFC89E47173885D64C7"
+            "Icon" = "8:_BBFE4A311A4F403EB7BAF781A8B20550"
             "Feature" = "8:"
             }
         }
@@ -879,7 +927,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8AE075A388374D9B934E075BE9FB1BD1"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_7C88D1EA49774BC99CD3D5A33314B953"
             {
             "SourcePath" = "8:..\\DataCollectionCustomInstaller\\obj\\Release\\DataCollectionCustomInstaller.dll"
             "TargetName" = "8:"
@@ -907,7 +955,7 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9AD191B533FE4426909455695ABB4CFC"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DBDAF4B14844439A81A972B78F46576C"
             {
             "SourcePath" = "8:..\\DataCollection\\obj\\Release\\DataCollection.exe"
             "TargetName" = "8:"

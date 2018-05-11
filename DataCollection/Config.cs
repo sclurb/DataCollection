@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     public partial class Config : Form
     {
@@ -21,7 +21,6 @@ namespace DataCollection
         public Config()
         {
             InitializeComponent();
-            //populate();
             loadThem();
         }
 
@@ -249,52 +248,6 @@ namespace DataCollection
             query.Append(x.ToString());
             return query.ToString();
         }
-
-        /*
-        private void populate()
-        {
-            forCombos.Add("Zone-1");
-            forCombos.Add("Zone-2");
-            forCombos.Add("Zone-3");
-            forCombos.Add("Zone-4");
-
-            foreach (string a in forCombos)
-            {
-                comboBox1.Items.Add(a);
-                comboBox2.Items.Add(a);
-                comboBox3.Items.Add(a);
-                comboBox4.Items.Add(a);
-                comboBox5.Items.Add(a);
-                comboBox6.Items.Add(a);
-                comboBox7.Items.Add(a);
-                comboBox8.Items.Add(a);
-                comboBox9.Items.Add(a);
-                comboBox10.Items.Add(a);
-                comboBox11.Items.Add(a);
-                comboBox12.Items.Add(a);
-                comboBox13.Items.Add(a);
-                comboBox14.Items.Add(a);
-                comboBox15.Items.Add(a);
-                comboBox16.Items.Add(a);
-                comboBox17.Items.Add(a);
-                comboBox18.Items.Add(a);
-                comboBox19.Items.Add(a);
-                comboBox20.Items.Add(a);
-                comboBox21.Items.Add(a);
-                comboBox22.Items.Add(a);
-                comboBox23.Items.Add(a);
-                comboBox24.Items.Add(a);
-                comboBox25.Items.Add(a);
-                comboBox26.Items.Add(a);
-                comboBox27.Items.Add(a);
-                comboBox28.Items.Add(a);
-                comboBox29.Items.Add(a);
-                comboBox30.Items.Add(a);
-                comboBox31.Items.Add(a);
-                comboBox32.Items.Add(a);
-            }
-        }
-        */
 
         private void btn_Save_Click(object sender, EventArgs e)
         {

@@ -4,17 +4,64 @@ using System.IO.Ports;
 using System.Management;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
-    class Crystal_LCD
+    public class Crystal_LCD
     {
 
         SerialPort com = new SerialPort();      // comport object used when this class is instantiated.
         string portName = null;                 // backing field for PortName 
         bool isPresent = false;                 // ensures consumers of this class that a port used by a Crystalfonz LCD is discovered.
+        byte contrast = 50;
+        byte backlight = 50;
         public Crystal_LCD()
         {
            portName = findDeviceComPort();      // determine if a crystalfontz device is present at the time of instamtioation.
+        }
+
+        public byte Contrast {
+            get
+            {
+                return contrast;
+            }
+            set
+            {
+                if (value > 100)
+                {
+                    contrast = 100;
+                }
+                else if (value < 0)
+                {
+                    contrast = 0;
+                }
+                else
+                {
+                    contrast = value;
+                }
+                
+            }
+        }
+        public byte Backlight {
+            get
+            {
+                return backlight;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    backlight = 0;
+                }
+                else if (value > 100)
+                {
+                    backlight = 100;
+                }
+                else
+                {
+                    backlight = value;
+                }
+                
+            }
         }
         /// <summary>
         /// If true, indicates the presence of a crystalfontz lcd device.

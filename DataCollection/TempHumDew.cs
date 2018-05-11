@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     public class TempHumDew
     {

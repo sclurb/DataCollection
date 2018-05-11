@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataCollection.Properties {
+namespace DataCollectionCustomInstaller.Properties {
     using System;
     
     

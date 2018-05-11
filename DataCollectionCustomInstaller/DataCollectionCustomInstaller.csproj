@@ -29,7 +29,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>thermo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OSVersionInfo">
+      <HintPath>..\Referenced Assemblies\OSVersionInfo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
@@ -51,8 +57,13 @@
       <DependentUpon>Installer1.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlClass.cs" />
-    <Compile Include="System\Web\UI.cs" />
+    <Compile Include="SqlProbe.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="thermo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="System\Web\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

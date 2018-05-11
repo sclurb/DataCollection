@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     /// <summary>
     /// This Class is used to access the DataCollection database used for the temperature-humidity data board
@@ -24,40 +25,31 @@ namespace DataCollection
         /// </summary>
         public numCrunch()
         {
-            connectionString = "data source = Bobzilla_16\\SQLEXPRESS2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True;  ";
-            /*
-            if (DataCollection.set)
-            {
-                connectionString = Properties.Settings.Default.ConnectionString;
-            }
-            else
-            {
-               // connectionString = GetInstance();
-                Properties.Settings.Default.ConnectionString = connectionString;
-                Properties.Settings.Default.Attached = true;
-                Properties.Settings.Default.Save();
-                DataCollection.set = true;
-            }
-            */
+            //connectionString = "data source = Temp-PC\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
+            connectionString = GetConnString();
         }
 
-
-        /*
-        public string GetInstance()
+        public string GetConnString()
         {
-            SqlProbe chk = new SqlProbe();
-            string inst = chk.InstanceName;
-            string conn = "data source={0}; " +
-                                    "initial catalog=DataCollection; " +
-                                    "integrated security=True; " +
-                                    "AttachDBFilename=C:\\Data\\DataCollection.mdf; " +
-                                    "MultipleActiveResultSets=True; ";
-            string result = string.Format(conn, inst);
-            // MessageBox.Show(chk.InstanceName + " and the windows version is: " + chk.VersionName);
-            return result;
+            string line;
+            try
+            {
+                using (StreamReader sr = new StreamReader("C:\\Data\\connString.txt"))
+                {
+                    line = sr.ReadToEnd();
+                }
+                return line;
+            }
+            catch(Exception ex)
+            {
+                bool bReturnLog = false;
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, ex);
+                return "Failed to get Connection String";
+            }
         }
-        
-    */
+
         // This method inserts datarows into the MainData table in the database
         public string insert(double[] values)
         {
