@@ -152,7 +152,7 @@ namespace DataCollectionCustomInstaller
         {
             string nullString = "Re-Enter";
             //var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
-            var regexItem = new Regex("^[a-zA-Z0-9_.-]*$");
+            var regexItem = new Regex("^[a-zA-Z0-9 _.-]*$");
             if (textBox.Length < 21)
             {
                 if (regexItem.IsMatch(textBox))

@@ -12,7 +12,6 @@ namespace DataCollectionCustomInstaller
 {
     public partial class DataCollection : Form
     {
-        private int zelda = 0;
         private delegate void DataIsReceived(byte[] rxTemp);
         //public delegate void Adjust(byte cmd, byte data);
 
@@ -43,7 +42,7 @@ namespace DataCollectionCustomInstaller
             timer1.Interval = 450000;   // specify interval time as you want
             timer2.Interval = 100;
             numCrunch crunch = new numCrunch();
-            if(lcd.IsPresent == true)
+            if(lcd.FindDeviceComPort())
             {
                 lcd.Open();
             }
@@ -180,7 +179,6 @@ namespace DataCollectionCustomInstaller
             // checking to see if rxdata is for Humidity/temperature sensors
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
-                zelda++;
                 if (tempArray[19] == 0)
                 {
                     double[] humidArray = arrange.ArrangeHumids(tempArray);
@@ -198,7 +196,7 @@ namespace DataCollectionCustomInstaller
                     Trim trim = new Trim();
                     procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
                     FillAll(procdValues);
-                    label33.Text = zelda.ToString();
+                    label33.Text = lcd.IsOpen.ToString();
                 }
                 rxData.Clear();
             }

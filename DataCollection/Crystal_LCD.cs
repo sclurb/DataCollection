@@ -11,12 +11,21 @@ namespace DataCollectionCustomInstaller
 
         SerialPort com = new SerialPort();      // comport object used when this class is instantiated.
         string portName = null;                 // backing field for PortName 
-        bool isPresent = false;                 // ensures consumers of this class that a port used by a Crystalfonz LCD is discovered.
         byte contrast = 50;
         byte backlight = 50;
+        private bool isOpen = false;
+        string searchString1 = "Crystalfontz CFA634-USB";
+        string searchString2 = "com";
         public Crystal_LCD()
         {
-           portName = findDeviceComPort();      // determine if a crystalfontz device is present at the time of instamtioation.
+        }
+
+        public bool IsOpen
+        {
+            get
+            {
+                return isOpen;
+            }
         }
 
         public byte Contrast {
@@ -63,15 +72,7 @@ namespace DataCollectionCustomInstaller
                 
             }
         }
-        /// <summary>
-        /// If true, indicates the presence of a crystalfontz lcd device.
-        /// </summary>
-        public bool IsPresent {
-            get
-            {
-                return isPresent;
-            }
-        }
+
         /// <summary>
         /// Contails the name of the port used by the crystalfontz lcd display
         /// </summary>
@@ -94,18 +95,19 @@ namespace DataCollectionCustomInstaller
                 try
                 {
                     com.PortName = PortName;
-                    com.BaudRate = 9600;
+                    com.BaudRate = 19200;
                     com.DataBits = 8;
                     com.Parity = Parity.None;
                     com.StopBits = StopBits.Two;
                     if (com.IsOpen != true)
                     {
                         com.Open();
+                        isOpen = true;
                     }
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.ToString() + "\r\n" + PortName);
+                    MessageBox.Show(ex.ToString() + " OPen()\r\n" + PortName);
                 }
 
             }
@@ -115,7 +117,8 @@ namespace DataCollectionCustomInstaller
                 SendData(0x0c);         // Form-Feed (Clear Display)
                 SendData(0x04);         // Hide Cursor
                 SendData(0x18);         // Word wrap Off.  (otherwise there is a Carraige return as soon as you reach 20 charcters)
-                SendText("Display Ready");
+                SendText("Display Ready \r\n");
+                SendText(DateTime.Now.ToString());
                 return true;
             }
             else
@@ -209,35 +212,56 @@ namespace DataCollectionCustomInstaller
         /// Thimethod returns a string with the com port that the Crystalfontz device is assigned on the local machine.
         /// </summary>
         /// <returns>Returns a single string with the Com Port Used by the Crystalfontz LCD Display.</returns>
-        private string findDeviceComPort()
+        public bool FindDeviceComPort()
         {
-            List<string> deviceInfo = getPortNames();
-            int z = 0; 
-            string searchString1 = "Crystalfontz CFA634-USB";
-            string searchString2 = "com";
-            string result = null;
-            foreach (string comListItem in deviceInfo)
+            try
+            {
+                List<string> deviceInfo = getPortNames();
+                string result = SetPortName(deviceInfo);
+                result = ExtractOnlyCommPort(result);
+                if (result != null)
+                {
+                    portName = result;
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                //MessageBox.Show("FindDeviceCommPort() \r\n" + ex.ToString());
+                return false;
+            }
+
+        }
+
+
+        private string SetPortName(List<string> deviceInfo)
+        {
+        int index = 0;
+        foreach (string comListItem in deviceInfo)
             {
                 if (comListItem.Contains(searchString1))
                 {
                     string blah = comListItem.ToLower();
-                    z = blah.IndexOf(searchString2);
-                    result = blah.Substring(z, 5);
-                }
-                
-                if (result != null)
-                {
-                    if (result.Contains(")"))
-                    {
-                        z = result.IndexOf(")");
-                        result = result.Substring(0, z);
-                        
-                    }
-                    isPresent = true;
+                    index = blah.IndexOf(searchString2);
+                    return blah.Substring(index, 5);
                 }
             }
-            MessageBox.Show(result + " *result 1");
-            return result; 
+            return null;
+        }
+
+        private string ExtractOnlyCommPort (string port)
+        {
+            int index = 0;
+            if (port.Contains(")"))
+            {
+                index = port.IndexOf(")");
+               return port.Substring(0, index);
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// This method returns a List<string> of all com port devices on the local machine.   
