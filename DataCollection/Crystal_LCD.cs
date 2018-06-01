@@ -95,7 +95,7 @@ namespace DataCollectionCustomInstaller
                 try
                 {
                     com.PortName = PortName;
-                    com.BaudRate = 19200;
+                    com.BaudRate = 9600;
                     com.DataBits = 8;
                     com.Parity = Parity.None;
                     com.StopBits = StopBits.Two;
@@ -107,7 +107,7 @@ namespace DataCollectionCustomInstaller
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.ToString() + " OPen()\r\n" + PortName);
+                    MessageBox.Show(ex.ToString() + "\r\n Open() " + PortName);
                 }
 
             }
