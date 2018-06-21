@@ -8,23 +8,25 @@ using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     public partial class DataCollection : Form
     {
         private delegate void DataIsReceived(byte[] rxTemp);
+        //public delegate void Adjust(byte cmd, byte data);
 
+        private string[] InfoFTDI = new string[7];
         ArrayList rxData = new ArrayList();
         private int RXcount = 0;
         private byte[] getTemps = { 0x40, 0x10, 0xf5 };
         private byte[] getHumps = { 0x40, 0x20, 0xf5 };
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
-        private SerialPort comPort = new SerialPort();
-
+        //private SerialPort comPort = new SerialPort();
+        FT232 comPort = new FT232();
+        public Crystal_LCD lcd = new Crystal_LCD();
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
-        private byte relayStat = 0;
         private byte[] setRelays = new byte[4];
         Timer timer1 = new Timer();     // sets the interval between data collection 450,000 = 7.5 minutes
         Timer timer2 = new Timer();     // sets  short delay to separate the data send commands
@@ -35,13 +37,22 @@ namespace DataCollection
         public DataCollection()
         {
             InitializeComponent();
-            RefreshComPortList();
-            comPort.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
+            InfoFTDI = comPort.InitFTDI();
+            comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             timer1.Interval = 450000;   // specify interval time as you want
+            timer2.Interval = 100;
             numCrunch crunch = new numCrunch();
+            if(lcd.FindDeviceComPort())
+            {
+                lcd.Open();
+            }
+            
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
             FillLabels();
+            timer1.Enabled = true;
+            timer1.Start();
+            InitCommunications();
 
         }
 
@@ -69,68 +80,25 @@ namespace DataCollection
             Chart chart = new Chart();
             chart.Show();
         }
+
+        private void lCDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            byte backlight = Properties.Settings.Default.Backlight;
+            byte contrast = Properties.Settings.Default.Contrast;
+            LCD adjust = new LCD(contrast, backlight);
+            adjust.adjuster = new AdjustLCD(Adjust);
+            adjust.Show();
+        }
         #endregion
 
         #region Communicate Methods
-        private void RefreshComPortList()
-        {
-            // Determain if the list of com port names has changed since last checked
-            string selected = RefreshComPortList(portNameBox.Items.Cast<string>(), portNameBox.SelectedItem as string, comPort.IsOpen);
-
-            // If there was an update, then update the control showing the user the list of port names
-            if (!String.IsNullOrEmpty(selected))
-            {
-                portNameBox.Items.Clear();
-                portNameBox.Items.AddRange(OrderedPortNames());
-                portNameBox.SelectedItem = selected;
-            }
-        }
-
-        private string[] OrderedPortNames()
-        {
-            // Just a placeholder for a successful parsing of a string to an integer
-            int num;
-
-            // Order the serial port names in numberic order (if possible)
-            return SerialPort.GetPortNames().OrderBy(a => a.Length > 3 && int.TryParse(a.Substring(3), out num) ? num : 0).ToArray();
-        }
-
-        private string RefreshComPortList(IEnumerable<string> PreviousPortNames, string CurrentSelection, bool PortOpen)
-        {
-            // Create a new return report to populate
-            string selected = null;
-            // Retrieve the list of ports currently mounted by the operating system (sorted by name)
-            string[] ports = SerialPort.GetPortNames();
-            // First determain if there was a change (any additions or removals)
-            bool updated = PreviousPortNames.Except(ports).Count() > 0 || ports.Except(PreviousPortNames).Count() > 0;
-            if (updated)    // If there was a change, then select an appropriate default port
-            {
-                ports = OrderedPortNames(); // Use the correctly ordered set of port names
-                // Find newest port if one or more were added
-                string newest = SerialPort.GetPortNames().Except(PreviousPortNames).OrderBy(a => a).LastOrDefault();
-                if (PortOpen)   // If the port was already open... (see logic notes and reasoning in Notes.txt)
-                {
-                    if (ports.Contains(CurrentSelection)) selected = CurrentSelection;
-                    else if (!String.IsNullOrEmpty(newest)) selected = newest;
-                    else selected = ports.LastOrDefault();
-                }
-                else
-                {
-                    if (!String.IsNullOrEmpty(newest)) selected = newest;
-                    else if (ports.Contains(CurrentSelection)) selected = CurrentSelection;
-                    else selected = ports.LastOrDefault();
-                }
-            }
-            return selected;    // If there was a change to the port list, return the recommended default selection
-        }
-
         private void communicate(byte[] txString)
         {
-            if (comPort.IsOpen)
+            if (comPort.comm.IsOpen)
             {
                 try
                 {
-                    comPort.Write(txString, 0, txString.Length);
+                    comPort.comm.Write(txString, 0, txString.Length);
                 }
                 catch (IOException)
                 { MessageBox.Show("IOException"); }
@@ -151,66 +119,112 @@ namespace DataCollection
 
         private void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            int bytes = comPort.BytesToRead;
-            byte[] rxBuffer = new byte[bytes]; // Read the data from the port and store it in our buffer
-            comPort.Read(rxBuffer, 0, bytes);
-            DataIsReceived d = new DataIsReceived(process);
-            Invoke(d, new object[] { rxBuffer });
+            
+            if (comPort.comm.BytesToRead == 0)
+            {
+                return;
+            }
+            try
+            {
+                byte[] rxBuffer = new byte[comPort.comm.BytesToRead]; // Read the data from the port and store it in our buffer
+                comPort.comm.Read(rxBuffer, 0, comPort.comm.BytesToRead);
+                DataIsReceived d = new DataIsReceived(process);
+                Invoke(d, new object[] { rxBuffer });
+            }
+            catch (Exception ex)
+            {
+                bool bReturnLog = false;
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, ex);
+            }
         }
-
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] rxBuffer)
         {
-            
             TempHumidityProcessing arrange = new TempHumidityProcessing();
+
             foreach (byte a in rxBuffer)
             {
                 rxData.Add(a);
             }
-
             byte[] tempArray = new byte[rxData.Count];
-            tempArray = (byte[])rxData.ToArray(typeof(byte));
+            try
+            {
+                tempArray = (byte[])rxData.ToArray(typeof(byte));
+            }
+            catch(IndexOutOfRangeException e)
+            {
+                bool bReturnLog = false;
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
 
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+            }
+            
+            // Checking to see if rxdata is for temp sensors
             if (tempArray[1] == 0x10 && tempArray.Length == 36)
             {
-                double[] temperatureArray = arrange.ArrangeTemps(tempArray);
-                temperatureArray = arrange.ProcTemps(temperatureArray);
-                fillTemps(temperatureArray);
-
+                if (tempArray[35] == 0)
+                {
+                    double[] temperatureArray = arrange.ArrangeTemps(tempArray);
+                    temperatureArray = arrange.ProcTemps(temperatureArray);
+                    fillTemps(temperatureArray);
+                }
+                rxData.Clear();
+                
             }
-            
+            // checking to see if rxdata is for Humidity/temperature sensors
             if (tempArray[1] == 0x20 && tempArray.Length == 20)
             {
-                double[] humidArray = arrange.ArrangeHumids(tempArray);
-
-                TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0]);
-                TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2]);
-                TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4]);
-                TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6]);
-
-                List<TempHumDew> humDew = new List<TempHumDew>();
-                humDew.Add(hum1);
-                humDew.Add(hum2);
-                humDew.Add(hum3);
-                humDew.Add(hum4);
-                fillHumps(humDew);
-
+                if (tempArray[19] == 0)
+                {
+                    double[] humidArray = arrange.ArrangeHumids(tempArray);
+                    TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0]);
+                    TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2]);
+                    TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4]);
+                    TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6]);
+                    List<TempHumDew> humDew = new List<TempHumDew>();
+                    humDew.Add(hum1);
+                    humDew.Add(hum2);
+                    humDew.Add(hum3);
+                    humDew.Add(hum4);
+                    fillHumps(humDew);
+                    lcd.ExtractStrings(humDew);
+                    Trim trim = new Trim();
+                    procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
+                    FillAll(procdValues);
+                    label33.Text = lcd.IsOpen.ToString();
+                }
+                rxData.Clear();
             }
-            if (tempArray[1] == 0x30)
+
+            // checking to see if rxdata is for aux inputs
+            if (tempArray[1] == 0x30 && tempArray.Length == 20)
             {
                 
-                double[] auxArray = arrange.ArrangeAuxs(tempArray);
-                auxArray = arrange.ProcAuxs(auxArray);
-                fillAuxs(auxArray);
+                if (tempArray[19] == 0)
+                {
+                    double[] auxArray = arrange.ArrangeAuxs(tempArray);
+                    auxArray = arrange.ProcAuxs(auxArray);
+                    fillAuxs(auxArray);
+                }
+                rxData.Clear();
+                
+            }
 
-            }
-            if (tempArray[1] == 0x50)
+            // checking to see if information is for relays
+            if (tempArray[1] == 0x50 && tempArray.Length == 7)
             {
-                relayStat = tempArray[2];
-                funKen();
-;
+                
+                if (tempArray[6] == 0)
+                {
+                    DisplayRelayStatus(tempArray[2]);
+                }
+                rxData.Clear();
             }
-            
         }
 
         #endregion
@@ -259,84 +273,142 @@ namespace DataCollection
 
         private void fillTemps(double[] proccessValues)
         {
-            textBox1.Text = proccessValues[0].ToString("0.0") + "\u00b0F";
-            textBox2.Text = proccessValues[1].ToString("0.0") + "\u00b0F";
-            textBox3.Text = proccessValues[2].ToString("0.0") + "\u00b0F";
-            textBox4.Text = proccessValues[3].ToString("0.0") + "\u00b0F";
-            textBox5.Text = proccessValues[4].ToString("0.0") + "\u00b0F";
-            textBox6.Text = proccessValues[5].ToString("0.0") + "\u00b0F";
-            textBox7.Text = proccessValues[6].ToString("0.0") + "\u00b0F";
-            textBox8.Text = proccessValues[7].ToString("0.0") + "\u00b0F";
-            textBox9.Text = proccessValues[8].ToString("0.0") + "\u00b0F";
-            textBox10.Text = proccessValues[9].ToString("0.0") + "\u00b0F";
-            textBox11.Text = proccessValues[10].ToString("0.0") + "\u00b0F";
-            textBox12.Text = proccessValues[11].ToString("0.0") + "\u00b0F";
-            textBox13.Text = proccessValues[12].ToString("0.0") + "\u00b0F";
-            textBox14.Text = proccessValues[13].ToString("0.0") + "\u00b0F";
-            textBox15.Text = proccessValues[14].ToString("0.0") + "\u00b0F";
-            textBox16.Text = proccessValues[15].ToString("0.0") + "\u00b0F";
-
-            for (int i = 0; i < 16; i++)
+            try
             {
-                procdValues[i] = proccessValues[i];
+                for (int i = 0; i < 16; i++)
+                {
+                    procdValues[i] = proccessValues[i];
+                }
+
+                RXcount = 1;
             }
-            RXcount = 1;
+            catch (NullReferenceException e)
+            {
+                bool bReturnLog = false;
+
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+                RXcount = 1;
+            }
+
         }
 
         public void fillHumps(List<TempHumDew> humps)
         {
-            textBox17.Text = humps[0].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[16] = humps[0].TempF;
-            textBox18.Text = humps[0].RHT.ToString("0.00") + "%RH";
-            procdValues[17] = humps[0].RHT;
-            textBox19.Text = humps[1].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[18] = humps[1].TempF;
-            textBox20.Text = humps[1].RHT.ToString("0.00") + "%RH";
-            procdValues[19] = humps[1].RHT;
-            textBox21.Text = humps[2].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[20] = humps[2].TempF;
-            textBox22.Text = humps[2].RHT.ToString("0.00") + "%RH";
-            procdValues[21] = humps[2].RHT;
-            textBox23.Text = humps[3].TempF.ToString("0.00") + "\u00b0F";
-            procdValues[22] = humps[3].TempF;
-            textBox24.Text = humps[3].RHT.ToString("0.00") + "%RH";
-            procdValues[23] = humps[3].RHT;
-
-
-            textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
-            textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
-            textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
-            textBox36.Text = humps[3].DewF.ToString("0.00") + "\u00b0F";
-            RXcount = 4;
+            try
+            {
+                procdValues[16] = humps[0].TempF;
+                procdValues[17] = humps[0].RHT;
+                procdValues[18] = humps[1].TempF;
+                procdValues[19] = humps[1].RHT;
+                procdValues[20] = humps[2].TempF;
+                procdValues[21] = humps[2].RHT;
+                procdValues[22] = humps[3].TempF;
+                procdValues[23] = humps[3].RHT;
+                // The following displyed readings are derived and are not stored in the database.
+                textBox33.Text = humps[0].DewF.ToString("0.00") + "\u00b0F";
+                textBox34.Text = humps[1].DewF.ToString("0.00") + "\u00b0F";
+                textBox35.Text = humps[2].DewF.ToString("0.00") + "\u00b0F";
+                textBox36.Text = humps[3].DewF.ToString("0.00") + "\u00b0F";
+                RXcount = 4;
+            }
+            catch (NullReferenceException e)
+            {
+                bool bReturnLog = false;
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+                RXcount = 1;
+            }
         }
 
         private void fillAuxs(double[] auxArray)
         {
-            textBox25.Text = auxArray[0].ToString("0.00");
-            textBox26.Text = auxArray[1].ToString("0.00");
-            textBox27.Text = auxArray[2].ToString("0.00");
-            textBox28.Text = auxArray[3].ToString("0.00");
-            textBox29.Text = auxArray[4].ToString("0.00");
-            textBox30.Text = auxArray[5].ToString("0.00");
-            textBox31.Text = auxArray[6].ToString("0.00");
-            textBox32.Text = auxArray[7].ToString("0.00");
-
-            for (int i = 0; i < 8; i++)
+            try
             {
-                procdValues[i + 24] = auxArray[i];
+                for (int i = 0; i < 8; i++)
+                {
+                    procdValues[i + 24] = auxArray[i];
+                }
+                RXcount = 2;
             }
-            RXcount = 2;
+            catch (NullReferenceException e)
+            {
+                bool bReturnLog = false;
+
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, e);
+
+                if (false == bReturnLog)
+                    MessageBox.Show("Unable to write a log");
+                RXcount = 1;
+            }
         }
+        
+        private void FillAll(double[] ProcessedValues)
+        {
+            textBox1.Text = ProcessedValues[0].ToString("0.0") + "\u00b0F";
+            textBox2.Text = ProcessedValues[1].ToString("0.0") + "\u00b0F";
+            textBox3.Text = ProcessedValues[2].ToString("0.0") + "\u00b0F";
+            textBox4.Text = ProcessedValues[3].ToString("0.0") + "\u00b0F";
+            textBox5.Text = ProcessedValues[4].ToString("0.0") + "\u00b0F";
+            textBox6.Text = ProcessedValues[5].ToString("0.0") + "\u00b0F";
+            textBox7.Text = ProcessedValues[6].ToString("0.0") + "\u00b0F";
+            textBox8.Text = ProcessedValues[7].ToString("0.0") + "\u00b0F";
+            textBox9.Text = ProcessedValues[8].ToString("0.0") + "\u00b0F";
+            textBox10.Text = ProcessedValues[9].ToString("0.0") + "\u00b0F";
+            textBox11.Text = ProcessedValues[10].ToString("0.0") + "\u00b0F";
+            textBox12.Text = ProcessedValues[11].ToString("0.0") + "\u00b0F";
+            textBox13.Text = ProcessedValues[12].ToString("0.0") + "\u00b0F";
+            textBox14.Text = ProcessedValues[13].ToString("0.0") + "\u00b0F";
+            textBox15.Text = ProcessedValues[14].ToString("0.0") + "\u00b0F";
+            textBox16.Text = ProcessedValues[15].ToString("0.0") + "\u00b0F";
+            textBox17.Text = ProcessedValues[16].ToString("0.00") + "\u00b0F";
+            textBox18.Text = ProcessedValues[17].ToString("0.00") + "%RH";
+            textBox19.Text = ProcessedValues[18].ToString("0.00") + "\u00b0F";
+            textBox20.Text = ProcessedValues[19].ToString("0.00") + "%RH";
+            textBox21.Text = ProcessedValues[20].ToString("0.00") + "\u00b0F";
+            textBox22.Text = ProcessedValues[21].ToString("0.00") + "%RH";
+            textBox23.Text = ProcessedValues[22].ToString("0.00") + "\u00b0F";
+            textBox24.Text = ProcessedValues[23].ToString("0.00") + "%RH";
+            textBox25.Text = ProcessedValues[24].ToString("0.00");
+            textBox26.Text = ProcessedValues[25].ToString("0.00");
+            textBox27.Text = ProcessedValues[26].ToString("0.00");
+            textBox28.Text = ProcessedValues[27].ToString("0.00");
+            textBox29.Text = ProcessedValues[28].ToString("0.00");
+            textBox30.Text = ProcessedValues[29].ToString("0.00");
+            textBox31.Text = ProcessedValues[30].ToString("0.00");
+            textBox32.Text = ProcessedValues[31].ToString("0.00");
+        }
+
         #endregion fill methods
 
- 
-        private void firstShot()
+
+        #region Methods
+
+        public  void Adjust(AdjustEventArgs e)
         {
+            lcd.SendData(e.Cmd);
+            lcd.SendData(e.Data);
+           // MessageBox.Show(e.Cmd.ToString() + " And " + e.Data.ToString());
+        }
+        
+        private void InitCommunications()
+        {
+            timer2.Enabled = false;
             rxData.Clear();
             communicate(getTemps);
             timer2.Enabled = true;
+            timer2.Start();
         }
-        private void funKen()
+        private void DisplayRelayStatus(int relayStat)
         {
             switch (relayStat)
             {
@@ -383,39 +455,11 @@ namespace DataCollection
             }
             RXcount = 3;
         }
+
+        #endregion
+
+
         #region  button click events
-        private void button1_Click(object sender, EventArgs e)
-        {
-            bool error = false;
-
-            // If the port is open, close it.
-            if (comPort.IsOpen) comPort.Close();
-            else
-            {
-                // Set the port's settings
-                comPort.BaudRate = 9600;
-                comPort.DataBits = 8;
-                comPort.StopBits = StopBits.One;
-                comPort.Parity = Parity.None;
-                comPort.PortName = portNameBox.Text;
-                try
-                {
-                    // Open the port
-                    comPort.Open();
-                }
-                catch (UnauthorizedAccessException) { error = true; }
-                catch (IOException) { error = true; }
-                catch (ArgumentException) { error = true; }
-
-                if (error) MessageBox.Show(this, "Could not open the COM port.  Most likely it is already in use, has been removed, or is unavailable.", "COM Port Unavalible", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            }
-            if (comPort.IsOpen)
-            {
-                button1.Text = "&Close Port"; timer1.Enabled = true;
-                firstShot();
-            }
-            else { button1.Text = "&Open Port"; timer1.Enabled = false; }
-        }
 
 
         private void button5_Click(object sender, EventArgs e)
@@ -438,7 +482,7 @@ namespace DataCollection
 
         private void setRelay1()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x01;
@@ -448,7 +492,7 @@ namespace DataCollection
 
         private void setRelay2()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x02;
@@ -458,7 +502,7 @@ namespace DataCollection
 
         private void setRelay3()
         {
-            rxData.Clear();
+            //rxData.Clear();
             setRelays[0] = 0x40;
             setRelays[1] = 0x50;
             setRelays[2] = 0x03;
@@ -467,11 +511,17 @@ namespace DataCollection
         }
         #endregion
 
+        #region timer ticks
+
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (comPort.IsOpen)
+            if (comPort.comm.IsOpen)
             {
-                firstShot();
+                rxData.Clear();
+                timer2.Interval = 100;
+                communicate(getTemps);
+                timer2.Enabled = true;
+                timer2.Start();
             }
             
         }
@@ -481,28 +531,29 @@ namespace DataCollection
             if (RXcount == 1)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
                 communicate(getAuxs);
                 timer2.Enabled = true;
+                timer2.Start();
             }
 
             if (RXcount == 2)
             {
                 timer2.Enabled = false;
-                rxData.Clear();
                 setRelays[0] = 0x40;
                 setRelays[1] = 0x50;
                 setRelays[2] = 0xff;
                 setRelays[3] = 0xf5;
                 communicate(setRelays);
                 timer2.Enabled = true;
+                timer2.Start();
             }
             if (RXcount == 3)
             {
+                timer2.Interval = 1500;
                 timer2.Enabled = false;
-                rxData.Clear();
                 communicate(getHumps);
                 timer2.Enabled = true;
+                timer2.Start();
             }
             if (RXcount == 4)
             {
@@ -511,6 +562,8 @@ namespace DataCollection
             }
             tripoiintCheck();
         }
+
+        #endregion
         // This method inserts the valuse in procValues into the database
         private void writeDB()
         {
@@ -518,15 +571,6 @@ namespace DataCollection
             numCrunch log = new numCrunch();
             bool[] switches = log.dataEnable();
             log.insert(procdValues);
-            /*   old routine with older database  obsolete!
-            for (int i = 0; i < switches.Length; i++)
-            {
-                if (switches[i])
-                {
-                    log.insert(procdValues);
-                }
-            }
-            */
         }
         private void tripoiintCheck()
         {
@@ -599,6 +643,7 @@ namespace DataCollection
                 }
             }
         }
+
 
     }
 }

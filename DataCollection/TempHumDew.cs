@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataCollection
+
+namespace DataCollectionCustomInstaller
 {
     public class TempHumDew
     {
@@ -20,19 +17,28 @@ namespace DataCollection
         private double rawTemp;                 // raw temperature data from sensor 
         private double rawHumid;                // raw humidiy data from sensor
  
+        /// <summary>
+        /// returns a an object containig the processed values from sensor data.
+        /// </summary>
+        /// <param name="temp"></param>
+        /// <param name="humid"></param>
         public TempHumDew(double temp, double humid)
         {
             rawTemp = temp;
             rawHumid = humid;
         }
-
+        /// <summary>
+        /// Holds a Temperature pre-processsed value from the sensor.
+        /// </summary>
         public double RawTemp
         {
             get { return rawTemp; }
 
             set { rawTemp = value; }
         }
-
+        /// <summary>
+        /// Holds a humidity pre-processed value from the sensor
+        /// </summary>
         public double RawHumid
         {
             get { return rawHumid; }
@@ -40,6 +46,9 @@ namespace DataCollection
             set { rawHumid = value; }
         }
 
+        /// <summary>
+        /// Returns a value derived from the raw temperature reading from sensor.
+        /// </summary>
         public double TempC
         {
             get
@@ -56,7 +65,10 @@ namespace DataCollection
                 
         }
 
-
+        /// <summary>
+        /// Returns a value derived from the raw humidity reading from sensor
+        /// Value is the Relative Humidity without temperature compensation factored in.
+        /// </summary>
         public double RH
         {
             get
@@ -73,7 +85,10 @@ namespace DataCollection
             }
 
         }
-
+        /// <summary>
+        /// Returns a value derived from the rawHumid and rawTemp backing fields.
+        /// Value is the Relative Humidity with a temperature compensation factored in.
+        /// </summary>
         public double RHT
         {
              get
@@ -89,7 +104,11 @@ namespace DataCollection
             }
         }
 
-        // https://www.ajdesigner.com/phphumidity/dewpoint_equation_dewpoint_temperature.php
+        // 
+        /// <summary>
+        /// This returns a value derived from raw temperature and raw humidity reading from sensor.
+        /// https://www.ajdesigner.com/phphumidity/dewpoint_equation_dewpoint_temperature.php
+        /// </summary>
         public double DewC
         {
             get
@@ -105,7 +124,10 @@ namespace DataCollection
                 
             }
         }
-
+        /// <summary>
+        /// Returns a value derived from the rawHumid and rawTemp backing fields
+        /// Value is the Dew point in fahrenheit.
+        /// </summary>
         public double DewF
         {
             get
@@ -121,10 +143,11 @@ namespace DataCollection
                 
             }
         }
-
+        /// <summary>
+        /// returns the temperature in fahrenheit of the value stored in rawTemps backing field
+        /// </summary>
         public double TempF
         {
-            
             get
             {
                 if (rawTemp == 0xf4f4)
@@ -135,7 +158,6 @@ namespace DataCollection
                 {
                     return (((rawTemp * d2) + d1) * 1.8) + 32;
                 }
-                
             }
         }
 

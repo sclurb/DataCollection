@@ -46,22 +46,31 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
     <Compile Include="Process Tests\Processtests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLProbe\SQLProbeTests.cs" />
+    <Compile Include="SQLProbe\SqlProbe_test.cs" />
     <Compile Include="TempHumDewTests\TempHumDewTests.cs" />
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataCollectionCustomInstaller\DataCollectionCustomInstaller.csproj">
+      <Project>{0fa88808-af80-4561-bc59-52258555e834}</Project>
+      <Name>DataCollectionCustomInstaller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataCollection\DataCollection.csproj">
       <Project>{6a8139f0-711c-45fd-b2cb-5c4f4e20e9ae}</Project>
       <Name>DataCollection</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

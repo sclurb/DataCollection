@@ -1,10 +1,6 @@
-﻿using DataCollection;
+﻿using DataCollectionCustomInstaller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatColTests.Process_Tests
 {
@@ -251,5 +247,7 @@ namespace DatColTests.Process_Tests
 
             }
         }
+
+
     }
 }

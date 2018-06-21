@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataCollection.Properties {
+namespace DataCollectionCustomInstaller.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -188,6 +188,30 @@ namespace DataCollection.Properties {
             }
             set {
                 this["Attached"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public byte Backlight {
+            get {
+                return ((byte)(this["Backlight"]));
+            }
+            set {
+                this["Backlight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public byte Contrast {
+            get {
+                return ((byte)(this["Contrast"]));
+            }
+            set {
+                this["Contrast"] = value;
             }
         }
     }

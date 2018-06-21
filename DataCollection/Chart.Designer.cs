@@ -1,4 +1,4 @@
-﻿namespace DataCollection
+﻿namespace DataCollectionCustomInstaller
 {
     partial class Chart
     {
@@ -96,21 +96,21 @@
             // 
             // chart1
             // 
-            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chart1.BorderlineColor = System.Drawing.Color.Maroon;
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Dock = System.Windows.Forms.DockStyle.Top;
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(0, 12);
+            this.chart1.Location = new System.Drawing.Point(0, 0);
             this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(1184, 555);
+            this.chart1.Size = new System.Drawing.Size(1184, 542);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
             // btnGetData
             // 
-            this.btnGetData.Location = new System.Drawing.Point(772, 123);
+            this.btnGetData.Location = new System.Drawing.Point(851, 121);
             this.btnGetData.Name = "btnGetData";
             this.btnGetData.Size = new System.Drawing.Size(75, 23);
             this.btnGetData.TabIndex = 1;
@@ -163,7 +163,7 @@
             this.groupBox1.Controls.Add(this.cmbEndYear);
             this.groupBox1.Controls.Add(this.cmbEndMonth);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 573);
+            this.groupBox1.Location = new System.Drawing.Point(0, 563);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1184, 219);
             this.groupBox1.TabIndex = 4;
@@ -172,7 +172,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(977, 74);
+            this.label8.Location = new System.Drawing.Point(1056, 72);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 13);
             this.label8.TabIndex = 25;
@@ -346,7 +346,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(926, 74);
+            this.label7.Location = new System.Drawing.Point(1005, 72);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(48, 13);
             this.label7.TabIndex = 24;
@@ -364,7 +364,7 @@
             this.groupBox2.Controls.Add(this.chkBoxSensor19);
             this.groupBox2.Location = new System.Drawing.Point(343, 19);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(216, 120);
+            this.groupBox2.Size = new System.Drawing.Size(307, 137);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sensors with Humidity and Temperature";
@@ -372,7 +372,7 @@
             // chkBoxSensor22
             // 
             this.chkBoxSensor22.AutoSize = true;
-            this.chkBoxSensor22.Location = new System.Drawing.Point(129, 72);
+            this.chkBoxSensor22.Location = new System.Drawing.Point(160, 72);
             this.chkBoxSensor22.Name = "chkBoxSensor22";
             this.chkBoxSensor22.Size = new System.Drawing.Size(62, 17);
             this.chkBoxSensor22.TabIndex = 24;
@@ -382,7 +382,7 @@
             // chkBoxSensor24
             // 
             this.chkBoxSensor24.AutoSize = true;
-            this.chkBoxSensor24.Location = new System.Drawing.Point(129, 95);
+            this.chkBoxSensor24.Location = new System.Drawing.Point(160, 95);
             this.chkBoxSensor24.Name = "chkBoxSensor24";
             this.chkBoxSensor24.Size = new System.Drawing.Size(62, 17);
             this.chkBoxSensor24.TabIndex = 25;
@@ -392,7 +392,7 @@
             // chkBoxSensor18
             // 
             this.chkBoxSensor18.AutoSize = true;
-            this.chkBoxSensor18.Location = new System.Drawing.Point(129, 26);
+            this.chkBoxSensor18.Location = new System.Drawing.Point(160, 26);
             this.chkBoxSensor18.Name = "chkBoxSensor18";
             this.chkBoxSensor18.Size = new System.Drawing.Size(62, 17);
             this.chkBoxSensor18.TabIndex = 22;
@@ -402,7 +402,7 @@
             // chkBoxSensor20
             // 
             this.chkBoxSensor20.AutoSize = true;
-            this.chkBoxSensor20.Location = new System.Drawing.Point(129, 49);
+            this.chkBoxSensor20.Location = new System.Drawing.Point(160, 49);
             this.chkBoxSensor20.Name = "chkBoxSensor20";
             this.chkBoxSensor20.Size = new System.Drawing.Size(62, 17);
             this.chkBoxSensor20.TabIndex = 23;
@@ -412,7 +412,7 @@
             // chkBoxSensor21
             // 
             this.chkBoxSensor21.AutoSize = true;
-            this.chkBoxSensor21.Location = new System.Drawing.Point(28, 72);
+            this.chkBoxSensor21.Location = new System.Drawing.Point(6, 72);
             this.chkBoxSensor21.Name = "chkBoxSensor21";
             this.chkBoxSensor21.Size = new System.Drawing.Size(75, 17);
             this.chkBoxSensor21.TabIndex = 20;
@@ -422,7 +422,7 @@
             // chkBoxSensor23
             // 
             this.chkBoxSensor23.AutoSize = true;
-            this.chkBoxSensor23.Location = new System.Drawing.Point(28, 95);
+            this.chkBoxSensor23.Location = new System.Drawing.Point(6, 95);
             this.chkBoxSensor23.Name = "chkBoxSensor23";
             this.chkBoxSensor23.Size = new System.Drawing.Size(75, 17);
             this.chkBoxSensor23.TabIndex = 21;
@@ -432,7 +432,7 @@
             // chkBoxSensor17
             // 
             this.chkBoxSensor17.AutoSize = true;
-            this.chkBoxSensor17.Location = new System.Drawing.Point(28, 26);
+            this.chkBoxSensor17.Location = new System.Drawing.Point(6, 26);
             this.chkBoxSensor17.Name = "chkBoxSensor17";
             this.chkBoxSensor17.Size = new System.Drawing.Size(75, 17);
             this.chkBoxSensor17.TabIndex = 18;
@@ -442,7 +442,7 @@
             // chkBoxSensor19
             // 
             this.chkBoxSensor19.AutoSize = true;
-            this.chkBoxSensor19.Location = new System.Drawing.Point(28, 49);
+            this.chkBoxSensor19.Location = new System.Drawing.Point(6, 49);
             this.chkBoxSensor19.Name = "chkBoxSensor19";
             this.chkBoxSensor19.Size = new System.Drawing.Size(75, 17);
             this.chkBoxSensor19.TabIndex = 19;
@@ -452,7 +452,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(854, 74);
+            this.label6.Location = new System.Drawing.Point(933, 72);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(59, 13);
             this.label6.TabIndex = 23;
@@ -468,7 +468,7 @@
             this.groupBox3.Controls.Add(this.chkBoxSensor28);
             this.groupBox3.Controls.Add(this.chkBoxSensor25);
             this.groupBox3.Controls.Add(this.chkBoxSensor26);
-            this.groupBox3.Location = new System.Drawing.Point(575, 19);
+            this.groupBox3.Location = new System.Drawing.Point(656, 19);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(176, 188);
             this.groupBox3.TabIndex = 6;
@@ -558,7 +558,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(769, 74);
+            this.label5.Location = new System.Drawing.Point(848, 72);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 13);
             this.label5.TabIndex = 22;
@@ -567,7 +567,7 @@
             // cmbStartYear
             // 
             this.cmbStartYear.FormattingEnabled = true;
-            this.cmbStartYear.Location = new System.Drawing.Point(772, 45);
+            this.cmbStartYear.Location = new System.Drawing.Point(851, 43);
             this.cmbStartYear.Name = "cmbStartYear";
             this.cmbStartYear.Size = new System.Drawing.Size(71, 21);
             this.cmbStartYear.TabIndex = 9;
@@ -575,7 +575,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(980, 29);
+            this.label4.Location = new System.Drawing.Point(1059, 27);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(55, 13);
             this.label4.TabIndex = 21;
@@ -583,7 +583,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(866, 123);
+            this.btnSave.Location = new System.Drawing.Point(945, 121);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 7;
@@ -594,7 +594,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(923, 29);
+            this.label3.Location = new System.Drawing.Point(1002, 27);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(51, 13);
             this.label3.TabIndex = 20;
@@ -602,7 +602,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(947, 123);
+            this.btnClear.Location = new System.Drawing.Point(1026, 121);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 8;
@@ -613,7 +613,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(846, 29);
+            this.label2.Location = new System.Drawing.Point(925, 27);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(62, 13);
             this.label2.TabIndex = 19;
@@ -622,7 +622,7 @@
             // cmbStartMonth
             // 
             this.cmbStartMonth.FormattingEnabled = true;
-            this.cmbStartMonth.Location = new System.Drawing.Point(849, 45);
+            this.cmbStartMonth.Location = new System.Drawing.Point(928, 43);
             this.cmbStartMonth.Name = "cmbStartMonth";
             this.cmbStartMonth.Size = new System.Drawing.Size(71, 21);
             this.cmbStartMonth.TabIndex = 10;
@@ -631,7 +631,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(769, 29);
+            this.label1.Location = new System.Drawing.Point(848, 27);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 18;
@@ -640,7 +640,7 @@
             // cmbStartDay
             // 
             this.cmbStartDay.FormattingEnabled = true;
-            this.cmbStartDay.Location = new System.Drawing.Point(926, 45);
+            this.cmbStartDay.Location = new System.Drawing.Point(1005, 43);
             this.cmbStartDay.Name = "cmbStartDay";
             this.cmbStartDay.Size = new System.Drawing.Size(48, 21);
             this.cmbStartDay.TabIndex = 11;
@@ -648,7 +648,7 @@
             // cmbEndTime
             // 
             this.cmbEndTime.FormattingEnabled = true;
-            this.cmbEndTime.Location = new System.Drawing.Point(980, 90);
+            this.cmbEndTime.Location = new System.Drawing.Point(1059, 88);
             this.cmbEndTime.Name = "cmbEndTime";
             this.cmbEndTime.Size = new System.Drawing.Size(42, 21);
             this.cmbEndTime.TabIndex = 16;
@@ -656,7 +656,7 @@
             // cmbStartTime
             // 
             this.cmbStartTime.FormattingEnabled = true;
-            this.cmbStartTime.Location = new System.Drawing.Point(980, 45);
+            this.cmbStartTime.Location = new System.Drawing.Point(1059, 43);
             this.cmbStartTime.Name = "cmbStartTime";
             this.cmbStartTime.Size = new System.Drawing.Size(42, 21);
             this.cmbStartTime.TabIndex = 12;
@@ -664,7 +664,7 @@
             // cmbEndDay
             // 
             this.cmbEndDay.FormattingEnabled = true;
-            this.cmbEndDay.Location = new System.Drawing.Point(926, 90);
+            this.cmbEndDay.Location = new System.Drawing.Point(1005, 88);
             this.cmbEndDay.Name = "cmbEndDay";
             this.cmbEndDay.Size = new System.Drawing.Size(48, 21);
             this.cmbEndDay.TabIndex = 15;
@@ -672,7 +672,7 @@
             // cmbEndYear
             // 
             this.cmbEndYear.FormattingEnabled = true;
-            this.cmbEndYear.Location = new System.Drawing.Point(772, 90);
+            this.cmbEndYear.Location = new System.Drawing.Point(851, 88);
             this.cmbEndYear.Name = "cmbEndYear";
             this.cmbEndYear.Size = new System.Drawing.Size(71, 21);
             this.cmbEndYear.TabIndex = 13;
@@ -680,7 +680,7 @@
             // cmbEndMonth
             // 
             this.cmbEndMonth.FormattingEnabled = true;
-            this.cmbEndMonth.Location = new System.Drawing.Point(849, 90);
+            this.cmbEndMonth.Location = new System.Drawing.Point(928, 88);
             this.cmbEndMonth.Name = "cmbEndMonth";
             this.cmbEndMonth.Size = new System.Drawing.Size(71, 21);
             this.cmbEndMonth.TabIndex = 14;
@@ -690,7 +690,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 792);
+            this.ClientSize = new System.Drawing.Size(1184, 782);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.chart1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

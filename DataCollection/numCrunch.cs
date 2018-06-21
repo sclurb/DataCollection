@@ -1,58 +1,54 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Windows.Forms;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
+    /// <summary>
+    /// This Class is used to access the DataCollection database used for the temperature-humidity data board
+    /// </summary>
     public class numCrunch
     {
-
-
         //
         private string configQuery = "select * from S_List";
         private string connectionString;
-
         // Insert S_Data into DataCollection Database
         private string strSelectQuery = "SELECT Enable FROM S_List";
 
         private string Insert2 = "INSERT INTO MainData (Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Temp7, Temp8, Temp9, " +
             " Temp10, Temp11, Temp12, Temp13, Temp14, Temp15, Temp16, Temph1, Hum1, Temph2, Hum2, Temph3, Hum3, Temph4, Hum4, " +
             "Volts1, Volts2, Volts3, Volts4, Volts5, Volts6, Volts7, Volts8, ReadDate) VALUES (";
+        /// <summary>
+        /// This class instantiates with the connection string for some reason... we'll fix that
+        /// </summary>
         public numCrunch()
         {
-            if (DataCollection.set)
-            {
-                connectionString = Properties.Settings.Default.ConnectionString;
-            }
-            else
-            {
-                
-                //connectionString = "data source = EPHOT-FL\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
-                connectionString = GetInstance();
-                Properties.Settings.Default.ConnectionString = connectionString;
-                Properties.Settings.Default.Attached = true;
-                Properties.Settings.Default.Save();
-                DataCollection.set = true;
-            }
+            //connectionString = "data source = Temp-PC\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
+            connectionString = GetConnString();
         }
 
-
-        
-        public string GetInstance()
+        public string GetConnString()
         {
-            SqlProbe chk = new SqlProbe();
-            string inst = chk.InstanceName;
-            string conn = "data source={0}; " +
-                                    "initial catalog=DataCollection; " +
-                                    "integrated security=True; " +
-                                    "AttachDBFilename=C:\\Data\\DataCollection.mdf; " +
-                                    "MultipleActiveResultSets=True; ";
-            string result = string.Format(conn, inst);
-            // MessageBox.Show(chk.InstanceName + " and the windows version is: " + chk.VersionName);
-            return result;
+            string line;
+            try
+            {
+                using (StreamReader sr = new StreamReader("C:\\Data\\connString.txt"))
+                {
+                    line = sr.ReadToEnd();
+                }
+                return line;
+            }
+            catch(Exception ex)
+            {
+                bool bReturnLog = false;
+                ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                //false for writing log entry to customized text file
+                bReturnLog = ErrorLog.ErrorRoutine(false, ex);
+                return "Failed to get Connection String";
+            }
         }
-        
 
         // This method inserts datarows into the MainData table in the database
         public string insert(double[] values)
@@ -179,8 +175,6 @@ namespace DataCollection
                 }
             }
         }
-
-
     }
 
 }

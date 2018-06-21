@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace DataCollection
+namespace DataCollectionCustomInstaller
 {
     public partial class Chart : Form
     {
@@ -28,7 +28,9 @@ namespace DataCollection
 
         private void sDATABindingSource_CurrentChanged(object sender, EventArgs e)
         {}
-
+        /// <summary>
+        /// This method is used to fill all the date selector  combos
+        /// </summary>
         private void populate()
         {
             cmbStartYear.Items.Clear();
