@@ -95,7 +95,7 @@ namespace DataCollectionCustomInstaller
                 try
                 {
                     com.PortName = PortName;
-                    com.BaudRate = 9600;
+                    com.BaudRate = 19200;
                     com.DataBits = 8;
                     com.Parity = Parity.None;
                     com.StopBits = StopBits.Two;
@@ -253,10 +253,12 @@ namespace DataCollectionCustomInstaller
         private string ExtractOnlyCommPort (string port)
         {
             int index = 0;
+            string result = null;
             if (port.Contains(")"))
             {
                 index = port.IndexOf(")");
-               return port.Substring(0, index);
+               result = port.Substring(0, index);
+                return result;
             }
             else
             {
