@@ -139,6 +139,10 @@ namespace DataCollectionCustomInstaller
                     checkBox30.Checked = (bool)result.Rows[29][4];
                     checkBox31.Checked = (bool)result.Rows[30][4];
                     checkBox32.Checked = (bool)result.Rows[31][4];
+                    checkBox33.Checked = (bool)result.Rows[32][4];
+                    checkBox34.Checked = (bool)result.Rows[33][4];
+                    checkBox35.Checked = (bool)result.Rows[34][4];
+                    checkBox36.Checked = (bool)result.Rows[35][4];
                 }
             }
             catch (Exception e)
@@ -207,10 +211,10 @@ namespace DataCollectionCustomInstaller
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox30.Text), Convert.ToDecimal(textBox130.Text), checkBox30.Checked, 30));
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox31.Text), Convert.ToDecimal(textBox131.Text), checkBox31.Checked, 31));
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox32.Text), Convert.ToDecimal(textBox132.Text), checkBox32.Checked, 32));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox33.Text), 0, false, 33));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox34.Text), 0, false, 34));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), 0, false, 35));
-            crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), 0, false, 36));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox33.Text), 0, checkBox33.Checked, 33));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox34.Text), 0, checkBox34.Checked, 34));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), 0, checkBox35.Checked, 35));
+            crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), 0, checkBox36.Checked, 36));
         }
 
         private string makeQuery(string first, string second, decimal third, bool fourth, int x)

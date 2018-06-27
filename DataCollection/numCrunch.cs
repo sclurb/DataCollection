@@ -85,7 +85,7 @@ namespace DataCollectionCustomInstaller
         // This method returns an array of bools which are the Enable column of the S_List table in the Database
         public bool[] dataEnable()
         {
-            bool [] switches = new bool[32];
+            bool[] switches = new bool[36];
             try
             {
                 DataTable result = new DataTable();
@@ -96,7 +96,7 @@ namespace DataCollectionCustomInstaller
                     {
                         SqlDataReader rdr = cmd.ExecuteReader();
                         result.Load(rdr);
-                        int count = result.Rows.Count - 4;
+                        int count = result.Rows.Count;
                         for (int i = 0; i < count; i++)
                         {
                             switches[i] = (bool)result.Rows[i][0];
