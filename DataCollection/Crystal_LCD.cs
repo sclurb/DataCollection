@@ -114,6 +114,10 @@ namespace DataCollectionCustomInstaller
 
             if (com.IsOpen)
             {
+                SendData(0x0f);
+                SendData(Properties.Settings.Default.Contrast);
+                SendData(0x0e);
+                SendData(Properties.Settings.Default.Backlight);
                 SendData(0x0c);         // Form-Feed (Clear Display)
                 SendData(0x04);         // Hide Cursor
                 SendData(0x18);         // Word wrap Off.  (otherwise there is a Carraige return as soon as you reach 20 charcters)
@@ -191,10 +195,10 @@ namespace DataCollectionCustomInstaller
         private void DisplayText(string[] tempHums)
         {
             SendData(0x0c);         // Turn word Wrapp off
-            string line1 = "1 T " + tempHums[0] + " H " + tempHums[1];
-            string line2 = "2 T " + tempHums[2] + " H " + tempHums[3];
-            string line3 = "3 T " + tempHums[4] + " H " + tempHums[5];
-            string line4 = "4 T " + tempHums[6] + " H " + tempHums[7];
+            string line1 = "1 " + tempHums[0] + " " + tempHums[1];
+            string line2 = "2 " + tempHums[2] + " " + tempHums[3];
+            string line3 = "3 " + tempHums[4] + " " + tempHums[5];
+            string line4 = "4 " + tempHums[6] + " " + tempHums[7];
             SendText(line1);
             SendData(0x0a);
             SendData(0x0d);
@@ -228,7 +232,7 @@ namespace DataCollectionCustomInstaller
             }
             catch(Exception ex)
             {
-                //MessageBox.Show("FindDeviceCommPort() \r\n" + ex.ToString());
+                MessageBox.Show("FindDeviceCommPort() \r\n" + ex.ToString());
                 return false;
             }
 
@@ -244,7 +248,8 @@ namespace DataCollectionCustomInstaller
                 {
                     string blah = comListItem.ToLower();
                     index = blah.IndexOf(searchString2);
-                    return blah.Substring(index, 6);
+                    blah = blah.Substring(index, 5);
+                    return blah;
                 }
             }
             return null;
@@ -259,6 +264,10 @@ namespace DataCollectionCustomInstaller
                 index = port.IndexOf(")");
                result = port.Substring(0, index);
                 return result;
+            }
+            else if(port.Length == 5)
+            {
+                return port;
             }
             else
             {

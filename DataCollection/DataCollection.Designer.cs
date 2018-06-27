@@ -66,6 +66,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tripPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lCDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBox25 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -108,7 +109,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
-            this.lCDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -459,9 +460,16 @@
             // tripPointsToolStripMenuItem
             // 
             this.tripPointsToolStripMenuItem.Name = "tripPointsToolStripMenuItem";
-            this.tripPointsToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+            this.tripPointsToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
             this.tripPointsToolStripMenuItem.Text = "Trip Points";
             this.tripPointsToolStripMenuItem.Click += new System.EventHandler(this.tripPointsToolStripMenuItem_Click);
+            // 
+            // lCDToolStripMenuItem
+            // 
+            this.lCDToolStripMenuItem.Name = "lCDToolStripMenuItem";
+            this.lCDToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.lCDToolStripMenuItem.Text = "LCD";
+            this.lCDToolStripMenuItem.Click += new System.EventHandler(this.lCDToolStripMenuItem_Click);
             // 
             // groupBox3
             // 
@@ -854,24 +862,29 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(13, 313);
+            this.label33.Location = new System.Drawing.Point(248, 355);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(41, 13);
             this.label33.TabIndex = 52;
             this.label33.Text = "label33";
+            this.label33.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // lCDToolStripMenuItem
+            // btnRefresh
             // 
-            this.lCDToolStripMenuItem.Name = "lCDToolStripMenuItem";
-            this.lCDToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.lCDToolStripMenuItem.Text = "LCD";
-            this.lCDToolStripMenuItem.Click += new System.EventHandler(this.lCDToolStripMenuItem_Click);
+            this.btnRefresh.Location = new System.Drawing.Point(92, 312);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(60, 30);
+            this.btnRefresh.TabIndex = 53;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // DataCollection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(745, 381);
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.label33);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.button7);
@@ -981,6 +994,7 @@
         private System.Windows.Forms.ToolStripMenuItem tripPointsToolStripMenuItem;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.ToolStripMenuItem lCDToolStripMenuItem;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
 
