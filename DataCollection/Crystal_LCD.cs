@@ -244,7 +244,7 @@ namespace DataCollectionCustomInstaller
                 {
                     string blah = comListItem.ToLower();
                     index = blah.IndexOf(searchString2);
-                    return blah.Substring(index, 5);
+                    return blah.Substring(index, 6);
                 }
             }
             return null;
