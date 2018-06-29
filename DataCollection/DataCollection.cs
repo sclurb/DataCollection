@@ -33,6 +33,9 @@ namespace DataCollectionCustomInstaller
 
         public static bool set = false;
 
+        numCrunch crunch1 = new numCrunch();
+        DataTable fillit = new DataTable();
+
 
         public DataCollection()
         {
@@ -188,10 +191,10 @@ namespace DataCollectionCustomInstaller
                 if (tempArray[19] == 0)
                 {
                     double[] humidArray = arrange.ArrangeHumids(tempArray);
-                    TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0]);
-                    TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2]);
-                    TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4]);
-                    TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6]);
+                    TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0], fillit.Rows[32][1].ToString());
+                    TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2], fillit.Rows[33][1].ToString());
+                    TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4], fillit.Rows[34][1].ToString());
+                    TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6], fillit.Rows[35][1].ToString());
                     List<TempHumDew> humDew = new List<TempHumDew>();
                     humDew.Add(hum1);
                     humDew.Add(hum2);
@@ -241,8 +244,7 @@ namespace DataCollectionCustomInstaller
 
         private void FillLabels()
         {
-            numCrunch crunch1 = new numCrunch();
-            DataTable fillit = new DataTable();
+
             fillit = crunch1.configLoad();
 
             label1.Text = fillit.Rows[0][1].ToString();
@@ -394,7 +396,7 @@ namespace DataCollectionCustomInstaller
             textBox32.Text = ProcessedValues[31].ToString("0.");
             BlankDisplay();
         }
-
+        #region BlankDisplay
         private void BlankDisplay()
         {
             numCrunch log = new numCrunch();
@@ -700,13 +702,14 @@ namespace DataCollectionCustomInstaller
                 label32.Visible = true;
             }
         }
+        #endregion BlankDisplay
 
         #endregion fill methods
 
 
         #region Methods
 
-        public  void Adjust(AdjustEventArgs e)
+        public void Adjust(AdjustEventArgs e)
         {
             lcd.SendData(e.Cmd);
             lcd.SendData(e.Data);
