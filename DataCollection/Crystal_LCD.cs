@@ -176,15 +176,19 @@ namespace DataCollectionCustomInstaller
         /// <param name="readings"></param>
         public void ExtractStrings(List<TempHumDew> readings)
         {
-            string[] tempHums = new string[8];
-            tempHums[0] = readings[0].TempF.ToString("0.0") + "F";
-            tempHums[1] = readings[0].RHT.ToString("0.0") + "%RH";
-            tempHums[2] = readings[1].TempF.ToString("0.0") + "F";
-            tempHums[3] = readings[1].RHT.ToString("0.0") + "%RH";
-            tempHums[4] = readings[2].TempF.ToString("0.0") + "F";
-            tempHums[5] = readings[2].RHT.ToString("0.0") + "%RH";
-            tempHums[6] = readings[3].TempF.ToString("0.0") + "F";
-            tempHums[7] = readings[3].RHT.ToString("0.0") + "%RH";
+            string[] tempHums = new string[12];
+            tempHums[0] = readings[0].TempF.ToString("0.") + "F";
+            tempHums[1] = readings[0].RHT.ToString("0.") + "%RH";
+            tempHums[2] = readings[0].Mnemonic;
+            tempHums[3] = readings[1].TempF.ToString("0.") + "F";
+            tempHums[4] = readings[1].RHT.ToString("0.") + "%RH";
+            tempHums[5] = readings[1].Mnemonic;
+            tempHums[6] = readings[2].RHT.ToString("0.") + "%RH";
+            tempHums[7] = readings[2].TempF.ToString("0.") + "F";
+            tempHums[8] = readings[2].Mnemonic;
+            tempHums[9] = readings[3].RHT.ToString("0.") + "%RH";
+            tempHums[10] = readings[3].TempF.ToString("0.") + "F";
+            tempHums[11] = readings[3].Mnemonic;
             DisplayText(tempHums);
         }
         /// <summary>
@@ -195,10 +199,10 @@ namespace DataCollectionCustomInstaller
         private void DisplayText(string[] tempHums)
         {
             SendData(0x0c);         // Turn word Wrapp off
-            string line1 = "1 " + tempHums[0] + " " + tempHums[1];
-            string line2 = "2 " + tempHums[2] + " " + tempHums[3];
-            string line3 = "3 " + tempHums[4] + " " + tempHums[5];
-            string line4 = "4 " + tempHums[6] + " " + tempHums[7];
+            string line1 = tempHums[0] + " " + tempHums[1] + " " + tempHums[2];
+            string line2 = tempHums[3] + " " + tempHums[4] + " " + tempHums[5];
+            string line3 = tempHums[6] + " " + tempHums[7] + " " + tempHums[8];
+            string line4 = tempHums[9] + " " + tempHums[10] + " " + tempHums[11];
             SendText(line1);
             SendData(0x0a);
             SendData(0x0d);
@@ -289,6 +293,11 @@ namespace DataCollectionCustomInstaller
                 portDeviceInfo.Add((string)mo.GetPropertyValue("Name"));
             }
             return portDeviceInfo;
+        }
+
+        private void GetNmenmonic()
+        {
+
         }
     }
 }

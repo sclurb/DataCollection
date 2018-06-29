@@ -16,6 +16,7 @@ namespace DataCollectionCustomInstaller
 
         private double rawTemp;                 // raw temperature data from sensor 
         private double rawHumid;                // raw humidiy data from sensor
+        private string mnemonic;
  
         /// <summary>
         /// returns a an object containig the processed values from sensor data.
@@ -30,6 +31,20 @@ namespace DataCollectionCustomInstaller
         /// <summary>
         /// Holds a Temperature pre-processsed value from the sensor.
         /// </summary>
+        /// 
+        public TempHumDew(double temp, double humid, string name)
+        {
+            rawTemp = temp;
+            rawHumid = humid;
+            mnemonic = name;
+
+        }
+
+        public string Mnemonic
+        {
+            get { return mnemonic; }
+            set { mnemonic = value; }
+        }
         public double RawTemp
         {
             get { return rawTemp; }
