@@ -106,7 +106,9 @@ namespace DataCollectionCustomInstaller
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+
+        private void btnSetTripPoint1_Click(object sender, EventArgs e)
         {
             double val;
             if (!Double.TryParse(textBox1.Text, out val))
@@ -118,7 +120,7 @@ namespace DataCollectionCustomInstaller
                 Properties.Settings.Default.TripPoint1 = val;
                 label3.Text = val.ToString();
             }
-            if (checkBox1.Checked )
+            if (checkBox1.Checked)
             {
                 Properties.Settings.Default.Enable1 = true;
             }
@@ -140,7 +142,9 @@ namespace DataCollectionCustomInstaller
         }
 
 
-        private void button2_Click_1(object sender, EventArgs e)
+
+
+        private void btnSetTripPoint2_Click_1(object sender, EventArgs e)
         {
             double val;
             if (!Double.TryParse(textBox2.Text, out val))
@@ -152,7 +156,7 @@ namespace DataCollectionCustomInstaller
                 Properties.Settings.Default.TripPoint2 = val;
                 label4.Text = val.ToString();
             }
-            if (checkBox2.Checked )
+            if (checkBox2.Checked)
             {
                 Properties.Settings.Default.Enable2 = true;
             }
@@ -173,7 +177,9 @@ namespace DataCollectionCustomInstaller
             Properties.Settings.Default.Save();
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
+
+
+        private void btnSetTripPoint3_Click_1(object sender, EventArgs e)
         {
             double val;
             if (!Double.TryParse(textBox3.Text, out val))
@@ -186,7 +192,7 @@ namespace DataCollectionCustomInstaller
                 Properties.Settings.Default.TripPoint3 = val;
                 label7.Text = val.ToString();
             }
-            if (checkBox3.Checked )
+            if (checkBox3.Checked)
             {
                 Properties.Settings.Default.Enable3 = true;
             }
@@ -208,6 +214,11 @@ namespace DataCollectionCustomInstaller
         }
 
         private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }

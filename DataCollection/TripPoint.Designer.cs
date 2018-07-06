@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TripPoint));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnSetTripPoint1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -42,7 +42,7 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnSetTripPoint2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -53,7 +53,7 @@
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnSetTripPoint3 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -62,7 +62,7 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -74,7 +74,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.btnSetTripPoint1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textBox1);
@@ -97,15 +97,15 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "label3";
             // 
-            // button1
+            // btnSetTripPoint1
             // 
-            this.button1.Location = new System.Drawing.Point(184, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Set Trip Point";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnSetTripPoint1.Location = new System.Drawing.Point(184, 27);
+            this.btnSetTripPoint1.Name = "btnSetTripPoint1";
+            this.btnSetTripPoint1.Size = new System.Drawing.Size(97, 23);
+            this.btnSetTripPoint1.TabIndex = 6;
+            this.btnSetTripPoint1.Text = "Set Trip Point";
+            this.btnSetTripPoint1.UseVisualStyleBackColor = true;
+            this.btnSetTripPoint1.Click += new System.EventHandler(this.btnSetTripPoint1_Click);
             // 
             // label2
             // 
@@ -186,7 +186,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.btnSetTripPoint2);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.textBox2);
@@ -209,15 +209,15 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "label4";
             // 
-            // button2
+            // btnSetTripPoint2
             // 
-            this.button2.Location = new System.Drawing.Point(184, 27);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Set Trip Point";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            this.btnSetTripPoint2.Location = new System.Drawing.Point(184, 27);
+            this.btnSetTripPoint2.Name = "btnSetTripPoint2";
+            this.btnSetTripPoint2.Size = new System.Drawing.Size(97, 23);
+            this.btnSetTripPoint2.TabIndex = 6;
+            this.btnSetTripPoint2.Text = "Set Trip Point";
+            this.btnSetTripPoint2.UseVisualStyleBackColor = true;
+            this.btnSetTripPoint2.Click += new System.EventHandler(this.btnSetTripPoint2_Click_1);
             // 
             // label5
             // 
@@ -298,7 +298,7 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.Controls.Add(this.button3);
+            this.groupBox5.Controls.Add(this.btnSetTripPoint3);
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.label9);
             this.groupBox5.Controls.Add(this.textBox3);
@@ -321,15 +321,15 @@
             this.label7.TabIndex = 7;
             this.label7.Text = "label7";
             // 
-            // button3
+            // btnSetTripPoint3
             // 
-            this.button3.Location = new System.Drawing.Point(184, 27);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(97, 23);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Set Trip Point";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            this.btnSetTripPoint3.Location = new System.Drawing.Point(184, 27);
+            this.btnSetTripPoint3.Name = "btnSetTripPoint3";
+            this.btnSetTripPoint3.Size = new System.Drawing.Size(97, 23);
+            this.btnSetTripPoint3.TabIndex = 6;
+            this.btnSetTripPoint3.Text = "Set Trip Point";
+            this.btnSetTripPoint3.UseVisualStyleBackColor = true;
+            this.btnSetTripPoint3.Click += new System.EventHandler(this.btnSetTripPoint3_Click_1);
             // 
             // label8
             // 
@@ -407,22 +407,22 @@
             this.radioButton5.Text = "Over Entered Value";
             this.radioButton5.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btnClose
             // 
-            this.button4.Location = new System.Drawing.Point(18, 502);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Close";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnClose.Location = new System.Drawing.Point(18, 502);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 3;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // TripPoint
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 561);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -456,11 +456,11 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSetTripPoint1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnSetTripPoint2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox2;
@@ -471,7 +471,7 @@
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnSetTripPoint3;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBox3;
@@ -480,6 +480,6 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.RadioButton radioButton5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnClose;
     }
 }
