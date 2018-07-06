@@ -119,7 +119,7 @@ namespace DataCollectionCustomInstaller
                 SendData(0x0e);
                 SendData(Properties.Settings.Default.Backlight);
                 SendData(0x0c);         // Form-Feed (Clear Display)
-                SendData(0x04);         // Hide Cursor
+               // SendData(0x04);         // Hide Cursor
                 SendData(0x18);         // Word wrap Off.  (otherwise there is a Carraige return as soon as you reach 20 charcters)
                 SendText("Display Ready \r\n");
                 SendText(DateTime.Now.ToString());
@@ -183,13 +183,14 @@ namespace DataCollectionCustomInstaller
             tempHums[3] = readings[1].TempF.ToString("0.") + "F";
             tempHums[4] = readings[1].RHT.ToString("0.") + "%RH";
             tempHums[5] = readings[1].Mnemonic;
-            tempHums[6] = readings[2].RHT.ToString("0.") + "%RH";
-            tempHums[7] = readings[2].TempF.ToString("0.") + "F";
+            tempHums[6] = readings[2].TempF.ToString("0.") + "F";
+            tempHums[7] = readings[2].RHT.ToString("0.") + "%RH";
             tempHums[8] = readings[2].Mnemonic;
-            tempHums[9] = readings[3].RHT.ToString("0.") + "%RH";
-            tempHums[10] = readings[3].TempF.ToString("0.") + "F";
+            tempHums[9] = readings[3].TempF.ToString("0.") + "F";
+            tempHums[10] = readings[3].RHT.ToString("0.") + "%RH";
             tempHums[11] = readings[3].Mnemonic;
             DisplayText(tempHums);
+            
         }
         /// <summary>
         /// This method takes a string[4] as a parameter and puts each sepate string into the proper line 
