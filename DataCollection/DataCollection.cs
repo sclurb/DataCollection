@@ -104,7 +104,8 @@ namespace DataCollectionCustomInstaller
                     comPort.comm.Write(txString, 0, txString.Length);
                 }
                 catch (IOException)
-                { MessageBox.Show("IOException"); }
+                {
+                    MessageBox.Show("IOException"); }
                 catch (ArgumentNullException)
                 { MessageBox.Show("Argument Null"); }
                 catch (InvalidOperationException)
@@ -190,11 +191,14 @@ namespace DataCollectionCustomInstaller
             {
                 if (tempArray[19] == 0)
                 {
+                    Trim trim = new Trim();
+                    List<Trim> list = new List<Trim>();
+                    list = trim.ReturnValues();
                     double[] humidArray = arrange.ArrangeHumids(tempArray);
-                    TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0], fillit.Rows[32][1].ToString());
-                    TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2], fillit.Rows[33][1].ToString());
-                    TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4], fillit.Rows[34][1].ToString());
-                    TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6], fillit.Rows[35][1].ToString());
+                    TempHumDew hum1 = new TempHumDew(humidArray[1], humidArray[0], fillit.Rows[32][1].ToString(), list[0].TrimValue, list[0].Enabled);
+                    TempHumDew hum2 = new TempHumDew(humidArray[3], humidArray[2], fillit.Rows[33][1].ToString(), list[2].TrimValue, list[2].Enabled);
+                    TempHumDew hum3 = new TempHumDew(humidArray[5], humidArray[4], fillit.Rows[34][1].ToString(), list[4].TrimValue, list[4].Enabled);
+                    TempHumDew hum4 = new TempHumDew(humidArray[7], humidArray[6], fillit.Rows[35][1].ToString(), list[6].TrimValue, list[6].Enabled);
                     List<TempHumDew> humDew = new List<TempHumDew>();
                     humDew.Add(hum1);
                     humDew.Add(hum2);
@@ -202,7 +206,6 @@ namespace DataCollectionCustomInstaller
                     humDew.Add(hum4);
                     fillHumps(humDew);
                     lcd.ExtractStrings(humDew);
-                    Trim trim = new Trim();
                     procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
                     FillAll(procdValues);
                     label33.Text = "LCD Present = " + lcd.IsOpen.ToString();
@@ -213,7 +216,6 @@ namespace DataCollectionCustomInstaller
             // checking to see if rxdata is for aux inputs
             if (tempArray[1] == 0x30 && tempArray.Length == 20)
             {
-                
                 if (tempArray[19] == 0)
                 {
                     double[] auxArray = arrange.ArrangeAuxs(tempArray);
@@ -221,13 +223,11 @@ namespace DataCollectionCustomInstaller
                     fillAuxs(auxArray);
                 }
                 rxData.Clear();
-                
             }
 
             // checking to see if information is for relays
             if (tempArray[1] == 0x50 && tempArray.Length == 7)
             {
-                
                 if (tempArray[6] == 0)
                 {
                     DisplayRelayStatus(tempArray[2]);
@@ -287,22 +287,18 @@ namespace DataCollectionCustomInstaller
                 {
                     procdValues[i] = proccessValues[i];
                 }
-
                 RXcount = 1;
             }
             catch (NullReferenceException e)
             {
                 bool bReturnLog = false;
-
                 ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                 //false for writing log entry to customized text file
                 bReturnLog = ErrorLog.ErrorRoutine(false, e);
-
                 if (false == bReturnLog)
-                    MessageBox.Show("Unable to write a log");
+                MessageBox.Show("Unable to write a log");
                 RXcount = 1;
             }
-
         }
 
         public void fillHumps(List<TempHumDew> humps)
