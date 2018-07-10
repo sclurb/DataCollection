@@ -17,6 +17,9 @@ namespace DataCollectionCustomInstaller
         private double rawTemp;                 // raw temperature data from sensor 
         private double rawHumid;                // raw humidiy data from sensor
         private string mnemonic;
+        private double trim;
+        private bool enabled = false;
+        private double local = 0;
  
         /// <summary>
         /// returns a an object containig the processed values from sensor data.
@@ -32,12 +35,25 @@ namespace DataCollectionCustomInstaller
         /// Holds a Temperature pre-processsed value from the sensor.
         /// </summary>
         /// 
-        public TempHumDew(double temp, double humid, string name)
+        public TempHumDew(double temp, double humid, string name, double trimValue, bool ena)
         {
             rawTemp = temp;
             rawHumid = humid;
             mnemonic = name;
+            trim = trimValue;
+            enabled = ena;
+        }
 
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+
+        public double Trim
+        {
+            get { return trim; }
+            set { trim = value; }
         }
 
         public string Mnemonic
@@ -68,16 +84,29 @@ namespace DataCollectionCustomInstaller
         {
             get
             {
+                local = 0;
+                if (enabled == true)
+                {
+                    local = ((rawTemp * d2) + d1) + Convert();
+                }
+                if (enabled == false)
+                {
+                    local = (rawTemp * d2) + d1;
+                }
                 if (rawTemp == 0xf4f4)
                 {
                     return 0;
                 }
                 else
                 {
-                    return (rawTemp * d2) + d1;
+                    return local;
                 }
             }
-                
+        }
+
+        public double Convert()
+        {
+            return trim / 1.8;
         }
 
         /// <summary>
@@ -153,7 +182,9 @@ namespace DataCollectionCustomInstaller
                 }
                 else
                 {
+
                     return ((Math.Pow((RHT / 100), .125) * (112 + (.9 * TempC)) + (.1 * TempC) - 112) * 1.8) + 32;
+
                 }
                 
             }
@@ -165,16 +196,27 @@ namespace DataCollectionCustomInstaller
         {
             get
             {
+                local = 0;
+                if(enabled == false)
+                {
+                    local = (((rawTemp * d2) + d1) * 1.8) + 32;
+                }
+                if(enabled == true)
+                {
+                    local = (((rawTemp * d2) + d1) * 1.8) + 32 + trim;
+                }
                 if (rawTemp == 0xf4f4)
                 {
                     return 0;
                 }
                 else
                 {
-                    return (((rawTemp * d2) + d1) * 1.8) + 32;
+                    return local;
                 }
             }
         }
+
+
 
 
     }

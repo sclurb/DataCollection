@@ -11,7 +11,6 @@ namespace DataCollectionCustomInstaller
     /// </summary>
     class Trim
     {
- 
         public Trim()
         {
 
@@ -55,18 +54,61 @@ namespace DataCollectionCustomInstaller
             try
             {
                 int count = result.Rows.Count;
-                for (int i = 0; i < 32; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     Trim temp = new Trim();
-                    temp.Enabled = Convert.ToBoolean(result.Rows[i][4]);
-                    temp.TrimValue = Convert.ToDouble(result.Rows[i][3].ToString());
+                    if ( i == 16)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if(i == 17)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else if (i == 18)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 19)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else if (i == 20)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 21)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else if (i == 22)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 23)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i][3].ToString());
+                        
+                    }
                     procTrim.Add(temp);
                 }
                 return procTrim;
             }
             catch (Exception e)
             {
-
                 System.Windows.Forms.MessageBox.Show("Failed to get Trim Values and Enables \r \n"
                     + "Here's Why.... \r \n" + e.ToString());
                 return null;
@@ -83,20 +125,94 @@ namespace DataCollectionCustomInstaller
         public double[] ProcessTrim(List<Trim> list, double[] proccessedValues)
         {
             double[] values = new double[32];
-
             for (int i = 0; i < 32; i++)
             {
-                if(list[i].Enabled == true)
+                if(i < 16)
                 {
-                    values[i] = list[i].TrimValue + proccessedValues[i];
+                    if (list[i].Enabled == true)
+                    {
+                        values[i] = list[i].TrimValue + proccessedValues[i];
+                    }
+                    else
+                    {
+                        values[i] = proccessedValues[i];
+                    }
                 }
                 else
                 {
                     values[i] = proccessedValues[i];
                 }
-                
+
             }
             return values;
+        }
+
+        public List<Trim> ReturnValues()
+        {
+            numCrunch pluto = new numCrunch();
+            DataTable result = pluto.configLoad();
+            List<Trim> procTrim = new List<Trim>();
+            try
+            {
+                int count = result.Rows.Count;
+                for (int i = 16; i < 24; i++)
+                {
+                    Trim temp = new Trim();
+                    if (i == 16)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 17)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else if (i == 18)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 19)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else if (i == 20)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 21)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else if (i == 22)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i + 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i + 1][3].ToString());
+                    }
+                    else if (i == 23)
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i - 1][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i - 1][3].ToString());
+                    }
+                    else
+                    {
+                        temp.Enabled = Convert.ToBoolean(result.Rows[i][4]);
+                        temp.TrimValue = Convert.ToDouble(result.Rows[i][3].ToString());
+
+                    }
+                    procTrim.Add(temp);
+                }
+                return procTrim;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(" Oops! Here's Why.... \r \n" + e.ToString());
+                return null;
+            }
         }
 
     }
