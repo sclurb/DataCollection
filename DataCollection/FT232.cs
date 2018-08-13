@@ -60,6 +60,9 @@ namespace DataCollectionCustomInstaller
                     deviceList[6] = "9600";
                 }
             }
+            ftStatus = myFtdiDevice.SetResetPipeRetryCount(150);
+
+
             ftStatus = myFtdiDevice.Close();
             if (deviceList[5] != null)
             {
@@ -82,6 +85,31 @@ namespace DataCollectionCustomInstaller
             comm.Parity = Parity.None;
             comm.StopBits = StopBits.One;
             comm.Open();
+        }
+
+        public bool ResetFtdi()
+        {
+
+            ftStatus = myFtdiDevice.GetNumberOfDevices(ref ftdiDeviceCount);  //instance, method changes uint by reference
+            if (ftdiDeviceCount > 0)
+            {
+                FTDI.FT_DEVICE_INFO_NODE[] ftdiDeviceList = new FTDI.FT_DEVICE_INFO_NODE[ftdiDeviceCount];
+                string SerNum = ftdiDeviceList[0].SerialNumber.ToString();
+                ftStatus = myFtdiDevice.OpenBySerialNumber(SerNum);
+
+                if (ftStatus == FTDI.FT_STATUS.FT_OK)
+                {
+                    myFtdiDevice.CyclePort();
+
+                    if (ftStatus == FTDI.FT_STATUS.FT_OK)
+                    {
+                        ftStatus = myFtdiDevice.Close();
+                        return true;
+                    }
+                }
+
+            }
+            return false;
         }
     }
 }

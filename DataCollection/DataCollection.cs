@@ -103,9 +103,23 @@ namespace DataCollectionCustomInstaller
                 {
                     comPort.comm.Write(txString, 0, txString.Length);
                 }
-                catch (IOException)
+                catch (IOException e)
                 {
-                    MessageBox.Show("IOException"); }
+                    comPort.comm.Close();
+
+                    if(comPort.ResetFtdi() == true)
+                    {
+                        InfoFTDI = comPort.InitFTDI();
+                    }
+
+
+                    bool bReturnLog = false;
+                    ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                    //false for writing log entry to customized text file
+                    bReturnLog = ErrorLog.ErrorRoutine(false, e);
+                     MessageBox.Show("IOException");
+
+                }
                 catch (ArgumentNullException)
                 { MessageBox.Show("Argument Null"); }
                 catch (InvalidOperationException)
@@ -122,7 +136,7 @@ namespace DataCollectionCustomInstaller
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                     //false for writing log entry to customized text file
                     bReturnLog = ErrorLog.ErrorRoutine(false, ex);
-                    //MessageBox.Show(ex.ToString()); 
+                    MessageBox.Show(ex.ToString()); 
                 }
             }
         }
