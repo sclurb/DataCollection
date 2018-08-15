@@ -24,6 +24,9 @@ namespace DataCollectionCustomInstaller
         //private SerialPort comPort = new SerialPort();
         FT232 comPort = new FT232();
         public Crystal_LCD lcd = new Crystal_LCD();
+        public FormatLCD blas = new FormatLCD();
+
+        public FTDI_Access usb = new FTDI_Access();
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
         
@@ -35,6 +38,7 @@ namespace DataCollectionCustomInstaller
 
         numCrunch crunch1 = new numCrunch();
         DataTable fillit = new DataTable();
+        private uint x = 0;     // just for a parameter that gets called via reference when writing to FTDI
 
 
         public DataCollection()
@@ -45,11 +49,19 @@ namespace DataCollectionCustomInstaller
             timer1.Interval = 450000;   // specify interval time as you want
             timer2.Interval = 100;
             numCrunch crunch = new numCrunch();
-            if(lcd.FindDeviceComPort())
+            if(usb.LcdPresent == true)
             {
-                lcd.Open();
+                if (usb.OpenByDescription(usb.Port2Description))
+                {
+                    byte[] settingsRecall = new byte[4];
+                    settingsRecall[0] = 0x0e;
+                    settingsRecall[1] = Properties.Settings.Default.Backlight;
+                    settingsRecall[2] = 0x0f;
+                    settingsRecall[3] = Properties.Settings.Default.Contrast;
+                    usb.display.Write(settingsRecall, 4, ref x);
+                }
             }
-            
+
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
             FillLabels();
@@ -106,6 +118,7 @@ namespace DataCollectionCustomInstaller
                 catch (IOException e)
                 {
                     comPort.comm.Close();
+                    lcd.com.Close();
 
                     if(comPort.ResetFtdi() == true)
                     {
@@ -166,6 +179,8 @@ namespace DataCollectionCustomInstaller
         // This method takes the receieved byte[] and determines which processing method to use based on the second element in the received byte[]
         private void process(byte[] rxBuffer)
         {
+            
+
             TempHumidityProcessing arrange = new TempHumidityProcessing();
 
             foreach (byte a in rxBuffer)
@@ -219,7 +234,9 @@ namespace DataCollectionCustomInstaller
                     humDew.Add(hum3);
                     humDew.Add(hum4);
                     fillHumps(humDew);
-                    lcd.ExtractStrings(humDew);
+                    string[] figaro = blas.ExtractStrings(humDew);
+                    byte[] floyd = blas.FormatData(figaro);
+                    usb.display.Write(floyd, floyd.Length, ref x);
                     procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
                     FillAll(procdValues);
                     label33.Text = "LCD Present = " + lcd.IsOpen.ToString();
@@ -723,7 +740,8 @@ namespace DataCollectionCustomInstaller
         {
             lcd.SendData(e.Cmd);
             lcd.SendData(e.Data);
-           // MessageBox.Show(e.Cmd.ToString() + " And " + e.Data.ToString());
+            byte[] Adjust = new byte[2] { e.Cmd, e.Data };
+            usb.display.Write(Adjust, 2, ref x);
         }
         
         private void InitCommunications()

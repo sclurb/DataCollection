@@ -108,7 +108,9 @@
     </Compile>
     <Compile Include="Delegate.cs" />
     <Compile Include="ErrorLog.cs" />
+    <Compile Include="FormatLCD.cs" />
     <Compile Include="FT232.cs" />
+    <Compile Include="FTDI_Access.cs" />
     <Compile Include="LCD.cs">
       <SubType>Form</SubType>
     </Compile>

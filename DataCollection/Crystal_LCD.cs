@@ -4,12 +4,13 @@ using System.IO.Ports;
 using System.Management;
 using System.Windows.Forms;
 
+
 namespace DataCollectionCustomInstaller
 {
     public class Crystal_LCD
     {
 
-        SerialPort com = new SerialPort();      // comport object used when this class is instantiated.
+        public SerialPort com = new SerialPort();      // comport object used when this class is instantiated.
         string portName = null;                 // backing field for PortName 
         byte contrast = 50;
         byte backlight = 50;
@@ -18,6 +19,7 @@ namespace DataCollectionCustomInstaller
         string searchString2 = "com";
         public Crystal_LCD()
         {
+
         }
 
         public bool IsOpen
