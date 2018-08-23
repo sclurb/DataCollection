@@ -89,7 +89,6 @@ namespace DataCollectionCustomInstaller
 
         public bool ResetFtdi()
         {
-
             ftStatus = myFtdiDevice.GetNumberOfDevices(ref ftdiDeviceCount);  //instance, method changes uint by reference
             if (ftdiDeviceCount > 0)
             {

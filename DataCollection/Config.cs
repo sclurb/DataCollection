@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DataCollectionCustomInstaller
@@ -23,7 +18,9 @@ namespace DataCollectionCustomInstaller
             InitializeComponent();
             loadThem();
         }
-
+        /// <summary>
+        /// loads data into the textboxes
+        /// </summary>
         private void loadThem()
         {
             numCrunch pluto = new numCrunch();
@@ -172,7 +169,11 @@ namespace DataCollectionCustomInstaller
                     + "Here's Why.... \r \r" + e.ToString());
             }
         }
-
+        /// <summary>
+        /// validates strings for proper length before data gets saved to database
+        /// </summary>
+        /// <param name="textBox"></param>
+        /// <returns></returns>
         private string Validate(string textBox)
         {
             string nullString = "Re-Enter";
@@ -194,10 +195,11 @@ namespace DataCollectionCustomInstaller
                 return nullString;
             }
         }
-
+        /// <summary>
+        /// Puts all the data in the textboxes in database S_LIST table
+        /// </summary>
         private void gather()
         {
-            
             string s;
             numCrunch crunch = new numCrunch();
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox1.Text), Convert.ToDecimal(textBox101.Text), checkBox1.Checked, 1));
@@ -237,7 +239,15 @@ namespace DataCollectionCustomInstaller
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox35.Text), 0, checkBox35.Checked, 35));
             crunch.updateS_List(makeQuery(_update, s = Validate(textBox36.Text), 0, checkBox36.Checked, 36));
         }
-
+        /// <summary>
+        /// Takes all the input values and converts everything to a real query for the database
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <param name="third"></param>
+        /// <param name="fourth"></param>
+        /// <param name="x"></param>
+        /// <returns>Returns a query in the form  of a string</returns>
         private string makeQuery(string first, string second, decimal third, bool fourth, int x)
         {
             int a = 89;
@@ -256,24 +266,11 @@ namespace DataCollectionCustomInstaller
             return query.ToString();
         }
 
-        private string makeQuery(string first, string second, string third, bool fourth, int x)
-        {
-            int a = 89;
-            if (fourth) { a = 1; }
-            if (!fourth) { a = 0; }
-            StringBuilder query = new StringBuilder();
-            query.Append(first);
-            query.Append(" SensorName = '");
-            query.Append(second);
-            query.Append("', Zone =  '");
-            query.Append(third);
-            query.Append("', Enable = ");
-            query.Append(a);
-            query.Append(" WHERE SensorID = ");
-            query.Append(x.ToString());
-            return query.ToString();
-        }
-
+        /// <summary>
+        /// Saves data to databse
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Save_Click(object sender, EventArgs e)
         {
             gather();
@@ -281,7 +278,11 @@ namespace DataCollectionCustomInstaller
             this.Close();
 
         }
-
+        /// <summary>
+        /// Closes form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_Close_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -28,7 +28,11 @@ namespace DataCollectionCustomInstaller
             //connectionString = "data source = Temp-PC\\SqlExpress2012; initial catalog=DataCollection; Integrated Security=true; AttachDBfilename=C:\\Data\\DataCollection.mdf; MultipleActiveResultSets=True; ";
             connectionString = GetConnString();
         }
-
+        /// <summary>
+        /// This method finds a .txt file that the installer class creates at the time of the installation.
+        /// It reads the file and stores that information as the connection string for all sql queries
+        /// </summary>
+        /// <returns>returns the connection string</returns>
         public string GetConnString()
         {
             string line;
@@ -50,7 +54,11 @@ namespace DataCollectionCustomInstaller
             }
         }
 
-        // This method inserts datarows into the MainData table in the database
+        /// <summary>
+        /// This method inserts datarows into the MainData table in the database
+        /// </summary>
+        /// <param name="values">takes the values[] and inserts them into a sql statement</param>
+        /// <returns></returns>
         public string insert(double[] values)
         {
             string y;
@@ -82,7 +90,10 @@ namespace DataCollectionCustomInstaller
             }
         }
 
-        // This method returns an array of bools which are the Enable column of the S_List table in the Database
+        /// <summary>
+        /// This method returns an array of bools which are the Enable column of the S_List table in the Database
+        /// </summary>
+        /// <returns>array of bools </returns>
         public bool[] dataEnable()
         {
             bool[] switches = new bool[36];
@@ -112,7 +123,11 @@ namespace DataCollectionCustomInstaller
                 return null;
             }
         }
-        // This method reads the database for the chart form
+        /// <summary>
+        /// This method reads the database for the chart form
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public DataTable dataRead(string query)
         {
             try
@@ -138,7 +153,12 @@ namespace DataCollectionCustomInstaller
 
         }
 
-        //  This method is called to load parameter values for the config form
+
+        /// <summary>
+        /// This method is called to load parameter values for the config form
+        /// </summary>
+        /// <returns>returns a datatable the contents of which contain all the information for
+        /// the config form</returns>
         public DataTable configLoad()
         {
             try
@@ -163,7 +183,10 @@ namespace DataCollectionCustomInstaller
             }
         }
 
-        // This method updates the S_List Table in the database
+        /// <summary>
+        /// This method updates the S_List Table in the database
+        /// </summary>
+        /// <param name="query">Takes a string which already isb a properly formed query</param>
         public void updateS_List(string query)
         {
             using (SqlConnection conn1 = new SqlConnection(connectionString))

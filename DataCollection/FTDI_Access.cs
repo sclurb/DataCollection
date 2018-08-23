@@ -21,7 +21,7 @@ namespace DataCollectionCustomInstaller
         private string port2Description;
         private string port2SerNum;
         private string port2LocId;
-        private bool lcdPresnt = false;
+        private bool lcdPresent = false;
         FTDI initial = new FTDI();
 
         public FTDI board = new FTDI();
@@ -89,7 +89,7 @@ namespace DataCollectionCustomInstaller
         {
             get
             {
-                return lcdPresnt;
+                return lcdPresent;
             }
         }
 
@@ -124,7 +124,7 @@ namespace DataCollectionCustomInstaller
                     port2Description = AllDevices[i].Description;
                     port2SerNum = AllDevices[i].SerialNumber;
                     port2LocId = AllDevices[i].LocId.ToString();
-                    lcdPresnt = true;
+                    lcdPresent = true;
                 }
                 if (AllDevices[0].Description == "FT245R USB FIFO")
                 {

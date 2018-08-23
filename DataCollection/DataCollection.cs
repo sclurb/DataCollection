@@ -53,12 +53,13 @@ namespace DataCollectionCustomInstaller
             {
                 if (usb.OpenByDescription(usb.Port2Description))
                 {
-                    byte[] settingsRecall = new byte[4];
+                    byte[] settingsRecall = new byte[5];
                     settingsRecall[0] = 0x0e;
                     settingsRecall[1] = Properties.Settings.Default.Backlight;
                     settingsRecall[2] = 0x0f;
                     settingsRecall[3] = Properties.Settings.Default.Contrast;
-                    usb.display.Write(settingsRecall, 4, ref x);
+                    settingsRecall[4] = 0x18;
+                    usb.display.Write(settingsRecall, 5, ref x);
                 }
             }
 
@@ -235,11 +236,11 @@ namespace DataCollectionCustomInstaller
                     humDew.Add(hum4);
                     fillHumps(humDew);
                     string[] figaro = blas.ExtractStrings(humDew);
-                    byte[] floyd = blas.FormatData(figaro);
+                    byte[] floyd = blas.FormatData(figaro, blas.Cursor());
                     usb.display.Write(floyd, floyd.Length, ref x);
                     procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
                     FillAll(procdValues);
-                    label33.Text = "LCD Present = " + lcd.IsOpen.ToString();
+                    label33.Text = "LCD Present = " + usb.LcdPresent.ToString();
                 }
                 rxData.Clear();
             }

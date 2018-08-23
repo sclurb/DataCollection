@@ -6,14 +6,31 @@ using System.Threading.Tasks;
 
 namespace DataCollectionCustomInstaller
 {
+    /// <summary>
+    /// This class formats the data into a byte array that the LCD can take
+    /// This class has both data and commands embedded intot eh byte[] that 
+    /// gets returned via the FormatData() method
+    /// </summary>
     public class FormatLCD
     {
+
         public FormatLCD()
         {
 
         }
 
+        /// <summary>
+        /// Used to change the cursor position for every update
+        /// </summary>
+        private byte cursor = 0x00;
 
+
+        /// <summary>
+        /// This method takes a list of TempHumDew type and extracts the readings
+        /// into an array of strings to be passed to FormatData()
+        /// </summary>
+        /// <param name="readings">List of 4 Temperature and Humidity readings</param>
+        /// <returns>returns an array of strings to be sent to Formatdata</returns>
         public string[] ExtractStrings(List<TempHumDew> readings)
         {
             string[] tempHums = new string[12];
@@ -32,8 +49,15 @@ namespace DataCollectionCustomInstaller
             return tempHums;
 
         }
-
-        public byte[] FormatData(string[] tempHums)
+        /// <summary>
+        /// This method takes the array of strings and converts each string to a byte[]
+        /// </summary>
+        /// <param name="tempHums">array of strings each with 4 Temperature/Humidity and Dew point values</param>
+        /// <param name="cursor">This input is rfom a local method that will increment from 0 to 3
+        /// so that the cursor will appear on a new line every time an updat occurs</param>
+        /// <returns>The byte[] has commands and data embedded together which will fir the 
+        /// 4 line display perfectly</returns>
+        public byte[] FormatData(string[] tempHums, byte cursor)
         {
 
             byte[] cmd = new byte[2] { 0x0a, 0x0d };
@@ -49,7 +73,7 @@ namespace DataCollectionCustomInstaller
 
             List<byte> masterByte = new List<byte>();
             masterByte.Add(0x0c);
-
+            masterByte.Add(0x05);
             foreach (byte a in buffer1)
             {
                 masterByte.Add(a);
@@ -72,13 +96,29 @@ namespace DataCollectionCustomInstaller
             {
                 masterByte.Add(a);
             }
+            masterByte.Add(0x11);
+            masterByte.Add(0x13);
+            masterByte.Add(cursor);
+            
             byte[] masterBuffer = new byte[masterByte.Count];
 
             masterBuffer = masterByte.ToArray();
-
-
             return masterBuffer;
         }
+        /// <summary>
+        /// This method is used to increment the cursor variable
+        /// </summary>
+        /// <returns>Returns a byte which will be 0x00 to 0x03</returns>
+        public byte Cursor()
+        {
+            cursor++;
+            if (cursor == 0x04)
+            {
+                cursor = 0x00;
+            }
+            return cursor;
+        }
+
     }
 
 }

@@ -73,7 +73,10 @@ namespace DataCollectionCustomInstaller
             cmbStartTime.SelectedIndex = 0;
             cmbEndTime.SelectedIndex = 0;
         }
-
+        /// <summary>
+        /// Used to fill combo boxes during date selection process
+        /// </summary>
+        /// <param name="a"></param>
         private void Establish_MonthDay(int a)
         {
             switch (a)

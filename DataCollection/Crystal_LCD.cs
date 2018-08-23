@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace DataCollectionCustomInstaller
 {
+    /// <summary>
+    /// This class communicates with the LCD
+    /// </summary>
     public class Crystal_LCD
     {
 
