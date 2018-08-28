@@ -117,7 +117,7 @@ namespace DataCollectionCustomInstaller
             AllDevices = new FT_DEVICE_INFO_NODE[_deviceCount];
             ftStatus = initial.GetDeviceList(AllDevices);
 
-            for(int i = 1; i < _deviceCount; i++)
+            for(int i = 0; i < _deviceCount; i++)
             {
                 if (AllDevices[i].Description == "Crystalfontz CFA634-USB LCD")
                 {
@@ -126,7 +126,7 @@ namespace DataCollectionCustomInstaller
                     port2LocId = AllDevices[i].LocId.ToString();
                     lcdPresent = true;
                 }
-                if (AllDevices[0].Description == "FT245R USB FIFO")
+                if (AllDevices[i].Description == "FT245R USB FIFO")
                 {
                     port1Description = AllDevices[i].Description;
                     port1SerNum = AllDevices[i].SerialNumber;
@@ -162,7 +162,6 @@ namespace DataCollectionCustomInstaller
                             return true;
                         }
                     }
-                    
                 }
             }
             return false;

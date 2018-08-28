@@ -279,7 +279,7 @@ namespace DataCollectionCustomInstaller
 
         }
         /// <summary>
-        /// Closes form
+        /// Closes form with no save
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

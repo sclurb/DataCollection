@@ -76,7 +76,7 @@ namespace DataCollectionCustomInstaller
         /// <summary>
         /// Used to fill combo boxes during date selection process
         /// </summary>
-        /// <param name="a"></param>
+        /// <param name="a">Numeric value for month</param>
         private void Establish_MonthDay(int a)
         {
             switch (a)
@@ -122,7 +122,11 @@ namespace DataCollectionCustomInstaller
                     break;
             }
         }
-
+        /// <summary>
+        /// When users change selected start month, this method is triggered
+        /// </summary>
+        /// <param name="sender">Called when selected month has changed</param>
+        /// <param name="e"></param>
         protected void Start_MonthDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbStartDay.Items.Clear();
@@ -133,7 +137,11 @@ namespace DataCollectionCustomInstaller
             }
             cmbStartDay.SelectedIndex = 0;
         }
-
+        /// <summary>
+        /// When users change selected end month, this method is triggered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void End_MonthDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbEndDay.Items.Clear();

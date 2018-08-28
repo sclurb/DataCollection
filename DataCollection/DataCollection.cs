@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System;                   
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +7,8 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace DataCollectionCustomInstaller
 {
@@ -23,7 +25,7 @@ namespace DataCollectionCustomInstaller
         private byte[] getAuxs = { 0x40, 0x30, 0xf5 };
         //private SerialPort comPort = new SerialPort();
         FT232 comPort = new FT232();
-        public Crystal_LCD lcd = new Crystal_LCD();
+       // public Crystal_LCD lcd = new Crystal_LCD();
         public FormatLCD blas = new FormatLCD();
 
         public FTDI_Access usb = new FTDI_Access();
@@ -118,21 +120,38 @@ namespace DataCollectionCustomInstaller
                 }
                 catch (IOException e)
                 {
-                    comPort.comm.Close();
-                    lcd.com.Close();
 
+                    Process.Start("shutdown", "/r /t 0");
+
+                    /*
+                    if(comPort.comm.IsOpen == true)
+                    {
+                        comPort.comm.Dispose();
+                    }
+                    
+
+                    if(usb.TempHumPresent == true)
+                    {
+                        if (usb.OpenByDescription(usb.Port1Description))
+                        {
+                            usb.board.CyclePort();
+                            usb.board.Close();
+                            comPort.PortSetUp();
+                            InitCommunications();
+                        }
+                    }
+                    //lcd.com.Close();
+                    /*
                     if(comPort.ResetFtdi() == true)
                     {
                         InfoFTDI = comPort.InitFTDI();
                     }
-
-
+                    */
                     bool bReturnLog = false;
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                     //false for writing log entry to customized text file
                     bReturnLog = ErrorLog.ErrorRoutine(false, e);
                      MessageBox.Show("IOException");
-
                 }
                 catch (ArgumentNullException)
                 { MessageBox.Show("Argument Null"); }
@@ -146,12 +165,30 @@ namespace DataCollectionCustomInstaller
                 { MessageBox.Show("TimeoutException"); }
                 catch (Exception ex)
                 {
+                    comPort.comm.Close();
+                    if (usb.TempHumPresent == true)
+                    {
+                        if (usb.OpenByDescription(usb.Port1Description))
+                        {
+                            usb.board.CyclePort();
+                            usb.board.Close();
+                            comPort.PortSetUp();
+                            InitCommunications();
+                        }
+                    }
+
+
+
                     bool bReturnLog = false;
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                     //false for writing log entry to customized text file
                     bReturnLog = ErrorLog.ErrorRoutine(false, ex);
                     MessageBox.Show(ex.ToString()); 
                 }
+            }
+            else
+            {
+                MessageBox.Show("No Com Port open");
             }
         }
 
@@ -739,8 +776,8 @@ namespace DataCollectionCustomInstaller
 
         public void Adjust(AdjustEventArgs e)
         {
-            lcd.SendData(e.Cmd);
-            lcd.SendData(e.Data);
+           // lcd.SendData(e.Cmd);
+          //  lcd.SendData(e.Data);
             byte[] Adjust = new byte[2] { e.Cmd, e.Data };
             usb.display.Write(Adjust, 2, ref x);
         }
