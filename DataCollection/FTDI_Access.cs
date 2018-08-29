@@ -16,11 +16,13 @@ namespace DataCollectionCustomInstaller
         private string port1Description;
         private string port1SerNum;
         private string port1LocId;
+        private string port1ComPort;
         private bool tempHumPresent = false;
 
         private string port2Description;
         private string port2SerNum;
         private string port2LocId;
+        private string port2ComPort;
         private bool lcdPresent = false;
         FTDI initial = new FTDI();
 
@@ -60,6 +62,13 @@ namespace DataCollectionCustomInstaller
                 return port1LocId;
             }
         }
+        public string Port1ComPort
+        {
+            get
+            {
+                return port1ComPort;
+            }
+        }
 
         public string Port2Description
         {
@@ -84,6 +93,13 @@ namespace DataCollectionCustomInstaller
                 return port2LocId;
             }
         }
+        public string Port2ComPort
+        {
+            get
+            {
+                return port1ComPort;
+            }
+        }
 
         public bool LcdPresent
         {
@@ -106,7 +122,10 @@ namespace DataCollectionCustomInstaller
         {
             ftStatus = initial.GetNumberOfDevices(ref deviceCount);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_deviceCount"></param>
         public void ProcessFTDIInfo(uint _deviceCount)
         {
             if(_deviceCount == 0)
@@ -136,38 +155,44 @@ namespace DataCollectionCustomInstaller
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="description"></param>
+        /// <returns></returns>
         public bool OpenByDescription(string description)
         {
-            if (AllDevices[0].Description.ToString() == description)
+            if (port1Description == description)
             {
-                ftStatus = board.OpenByDescription(AllDevices[0].Description);
+                ftStatus = board.OpenByDescription(description);
                 if (ftStatus == FTDI.FT_STATUS.FT_OK)
                 {
                     ftStatus = board.SetResetPipeRetryCount(150);
                     if(ftStatus == FT_STATUS.FT_OK)
                     {
-                        return true;
+                        ftStatus = board.GetCOMPort(out port1ComPort);
+                        if (ftStatus == FT_STATUS.FT_OK)
+                        {
+                            return true;
+                        }
                     }
-                    
                 }
             }
 
-            if (AllDevices[1].Description.ToString() == description)
+            if (port2Description == description)
             {
-                ftStatus = display.OpenByDescription(AllDevices[1].Description);
+                ftStatus = display.OpenByDescription(description);
                 if (ftStatus == FTDI.FT_STATUS.FT_OK)
                 {
                     ftStatus = display.SetBaudRate(19200);
                     {
                         if (ftStatus == FT_STATUS.FT_OK)
                         {
-                            ftStatus = display.SetResetPipeRetryCount(150);
+                            ftStatus = display.GetCOMPort(out port2ComPort);
                             if (ftStatus == FT_STATUS.FT_OK)
                             {
                                 return true;
                             }
-                                
                         }
                     }
                 }

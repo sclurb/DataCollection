@@ -49,9 +49,9 @@ namespace DataCollectionCustomInstaller
 
             if(usb.LcdPresent == true)
             {
+                // opens the FTDI discreet command set for communication to LCD display
                 if (usb.OpenByDescription(usb.Port2Description))
                 {
-                    
                     byte[] settingsRecall = new byte[5];
                     settingsRecall[0] = 0x0e;
                     settingsRecall[1] = Properties.Settings.Default.Backlight;
@@ -61,11 +61,12 @@ namespace DataCollectionCustomInstaller
                     usb.display.Write(settingsRecall, 5, ref x);
                 }
             }
-            if (usb.OpenByDescription(usb.Port1Description))
+            if (usb.OpenByDescription(usb.Port1Description)) // opening this connection sets a few parameters
             {
-                usb.board.Close();
+                usb.board.Close();  // now we can close it to use the  com port instead of FTDI discreet commands
             }
-            InfoFTDI = comPort.InitFTDI();
+            comPort.ComPortNum = usb.Port1ComPort;      // makes sure the correct com port number is passed
+            comPort.PortSetUp();        // opens the correct port
             comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
             timer1.Interval = 450000;   // specify interval time as you want
             timer2.Interval = 100;
@@ -152,7 +153,18 @@ namespace DataCollectionCustomInstaller
             }
             else
             {
-                MessageBox.Show("No Com Port open");
+                //throw new CustomException();
+                StreamWriter sw = new StreamWriter("C:\\Data\\ErrorLogFile.txt", true);
+                sw.WriteLine(" ");
+                sw.WriteLine("------------------");
+                sw.WriteLine("The USB Port Failed");
+                sw.WriteLine(DateTime.Now.ToString());
+                sw.WriteLine("------------------");
+                sw.WriteLine(" ");
+                sw.Flush();
+                sw.Close();
+                Process.Start("shutdown", "/r /t 5");
+               // MessageBox.Show("No Com Port open");
             }
         }
 
