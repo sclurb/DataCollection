@@ -141,17 +141,20 @@ namespace DataCollectionCustomInstaller
         {
             if (AllDevices[0].Description.ToString() == description)
             {
-                port1Description = description;
                 ftStatus = board.OpenByDescription(AllDevices[0].Description);
                 if (ftStatus == FTDI.FT_STATUS.FT_OK)
                 {
-                    return true;
+                    ftStatus = board.SetResetPipeRetryCount(150);
+                    if(ftStatus == FT_STATUS.FT_OK)
+                    {
+                        return true;
+                    }
+                    
                 }
             }
 
             if (AllDevices[1].Description.ToString() == description)
             {
-                port2Description = description;
                 ftStatus = display.OpenByDescription(AllDevices[1].Description);
                 if (ftStatus == FTDI.FT_STATUS.FT_OK)
                 {
@@ -159,7 +162,12 @@ namespace DataCollectionCustomInstaller
                     {
                         if (ftStatus == FT_STATUS.FT_OK)
                         {
-                            return true;
+                            ftStatus = display.SetResetPipeRetryCount(150);
+                            if (ftStatus == FT_STATUS.FT_OK)
+                            {
+                                return true;
+                            }
+                                
                         }
                     }
                 }

@@ -46,15 +46,12 @@ namespace DataCollectionCustomInstaller
         public DataCollection()
         {
             InitializeComponent();
-            InfoFTDI = comPort.InitFTDI();
-            comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
-            timer1.Interval = 450000;   // specify interval time as you want
-            timer2.Interval = 100;
-            numCrunch crunch = new numCrunch();
+
             if(usb.LcdPresent == true)
             {
                 if (usb.OpenByDescription(usb.Port2Description))
                 {
+                    
                     byte[] settingsRecall = new byte[5];
                     settingsRecall[0] = 0x0e;
                     settingsRecall[1] = Properties.Settings.Default.Backlight;
@@ -64,6 +61,15 @@ namespace DataCollectionCustomInstaller
                     usb.display.Write(settingsRecall, 5, ref x);
                 }
             }
+            if (usb.OpenByDescription(usb.Port1Description))
+            {
+                usb.board.Close();
+            }
+            InfoFTDI = comPort.InitFTDI();
+            comPort.comm.DataReceived += new SerialDataReceivedEventHandler(DataReceived);
+            timer1.Interval = 450000;   // specify interval time as you want
+            timer2.Interval = 100;
+            numCrunch crunch = new numCrunch();
 
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Tick += new EventHandler(timer2_Tick);
@@ -120,38 +126,10 @@ namespace DataCollectionCustomInstaller
                 }
                 catch (IOException e)
                 {
-
-                    Process.Start("shutdown", "/r /t 0");
-
-                    /*
-                    if(comPort.comm.IsOpen == true)
-                    {
-                        comPort.comm.Dispose();
-                    }
-                    
-
-                    if(usb.TempHumPresent == true)
-                    {
-                        if (usb.OpenByDescription(usb.Port1Description))
-                        {
-                            usb.board.CyclePort();
-                            usb.board.Close();
-                            comPort.PortSetUp();
-                            InitCommunications();
-                        }
-                    }
-                    //lcd.com.Close();
-                    /*
-                    if(comPort.ResetFtdi() == true)
-                    {
-                        InfoFTDI = comPort.InitFTDI();
-                    }
-                    */
                     bool bReturnLog = false;
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
-                    //false for writing log entry to customized text file
                     bReturnLog = ErrorLog.ErrorRoutine(false, e);
-                     MessageBox.Show("IOException");
+                    Process.Start("shutdown", "/r /t 5");
                 }
                 catch (ArgumentNullException)
                 { MessageBox.Show("Argument Null"); }
@@ -165,25 +143,11 @@ namespace DataCollectionCustomInstaller
                 { MessageBox.Show("TimeoutException"); }
                 catch (Exception ex)
                 {
-                    comPort.comm.Close();
-                    if (usb.TempHumPresent == true)
-                    {
-                        if (usb.OpenByDescription(usb.Port1Description))
-                        {
-                            usb.board.CyclePort();
-                            usb.board.Close();
-                            comPort.PortSetUp();
-                            InitCommunications();
-                        }
-                    }
-
-
-
                     bool bReturnLog = false;
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                     //false for writing log entry to customized text file
                     bReturnLog = ErrorLog.ErrorRoutine(false, ex);
-                    MessageBox.Show(ex.ToString()); 
+                    Process.Start("shutdown", "/r /t 5");
                 }
             }
             else
