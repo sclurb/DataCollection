@@ -1,4 +1,4 @@
-﻿using System;                   
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +9,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Management;
+using static FTD2XX_NET.FTDI;
 
 namespace DataCollectionCustomInstaller
 {
@@ -27,7 +29,7 @@ namespace DataCollectionCustomInstaller
         FT232 comPort = new FT232();
        // public Crystal_LCD lcd = new Crystal_LCD();
         public FormatLCD blas = new FormatLCD();
-
+        FT_STATUS ftStatus = FT_STATUS.FT_OK;
         public FTDI_Access usb = new FTDI_Access();
         private double[] procdValues = new double[32];
         private double[] dews = new double[4];
@@ -130,7 +132,8 @@ namespace DataCollectionCustomInstaller
                     bool bReturnLog = false;
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                     bReturnLog = ErrorLog.ErrorRoutine(false, e);
-                    Process.Start("shutdown", "/r /t 5");
+                    //Process.Start("shutdown", "/r /t 5");
+                    ShutDown();
                 }
                 catch (ArgumentNullException)
                 { MessageBox.Show("Argument Null"); }
@@ -148,7 +151,8 @@ namespace DataCollectionCustomInstaller
                     ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
                     //false for writing log entry to customized text file
                     bReturnLog = ErrorLog.ErrorRoutine(false, ex);
-                    Process.Start("shutdown", "/r /t 5");
+                    //Process.Start("shutdown", "/r /t 5");
+                    ShutDown();
                 }
             }
             else
@@ -163,8 +167,9 @@ namespace DataCollectionCustomInstaller
                 sw.WriteLine(" ");
                 sw.Flush();
                 sw.Close();
-                Process.Start("shutdown", "/r /t 5");
-               // MessageBox.Show("No Com Port open");
+                ShutDown();
+                //Process.Start("shutdown", "/r /t 5");
+                // MessageBox.Show("No Com Port open");
             }
         }
 
@@ -250,7 +255,23 @@ namespace DataCollectionCustomInstaller
                     fillHumps(humDew);
                     string[] figaro = blas.ExtractStrings(humDew);
                     byte[] floyd = blas.FormatData(figaro, blas.Cursor());
-                    usb.display.Write(floyd, floyd.Length, ref x);
+
+                    try
+                    {
+                        if (usb.display.Write(floyd, floyd.Length, ref x) != FT_STATUS.FT_OK)
+                        {
+                            ShutDown();
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        bool bReturnLog = false;
+                        ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                        //false for writing log entry to customized text file
+                        bReturnLog = ErrorLog.ErrorRoutine(false, ex);
+                        ShutDown();
+                    }
+                    
                     procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
                     FillAll(procdValues);
                     label33.Text = "LCD Present = " + usb.LcdPresent.ToString();
@@ -749,6 +770,14 @@ namespace DataCollectionCustomInstaller
 
 
         #region Methods
+
+        public void ShutDown()
+        {
+            const int restart = 2;
+            var management = new ManagementClass("Win32_OperatingSystem");
+            management.Scope.Options.EnablePrivileges = true;
+            management.GetInstances().OfType<ManagementObject>().First().InvokeMethod("Win32Shutdown", new object[] { restart, 0 });
+        }
 
         public void Adjust(AdjustEventArgs e)
         {
