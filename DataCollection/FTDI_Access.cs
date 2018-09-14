@@ -123,7 +123,8 @@ namespace DataCollectionCustomInstaller
             ftStatus = initial.GetNumberOfDevices(ref deviceCount);
         }
         /// <summary>
-        /// 
+        /// This method is called via the constructor for this class.   
+        /// This method 
         /// </summary>
         /// <param name="_deviceCount"></param>
         public void ProcessFTDIInfo(uint _deviceCount)

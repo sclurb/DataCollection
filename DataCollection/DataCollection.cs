@@ -255,22 +255,25 @@ namespace DataCollectionCustomInstaller
                     fillHumps(humDew);
                     string[] figaro = blas.ExtractStrings(humDew);
                     byte[] floyd = blas.FormatData(figaro, blas.Cursor());
-
-                    try
+                    if(usb.LcdPresent == true)
                     {
-                        if (usb.display.Write(floyd, floyd.Length, ref x) != FT_STATUS.FT_OK)
+                        try
                         {
+                            if (usb.display.Write(floyd, floyd.Length, ref x) != FT_STATUS.FT_OK)
+                            {
+                                ShutDown();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            bool bReturnLog = false;
+                            ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
+                            //false for writing log entry to customized text file
+                            bReturnLog = ErrorLog.ErrorRoutine(false, ex);
                             ShutDown();
                         }
                     }
-                    catch(Exception ex)
-                    {
-                        bool bReturnLog = false;
-                        ErrorLog.LogFilePath = "C:\\Data\\ErrorLogFile.txt";
-                        //false for writing log entry to customized text file
-                        bReturnLog = ErrorLog.ErrorRoutine(false, ex);
-                        ShutDown();
-                    }
+
                     
                     procdValues = trim.ProcessTrim(trim.GetValues(), procdValues);
                     FillAll(procdValues);
